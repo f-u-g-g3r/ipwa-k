@@ -9,6 +9,10 @@ import java.util.Objects;
 @Table(name = "students")
 public class Student {
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
+
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Resume resume;
+
     //add relationship
     private Long teacherId;
     private String firstName;
@@ -19,8 +23,9 @@ public class Student {
 
     public Student() {}
 
-    public Student(Long id, Long teacherId, String firstName, String lastName, String email, String password, Status accountStatus) {
+    public Student(Long id, Resume resume, Long teacherId, String firstName, String lastName, String email, String password, Status accountStatus) {
         this.id = id;
+        this.resume = resume;
         this.teacherId = teacherId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -85,23 +90,32 @@ public class Student {
         this.accountStatus = accountStatus;
     }
 
+    public Resume getResume() {
+        return resume;
+    }
+
+    public void setResume(Resume resume) {
+        this.resume = resume;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return Objects.equals(id, student.id) && Objects.equals(teacherId, student.teacherId) && Objects.equals(firstName, student.firstName) && Objects.equals(lastName, student.lastName) && Objects.equals(email, student.email) && Objects.equals(password, student.password) && accountStatus == student.accountStatus;
+        return Objects.equals(id, student.id) && Objects.equals(resume, student.resume) && Objects.equals(teacherId, student.teacherId) && Objects.equals(firstName, student.firstName) && Objects.equals(lastName, student.lastName) && Objects.equals(email, student.email) && Objects.equals(password, student.password) && accountStatus == student.accountStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, teacherId, firstName, lastName, email, password, accountStatus);
+        return Objects.hash(id, resume, teacherId, firstName, lastName, email, password, accountStatus);
     }
 
     @Override
     public String toString() {
         return "Student{" +
                 "id=" + id +
+                ", resume=" + resume +
                 ", teacherId=" + teacherId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

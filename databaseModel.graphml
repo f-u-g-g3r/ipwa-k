@@ -37,10 +37,10 @@ account_status: Active/Inactive<y:LabelModel><y:ErdAttributesNodeLabelModel/></y
     <node id="n1">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="78.31999999999994" width="85.28000000000014" x="504.5405499999998" y="611.9312524999993"/>
+          <y:Geometry height="78.31999999999994" width="102.88000000000011" x="475.74054999999976" y="611.9312524999993"/>
           <y:Fill color="#FFFFFF" color2="#FFFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="3.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#000000" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" lineColor="#000000" modelName="internal" modelPosition="t" textColor="#FFFFFF" verticalTextPosition="bottom" visible="true" width="48.68359375" x="18.2982031250001" xml:space="preserve" y="4.0">Resume</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#000000" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" lineColor="#000000" modelName="internal" modelPosition="t" textColor="#FFFFFF" verticalTextPosition="bottom" visible="true" width="48.68359375" x="27.098203124999998" xml:space="preserve" y="4.0">Resume</y:NodeLabel>
           <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="48.103515625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="92.740234375" x="2.0" xml:space="preserve" y="30.701171875">id: Long
 path: String
 student_id: Long<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y:ModelParameter><y:ErdAttributesNodeLabelModelParameter/></y:ModelParameter></y:NodeLabel>
@@ -156,9 +156,9 @@ expiry_date: Date<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y
     <edge id="e1" source="n1" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="30.59990946129477" tx="-81.6176578665013" ty="34.32921208967585">
+          <y:Path sx="0.0" sy="30.59990946129477" tx="-81.6176578665013" ty="-28.870787910324225">
             <y:Point x="591.8117210667492" y="681.691161961294"/>
-            <y:Point x="591.8117210667492" y="693.020464589675"/>
+            <y:Point x="591.8117210667492" y="629.820464589675"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>

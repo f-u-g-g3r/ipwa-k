@@ -2,15 +2,28 @@ package com.ipwa.kp.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "posts")
 public class Post {
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
-    //add relationship
-    private Long companyId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    private Company company;
+
+    @ManyToMany
+    @JoinTable(
+            name = "post_student",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
+    private List<Student> students = new ArrayList<>();
+
     private String workName;
     private String workDescription;
     private int salary;
@@ -22,9 +35,10 @@ public class Post {
 
     }
 
-    public Post(Long id, Long companyId, String workName, String workDescription, int salary, String claims, String additionalInfo, Date expiryDate) {
+    public Post(Long id, Company company, List<Student> students, String workName, String workDescription, int salary, String claims, String additionalInfo, Date expiryDate) {
         this.id = id;
-        this.companyId = companyId;
+        this.company = company;
+        this.students = students;
         this.workName = workName;
         this.workDescription = workDescription;
         this.salary = salary;
@@ -41,12 +55,12 @@ public class Post {
         this.id = id;
     }
 
-    public Long getCompanyId() {
-        return companyId;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setCompanyId(Long companyId) {
-        this.companyId = companyId;
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public String getWorkName() {
@@ -97,24 +111,33 @@ public class Post {
         this.expiryDate = expiryDate;
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return salary == post.salary && Objects.equals(id, post.id) && Objects.equals(companyId, post.companyId) && Objects.equals(workName, post.workName) && Objects.equals(workDescription, post.workDescription) && Objects.equals(claims, post.claims) && Objects.equals(additionalInfo, post.additionalInfo) && Objects.equals(expiryDate, post.expiryDate);
+        return salary == post.salary && Objects.equals(id, post.id) && Objects.equals(company, post.company) && Objects.equals(students, post.students) && Objects.equals(workName, post.workName) && Objects.equals(workDescription, post.workDescription) && Objects.equals(claims, post.claims) && Objects.equals(additionalInfo, post.additionalInfo) && Objects.equals(expiryDate, post.expiryDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, companyId, workName, workDescription, salary, claims, additionalInfo, expiryDate);
+        return Objects.hash(id, company, students, workName, workDescription, salary, claims, additionalInfo, expiryDate);
     }
 
     @Override
     public String toString() {
         return "Post{" +
                 "id=" + id +
-                ", companyId=" + companyId +
+                ", company=" + company +
+                ", students=" + students +
                 ", workName='" + workName + '\'' +
                 ", workDescription='" + workDescription + '\'' +
                 ", salary=" + salary +

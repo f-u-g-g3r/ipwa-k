@@ -3,6 +3,8 @@ package com.ipwa.kp.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -14,15 +16,19 @@ public class Teacher {
     private String email;
     private String password;
 
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Student> students = new ArrayList<>();
+
     public Teacher() {
     }
 
-    public Teacher(Long id, String firstName, String lastName, String email, String password) {
+    public Teacher(Long id, String firstName, String lastName, String email, String password, List<Student> students) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.students = students;
     }
 
     public Long getId() {
@@ -65,17 +71,25 @@ public class Teacher {
         this.password = password;
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Teacher teacher = (Teacher) o;
-        return Objects.equals(id, teacher.id) && Objects.equals(firstName, teacher.firstName) && Objects.equals(lastName, teacher.lastName) && Objects.equals(email, teacher.email) && Objects.equals(password, teacher.password);
+        return Objects.equals(id, teacher.id) && Objects.equals(firstName, teacher.firstName) && Objects.equals(lastName, teacher.lastName) && Objects.equals(email, teacher.email) && Objects.equals(password, teacher.password) && Objects.equals(students, teacher.students);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, password);
+        return Objects.hash(id, firstName, lastName, email, password, students);
     }
 
     @Override
@@ -86,6 +100,7 @@ public class Teacher {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", students=" + students +
                 '}';
     }
 }

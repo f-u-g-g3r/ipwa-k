@@ -2,6 +2,8 @@ package com.ipwa.kp.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,10 +17,13 @@ public class Company {
     private String contacts;
     private String address;
 
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Post> posts = new ArrayList<>();
+
     public Company() {
     }
 
-    public Company(Long id, String companyName, String registryCode, String email, String phone, String contacts, String address) {
+    public Company(Long id, String companyName, String registryCode, String email, String phone, String contacts, String address, List<Post> posts) {
         this.id = id;
         this.companyName = companyName;
         this.registryCode = registryCode;
@@ -26,6 +31,7 @@ public class Company {
         this.phone = phone;
         this.contacts = contacts;
         this.address = address;
+        this.posts = posts;
     }
 
     public Long getId() {
@@ -84,17 +90,25 @@ public class Company {
         this.address = address;
     }
 
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Company company = (Company) o;
-        return Objects.equals(id, company.id) && Objects.equals(companyName, company.companyName) && Objects.equals(registryCode, company.registryCode) && Objects.equals(email, company.email) && Objects.equals(phone, company.phone) && Objects.equals(contacts, company.contacts) && Objects.equals(address, company.address);
+        return Objects.equals(id, company.id) && Objects.equals(companyName, company.companyName) && Objects.equals(registryCode, company.registryCode) && Objects.equals(email, company.email) && Objects.equals(phone, company.phone) && Objects.equals(contacts, company.contacts) && Objects.equals(address, company.address) && Objects.equals(posts, company.posts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, companyName, registryCode, email, phone, contacts, address);
+        return Objects.hash(id, companyName, registryCode, email, phone, contacts, address, posts);
     }
 
     @Override
@@ -107,6 +121,7 @@ public class Company {
                 ", phone='" + phone + '\'' +
                 ", contacts='" + contacts + '\'' +
                 ", address='" + address + '\'' +
+                ", posts=" + posts +
                 '}';
     }
 }

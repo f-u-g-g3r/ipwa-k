@@ -1,0 +1,92 @@
+- Tööpakkumise lisamine ettevõtte vaatest
+
+
+- Tööpakkumiste kuvamine (avalik kõigile?) 
+
+
+- Tahvli export, Praktikaportaali import, Õpilase konto loomine andmebaasi
+data from tahvel: {
+name
+isikukood
+final grades of every subject
+}
+
+every teacher see only their own class
+
+
+- Võlgagade arv + loetelu (to-do-list) Tahvlist õpilase profiilile
+
+
+- Õpilaste profiilide nimekiri klassijuhatajale ja kordinaatorile (filtritega)
+
+
+- profiili täitmine (CV, Motivation Letter), praktikale lubamine
+Coordinator wanna see a number in how many jobs student have applicated.
+Dashboard with student grades.
+Button for "Notify my teacher that i made improvements."
+Class teacher can check student's CV(File). only when teacher accept student's CV, student would be able to apply for the job.
+
+
+- Ettevõtete profiilide ja kontode kinnitamine, nimekiri ettevõtetest ja ettevõtete esindajatest kordinaatoritele
+Coordinator is a one man who collect emails with job postings and upload pdfs into the system.
+First idea(main idea):
+Coordinator will mannualy creating company accounts;
+Search for job postings. Search between different specialties.
+Form for submitting job post. 
+File upload for company logo. Keywords. Title
+Simple text search for posts.
+
+For future(dont need it know):
+Registration for company account, need to be verified by coordinator before be able to upload job posts.
+
+
+
+
+- Pakkumised ja kinnitusring (kandideerib, võetakse vastu, alustab lepingut)
+Offers and applying.
+Student can apply only when grades are ok, when teacher has accepted student's cv. Before that student can only see posts, but not applying.
+Company worker can accept student application. Coordinator can do it as well. Coordinator can do everything.
+
+
+
+- Tööpakkumiste adminnimine (õpetaja/adminni/kooli töötaja vaade) 
+Coordinator can view numerical information about student experience in applying.(how many accepted? how many was declined?)
+
+
+- kandideerimine tööpakkumisele 
+
+
+- Admin vaates ülevaate kuvamine nt klassijuhatajale (kui paljud praktikal, kes kui palju kandideerinud) 
+
+
+- Automaatne lepingu tegemise süsteem 
+
+
+- Automaatsed teavitused (kui uus sobiv pakkumine, kui ettevõtja kutsub vestlusele) 
+
+
+- Aegunud pakkumiste peitmine, kustutamine 
+
+
+- Praktikalepingu alustamine ja andmete liikumine Pinalisse
+Signing contract.
+Coordinator will manually fill the information in tahvel, then copy paste all the info and paste in Pinal(will create pdf). 
+This pdf coordinator will send manually for both sides(school and company).
+
+
+OneToOne relationship in database for Contract table.(student to company)
+Can create a form for creating contract with pre-filled info about student and company. 
+After all the info has been filled, company can click "Start signing" and generate pdf.
+
+
+User registration
+Teacher generate accounts by emails exported from tahvel and generate passwords for accounts. student can change email after logging in.
+
+Better idea.
+Autogenerate accounts with userid and password. student can change password after logging in.
+Teacher and coordinator can reset student's password.
+
+
+
+
+

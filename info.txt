@@ -1,0 +1,24 @@
+
+Create a user accaunt.
+First name - Eesnimi
+Last name - Perekonnanimi
+Email - E-posti aadress
+Password - Salasõna
+
+Create a company accaunt:
+Organization - Ettevõte/organisatsioon
+Registry code - Registikood
+Email - E-posti aadress
+Telephone - Telefon
+Contacts - Kontaktisik
+Address - Aadress
+
+
+
+Create a post about a job:
+Work name - Töö nimetus
+Work description - Töö kirjeldus
+Salary - Palk
+Claims - Nõuded
+Additional info - Lisainformatsioon
+Expiry date - Aegumiskuupäev

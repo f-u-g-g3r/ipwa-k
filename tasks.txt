@@ -1,0 +1,87 @@
+Tasks:
+ - Create a form for creating job posts. This form can use only company account or coordinator.
+	Fields to fill: 
+		* Töö nimetus (required)
+		* Töö kirjeldus (required)
+		* Palk (not required)
+		* Nõuded (required)
+		* Lisainformatsioon (not required)
+		* Aegumiskuupäev (required)
+		* PDF file (required)
+		
+ - List all the job posts. Add filter and search.
+	Filter by: Posted date(asc/desc), 
+	skills(show only specific posts), 
+	company name(?),
+	
+	Search by keywords(Company name, job title, skills)
+	
+ - Create a login form. 
+	Username, Password
+	Users can log in by their auto-generated username or by their email.
+	
+ - Create a page for editing profile information. Create changing password.
+	
+ - Coordinator can manually create accounts for Student, Company, Teacher
+	Coordinator can reset password for Student, Company, Teacher
+	
+ - Teacher can manually create accounts for Student
+	Teacher can reset password for Student
+	
+
+ - JWT authentication system
+	Data stored in token:
+		subject(username or email)
+		id
+		role
+		
+	
+Controllers:
+	
+	GET
+	/posts
+	
+	POST
+	/posts
+	
+	DELETE
+	/posts
+	
+	
+	GET
+	/users
+	
+	POST
+	/users
+	
+	PATCH
+	/users/{id}
+	
+	
+	GET
+	/teachers
+	
+	POST
+	/teachers
+	
+	PATCH
+	/teachers/{id}
+	
+	
+	GET
+	/companies
+	
+	POST
+	/companies
+	
+	PATCH
+	/companies/{id}
+	
+	
+	POST
+	/auth/authenticate
+	
+	
+	
+	
+	

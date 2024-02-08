@@ -30,7 +30,7 @@ public class CompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<?> newPost(@RequestBody Company company) {
+    public ResponseEntity<?> newCompany(@RequestBody Company company) {
         return ResponseEntity.ok(repository.save(company));
     }
 

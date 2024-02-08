@@ -41,9 +41,6 @@ public class ApplicationConfig {
                     .orElseThrow(() -> new UsernameNotFoundException(username));
 
 
-
-
-
             return new User(
                     student.getUsername(),
                     student.getPassword(),

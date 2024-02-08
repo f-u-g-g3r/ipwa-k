@@ -15,13 +15,4 @@ public class PostController {
         this.repository = repository;
     }
 
-    @PostMapping
-    public void add(@RequestBody Post post) {
-        repository.save(post);
-    }
-
-    @GetMapping
-    public List<Post> all() {
-        return repository.findAll();
-    }
 }

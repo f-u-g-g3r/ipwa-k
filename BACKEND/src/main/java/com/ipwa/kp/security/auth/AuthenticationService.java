@@ -63,7 +63,8 @@ public class AuthenticationService {
             switch (authority.getAuthority()) {
                 case "STUDENT":
                     Student student = studentRepository.findByEmail(username)
-                            .orElseThrow(() -> new UsernameNotFoundException("Username not found " + username));
+                            .orElseGet(() -> studentRepository.findByUsername(username)
+                                .orElseThrow(() -> new UsernameNotFoundException("Username not found " + username)));
                     extraClaims.put("id", student.getId());
                     extraClaims.put("authority", student.getAuthorities());
                     jwtToken = jwtService.generateToken(extraClaims, student);
@@ -71,7 +72,8 @@ public class AuthenticationService {
 
                 case "TEACHER":
                     Teacher teacher = teacherRepository.findByEmail(username)
-                            .orElseThrow(() -> new UsernameNotFoundException("Username not found " + username));
+                            .orElseGet(() -> teacherRepository.findByUsername(username)
+                                .orElseThrow(() -> new UsernameNotFoundException("Username not found " + username)));
                     extraClaims.put("id", teacher.getId());
                     extraClaims.put("authority", teacher.getAuthorities());
                     jwtToken = jwtService.generateToken(extraClaims, teacher);
@@ -79,7 +81,8 @@ public class AuthenticationService {
 
                 case "COMPANY":
                     Company company = companyRepository.findByEmail(username)
-                            .orElseThrow(() -> new UsernameNotFoundException("Username not found " + username));
+                            .orElseGet(() -> companyRepository.findByUsername(username)
+                                .orElseThrow(() -> new UsernameNotFoundException("Username not found " + username)));
                     extraClaims.put("id", company.getId());
                     extraClaims.put("authority", company.getAuthorities());
                     jwtToken = jwtService.generateToken(extraClaims, company);

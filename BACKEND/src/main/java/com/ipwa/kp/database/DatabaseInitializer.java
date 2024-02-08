@@ -40,9 +40,10 @@ public class DatabaseInitializer {
             checkStatement2.setString(1, "userEmail");
             ResultSet resultSet2 = checkStatement2.executeQuery();
             if (!resultSet2.next()) {
-                PreparedStatement insertStatement2 = connection.prepareStatement("INSERT INTO students (email, password, applied_for) VALUES (?, ?, 0)");
+                PreparedStatement insertStatement2 = connection.prepareStatement("INSERT INTO students (email, username, password, applied_for) VALUES (?, ?, ?, 0)");
                 insertStatement2.setString(1, "userEmail");
-                insertStatement2.setString(2, passwordEncoder.encode("password"));
+                insertStatement2.setString(2, "userUsername");
+                insertStatement2.setString(3, passwordEncoder.encode("password"));
                 insertStatement2.executeUpdate();
                 insertStatement2.close();
             }

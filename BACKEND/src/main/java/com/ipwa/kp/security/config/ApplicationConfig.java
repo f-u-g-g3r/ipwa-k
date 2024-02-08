@@ -38,11 +38,12 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService() {
         return username -> {
             Student student = studentRepository.findByEmail(username)
-                    .orElse(null);
+                    .orElseGet(() -> studentRepository.findByUsername(username).orElse(null));
 
             if (student == null) {
                 Teacher teacher = teacherRepository.findByEmail(username)
-                        .orElse(null);
+                        .orElseGet(() -> teacherRepository.findByUsername(username)
+                                .orElse(null));
 
                 if (teacher != null) {
                     return new User(
@@ -52,7 +53,8 @@ public class ApplicationConfig {
                     );
                 } else {
                     Company company = companyRepository.findByEmail(username)
-                            .orElse(null);
+                            .orElseGet(() -> companyRepository.findByUsername(username)
+                                    .orElse(null));
 
                     if (company != null) {
                         return new User(

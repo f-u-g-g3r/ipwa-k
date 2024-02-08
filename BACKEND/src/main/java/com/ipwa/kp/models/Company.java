@@ -1,18 +1,23 @@
 package com.ipwa.kp.models;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "companies")
-public class Company {
+public class Company implements UserDetails {
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     private String companyName;
     private String registryCode;
     private String email;
+    private String password;
     private String phone;
     private String contacts;
     private String address;
@@ -23,11 +28,12 @@ public class Company {
     public Company() {
     }
 
-    public Company(Long id, String companyName, String registryCode, String email, String phone, String contacts, String address, List<Post> posts) {
+    public Company(Long id, String companyName, String registryCode, String email, String password, String phone, String contacts, String address, List<Post> posts) {
         this.id = id;
         this.companyName = companyName;
         this.registryCode = registryCode;
         this.email = email;
+        this.password = password;
         this.phone = phone;
         this.contacts = contacts;
         this.address = address;
@@ -98,17 +104,21 @@ public class Company {
         this.posts = posts;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Company company = (Company) o;
-        return Objects.equals(id, company.id) && Objects.equals(companyName, company.companyName) && Objects.equals(registryCode, company.registryCode) && Objects.equals(email, company.email) && Objects.equals(phone, company.phone) && Objects.equals(contacts, company.contacts) && Objects.equals(address, company.address) && Objects.equals(posts, company.posts);
+        return Objects.equals(id, company.id) && Objects.equals(companyName, company.companyName) && Objects.equals(registryCode, company.registryCode) && Objects.equals(email, company.email) && Objects.equals(password, company.password) && Objects.equals(phone, company.phone) && Objects.equals(contacts, company.contacts) && Objects.equals(address, company.address) && Objects.equals(posts, company.posts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, companyName, registryCode, email, phone, contacts, address, posts);
+        return Objects.hash(id, companyName, registryCode, email, password, phone, contacts, address, posts);
     }
 
     @Override
@@ -118,10 +128,46 @@ public class Company {
                 ", companyName='" + companyName + '\'' +
                 ", registryCode='" + registryCode + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
                 ", contacts='" + contacts + '\'' +
                 ", address='" + address + '\'' +
                 ", posts=" + posts +
                 '}';
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("COMPANY"));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

@@ -2,6 +2,7 @@ package com.ipwa.kp.security.auth;
 
 import com.ipwa.kp.models.Student;
 import com.ipwa.kp.repositories.StudentRepository;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -9,18 +10,18 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final StudentRepository studentRepository;
+    private final UserDetailsService userDetailsService;
 
-    public AuthenticationController(AuthenticationService authenticationService, StudentRepository studentRepository) {
+    public AuthenticationController(AuthenticationService authenticationService, StudentRepository studentRepository, UserDetailsService userDetailsService) {
         this.authenticationService = authenticationService;
         this.studentRepository = studentRepository;
+        this.userDetailsService = userDetailsService;
     }
 
     @PostMapping("/authenticate")
     public AuthenticationResponse authenticate(@RequestBody AuthenticationRequest request) {
-        if (studentRepository.findByEmail(request.getUsername()).isPresent()) {
             return authenticationService.authenticate(request);
-        }
-        return new AuthenticationResponse("Error");
+        //return new AuthenticationResponse("Error");
     }
 
     @PostMapping("/test")

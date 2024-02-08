@@ -38,14 +38,50 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService() {
         return username -> {
             Student student = studentRepository.findByEmail(username)
-                    .orElseThrow(() -> new UsernameNotFoundException(username));
+                    .orElse(null);
 
+            if (student == null) {
+                Teacher teacher = teacherRepository.findByEmail(username)
+                        .orElse(null);
 
-            return new User(
-                    student.getUsername(),
-                    student.getPassword(),
-                    student.getAuthorities()
-            );
+                if (teacher != null) {
+                    return new User(
+                            teacher.getUsername(),
+                            teacher.getPassword(),
+                            teacher.getAuthorities()
+                    );
+                } else {
+                    Company company = companyRepository.findByEmail(username)
+                            .orElse(null);
+
+                    if (company != null) {
+                        return new User(
+                                company.getUsername(),
+                                company.getPassword(),
+                                company.getAuthorities()
+                        );
+                    } else {
+                        InternshipCoordinator coordinator = coordinatorRepository.findByEmail(username)
+                                .orElse(null);
+
+                        if (coordinator != null) {
+                            return new User(
+                                    coordinator.getUsername(),
+                                    coordinator.getPassword(),
+                                    coordinator.getAuthorities()
+                            );
+                        }
+                    }
+                }
+            } else {
+                return new User(
+                        student.getUsername(),
+                        student.getPassword(),
+                        student.getAuthorities()
+                );
+            }
+
+            throw new UsernameNotFoundException(username);
         };
     }
 

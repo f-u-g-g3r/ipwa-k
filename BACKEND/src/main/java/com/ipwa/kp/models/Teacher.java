@@ -20,20 +20,28 @@ public class Teacher implements UserDetails {
     private String email;
     private String password;
 
+    private String username;
+
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Student> students = new ArrayList<>();
 
     public Teacher() {
     }
 
-    public Teacher(Long id, String firstName, String lastName, String email, String password, List<Student> students) {
+    public Teacher(Long id, String firstName, String lastName, String email, String password, String username, List<Student> students) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.username = username;
         this.students = students;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
 
     public Long getId() {
         return id;

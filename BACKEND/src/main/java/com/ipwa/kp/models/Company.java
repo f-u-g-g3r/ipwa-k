@@ -15,6 +15,9 @@ import java.util.Objects;
 public class Company implements UserDetails {
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     private String companyName;
+
+    private String username;
+
     private String registryCode;
     private String email;
     private String password;
@@ -22,21 +25,25 @@ public class Company implements UserDetails {
     private String contacts;
     private String address;
 
+    private String companyLogoPath;
+
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
 
     public Company() {
     }
 
-    public Company(Long id, String companyName, String registryCode, String email, String password, String phone, String contacts, String address, List<Post> posts) {
+    public Company(Long id, String companyName, String username, String registryCode, String email, String password, String phone, String contacts, String address, String companyLogoPath, List<Post> posts) {
         this.id = id;
         this.companyName = companyName;
+        this.username = username;
         this.registryCode = registryCode;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.contacts = contacts;
         this.address = address;
+        this.companyLogoPath = companyLogoPath;
         this.posts = posts;
     }
 
@@ -108,17 +115,29 @@ public class Company implements UserDetails {
         this.password = password;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getCompanyLogoPath() {
+        return companyLogoPath;
+    }
+
+    public void setCompanyLogoPath(String companyLogoPath) {
+        this.companyLogoPath = companyLogoPath;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Company company = (Company) o;
-        return Objects.equals(id, company.id) && Objects.equals(companyName, company.companyName) && Objects.equals(registryCode, company.registryCode) && Objects.equals(email, company.email) && Objects.equals(password, company.password) && Objects.equals(phone, company.phone) && Objects.equals(contacts, company.contacts) && Objects.equals(address, company.address) && Objects.equals(posts, company.posts);
+        return Objects.equals(id, company.id) && Objects.equals(companyName, company.companyName) && Objects.equals(username, company.username) && Objects.equals(registryCode, company.registryCode) && Objects.equals(email, company.email) && Objects.equals(password, company.password) && Objects.equals(phone, company.phone) && Objects.equals(contacts, company.contacts) && Objects.equals(address, company.address) && Objects.equals(companyLogoPath, company.companyLogoPath) && Objects.equals(posts, company.posts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, companyName, registryCode, email, password, phone, contacts, address, posts);
+        return Objects.hash(id, companyName, username, registryCode, email, password, phone, contacts, address, companyLogoPath, posts);
     }
 
     @Override
@@ -126,12 +145,14 @@ public class Company implements UserDetails {
         return "Company{" +
                 "id=" + id +
                 ", companyName='" + companyName + '\'' +
+                ", username='" + username + '\'' +
                 ", registryCode='" + registryCode + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
                 ", contacts='" + contacts + '\'' +
                 ", address='" + address + '\'' +
+                ", companyLogoPath='" + companyLogoPath + '\'' +
                 ", posts=" + posts +
                 '}';
     }
@@ -143,7 +164,7 @@ public class Company implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.getPassword();
+        return password;
     }
 
     @Override

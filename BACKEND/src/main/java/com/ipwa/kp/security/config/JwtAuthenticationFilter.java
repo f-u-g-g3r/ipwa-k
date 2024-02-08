@@ -52,12 +52,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
         String[] uriParts = requestURI.split("/");
 
-        if (uriParts.length > 2) {
-            id = Long.parseLong(uriParts[2]);
-        } else {
-            filterChain.doFilter(request, response);
-            return;
-        }
+//        if (uriParts.length > 2) {
+//            id = Long.parseLong(uriParts[2]);
+//        } else {
+//            System.out.println(123);
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);

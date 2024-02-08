@@ -30,21 +30,18 @@ public class Post {
     private String claims;
     private String additionalInfo;
     private Date expiryDate;
+    private Date datePosted;
 
     public Post() {
 
     }
 
-    public Post(Long id, Company company, List<Student> students, String workName, String workDescription, int salary, String claims, String additionalInfo, Date expiryDate) {
-        this.id = id;
-        this.company = company;
-        this.students = students;
-        this.workName = workName;
-        this.workDescription = workDescription;
-        this.salary = salary;
-        this.claims = claims;
-        this.additionalInfo = additionalInfo;
-        this.expiryDate = expiryDate;
+    public Date getDatePosted() {
+        return datePosted;
+    }
+
+    public void setDatePosted(Date datePosted) {
+        this.datePosted = datePosted;
     }
 
     public Long getId() {
@@ -124,12 +121,12 @@ public class Post {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return salary == post.salary && Objects.equals(id, post.id) && Objects.equals(company, post.company) && Objects.equals(students, post.students) && Objects.equals(workName, post.workName) && Objects.equals(workDescription, post.workDescription) && Objects.equals(claims, post.claims) && Objects.equals(additionalInfo, post.additionalInfo) && Objects.equals(expiryDate, post.expiryDate);
+        return salary == post.salary && Objects.equals(id, post.id) && Objects.equals(company, post.company) && Objects.equals(students, post.students) && Objects.equals(workName, post.workName) && Objects.equals(workDescription, post.workDescription) && Objects.equals(claims, post.claims) && Objects.equals(additionalInfo, post.additionalInfo) && Objects.equals(expiryDate, post.expiryDate) && Objects.equals(datePosted, post.datePosted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, company, students, workName, workDescription, salary, claims, additionalInfo, expiryDate);
+        return Objects.hash(id, company, students, workName, workDescription, salary, claims, additionalInfo, expiryDate, datePosted);
     }
 
     @Override
@@ -144,6 +141,7 @@ public class Post {
                 ", claims='" + claims + '\'' +
                 ", additionalInfo='" + additionalInfo + '\'' +
                 ", expiryDate=" + expiryDate +
+                ", datePosted=" + datePosted +
                 '}';
     }
 }

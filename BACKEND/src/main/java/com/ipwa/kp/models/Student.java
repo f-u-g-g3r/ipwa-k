@@ -26,24 +26,29 @@ public class Student implements UserDetails {
     @ManyToMany(mappedBy = "students")
     private List<Post> posts = new ArrayList<>();
 
+    private String username;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private Status accountStatus;
 
+    private int appliedFor;
+
     public Student() {}
 
-    public Student(Long id, Resume resume, Teacher teacher, List<Post> posts, String firstName, String lastName, String email, String password, Status accountStatus) {
+    public Student(Long id, Resume resume, Teacher teacher, List<Post> posts, String username, String firstName, String lastName, String email, String password, Status accountStatus, int appliedFor) {
         this.id = id;
         this.resume = resume;
         this.teacher = teacher;
         this.posts = posts;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.accountStatus = accountStatus;
+        this.appliedFor = appliedFor;
     }
 
     public Long getId() {
@@ -118,17 +123,29 @@ public class Student implements UserDetails {
         this.resume = resume;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getAppliedFor() {
+        return appliedFor;
+    }
+
+    public void setAppliedFor(int appliedFor) {
+        this.appliedFor = appliedFor;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return Objects.equals(id, student.id) && Objects.equals(resume, student.resume) && Objects.equals(teacher, student.teacher) && Objects.equals(posts, student.posts) && Objects.equals(firstName, student.firstName) && Objects.equals(lastName, student.lastName) && Objects.equals(email, student.email) && Objects.equals(password, student.password) && accountStatus == student.accountStatus;
+        return appliedFor == student.appliedFor && Objects.equals(id, student.id) && Objects.equals(resume, student.resume) && Objects.equals(teacher, student.teacher) && Objects.equals(posts, student.posts) && Objects.equals(username, student.username) && Objects.equals(firstName, student.firstName) && Objects.equals(lastName, student.lastName) && Objects.equals(email, student.email) && Objects.equals(password, student.password) && accountStatus == student.accountStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, resume, teacher, posts, firstName, lastName, email, password, accountStatus);
+        return Objects.hash(id, resume, teacher, posts, username, firstName, lastName, email, password, accountStatus, appliedFor);
     }
 
     @Override
@@ -138,11 +155,13 @@ public class Student implements UserDetails {
                 ", resume=" + resume +
                 ", teacher=" + teacher +
                 ", posts=" + posts +
+                ", username='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", accountStatus=" + accountStatus +
+                ", appliedFor=" + appliedFor +
                 '}';
     }
 

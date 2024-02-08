@@ -1,8 +1,13 @@
 package com.ipwa.kp.controllers;
 
+import com.ipwa.kp.controllers.exceptions.ResumeNotFoundException;
+import com.ipwa.kp.models.Resume;
+import com.ipwa.kp.models.Teacher;
 import com.ipwa.kp.repositories.ResumeRepository;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/resumes")
@@ -11,5 +16,26 @@ public class ResumeController {
 
     public ResumeController(ResumeRepository repository) {
         this.repository = repository;
+    }
+
+    @GetMapping
+    public List<Resume> all() {
+        return repository.findAll();
+    }
+    @GetMapping("/{id}")
+    public Resume one(@PathVariable Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResumeNotFoundException(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> newResume(@RequestBody Resume resume) {
+        return ResponseEntity.ok(repository.save(resume));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        repository.deleteById(id);
+        return ResponseEntity.ok("ok");
     }
 }

@@ -1,8 +1,7 @@
 package com.ipwa.kp.controllers;
 
-import com.ipwa.kp.controllers.exceptions.PostNotFoundException;
+
 import com.ipwa.kp.controllers.exceptions.StudentNotFoundException;
-import com.ipwa.kp.models.Post;
 import com.ipwa.kp.models.Student;
 import com.ipwa.kp.repositories.StudentRepository;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +22,7 @@ public class StudentController {
     public List<Student> all() {
         return repository.findAll();
     }
+
     @GetMapping("/{id}")
     public Student one(@PathVariable Long id) {
         return repository.findById(id)

@@ -1,6 +1,6 @@
 function LoginForm() {
     return (
-        <div className='container mx-auto '>
+        <>
             <form>
                 <div className="flex justify-center">
                     <label className="form-control w-full max-w-xs">
@@ -22,7 +22,7 @@ function LoginForm() {
                 </div>
 
             </form>
-        </div>
+        </>
     )
 }
 

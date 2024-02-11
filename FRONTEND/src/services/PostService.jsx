@@ -37,3 +37,38 @@ export async function getPost(id) {
         return redirect("/login")
     }
 }
+
+export async function uploadPostPdf(id, file) {
+    if (isAuth()) {
+        const post = await axios.put(`${API_URL}/pdf/${id}`, file, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return post.data;
+    } else {
+        return redirect("/login")
+    }
+}
+
+export async function getPostPdf(path) {
+    if (isAuth()) {
+        try {
+            const response = await axios.get(`${API_URL}/pdf/${path}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                },
+                responseType: 'blob'
+
+            });
+            const blob = response.data;
+            console.log(blob)
+            return URL.createObjectURL(blob);
+        } catch (e) {
+            console.log(e)
+        }
+    } else {
+        return redirect("/login")
+    }
+}

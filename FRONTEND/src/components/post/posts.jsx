@@ -2,7 +2,7 @@
 import {useEffect, useState} from "react";
 import PostCard from "./postCard.jsx";
 import PostSearch from "./postSearch.jsx";
-import {getPosts} from "../services/PostService.jsx";
+import {getPosts} from "../../services/PostService.jsx";
 
 function Posts() {
     const [posts, setPosts] = useState({});

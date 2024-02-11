@@ -1,11 +1,21 @@
-
+import {savePost, uploadPostPdf} from "../../services/PostService.jsx";
 import {Form, redirect} from "react-router-dom";
-import {savePost} from "../services/PostService.jsx";
+import {getId} from "../../services/AuthService.jsx";
+import {uploadLogo} from "../../services/CompanyService.jsx";
 
 export async function actionPostForm({request}) {
     const formData = await request.formData();
+    const file = formData.get('file');
+    formData.delete('file');
+
     const postData = Object.fromEntries(formData);
-    await savePost(postData);
+    const {data} = await savePost(postData);
+
+    if (file.name !== "") {
+        const fileFormData = new FormData();
+        fileFormData.append('file', file, file.name);
+        await uploadPostPdf(getId(), fileFormData);
+    }
 
     return redirect("/posts")
 }
@@ -15,7 +25,7 @@ function PostForm() {
 
     return (
         <div className="">
-            <Form method="post">
+            <Form method="post" encType="multipart/form-data">
                 <div className="flex justify-center">
                     <label className="form-control w-full max-w-lg my-2">
                         <div className="label">

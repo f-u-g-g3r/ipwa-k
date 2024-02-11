@@ -1,7 +1,7 @@
 import SuccessAlert from "./successAlert.jsx";
 import {useState} from "react";
-import {generateRandomString} from "../services/AuthService.jsx";
-import {createCompany} from "../services/CompanyService.jsx";
+import {generateRandomString} from "../../services/AuthService.jsx";
+import {createCompany} from "../../services/CompanyService.jsx";
 
 function CompanyProfileManagement() {
     const [ success, setSuccess ] = useState()

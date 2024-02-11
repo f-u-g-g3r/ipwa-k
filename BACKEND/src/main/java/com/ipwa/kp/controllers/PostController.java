@@ -1,21 +1,41 @@
 package com.ipwa.kp.controllers;
 
+import com.ipwa.kp.controllers.exceptions.CompanyNotFoundException;
 import com.ipwa.kp.controllers.exceptions.PostNotFoundException;
+import com.ipwa.kp.models.Company;
 import com.ipwa.kp.models.Post;
+import com.ipwa.kp.repositories.CompanyRepository;
 import com.ipwa.kp.repositories.PostRepository;
+import com.ipwa.kp.security.config.JwtService;
+import com.ipwa.kp.services.FileService;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
 public class PostController {
     private final PostRepository repository;
+    private final CompanyRepository companyRepository;
+    private final JwtService jwtService;
+    private final FileService fileService;
 
-    public PostController(PostRepository repository) {
+    public PostController(PostRepository repository, CompanyRepository companyRepository, JwtService jwtService, FileService fileService) {
         this.repository = repository;
+        this.companyRepository = companyRepository;
+        this.jwtService = jwtService;
+        this.fileService = fileService;
     }
 
     @GetMapping
@@ -34,8 +54,49 @@ public class PostController {
     @PostMapping
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'COMPANY')")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<?> newPost(@RequestBody Post post) {
+    public ResponseEntity<?> newPost(@RequestHeader(name = "Authorization") String token, @RequestBody Post post) {
+        String jwt = token.substring(7);
+        Long companyId = jwtService.extractId(jwt);
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new CompanyNotFoundException(companyId));
+        post.setCompany(company);
         return ResponseEntity.ok(repository.save(post));
+    }
+
+    @PutMapping("/pdf/{id}")
+    @CrossOrigin(origins = "*")
+    public String uploadPdf(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        Post post = repository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException(id));
+        String pdfUrl = fileService.uploadPostPdf.apply(file);
+        post.setPathToPdf(pdfUrl);
+        repository.save(post);
+        return pdfUrl;
+    }
+
+    @GetMapping("/pdf/{fileName}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<ByteArrayResource> getPdf(@PathVariable String fileName) throws IOException {
+
+        Path absolutePath = Paths.get("").toAbsolutePath();
+        Path fileStorageLocation = Paths.get(absolutePath+"/uploads/posts").toAbsolutePath().normalize();
+        Path filePath = fileStorageLocation.resolve(fileName).normalize();
+
+        Path pdfPath = Paths.get(filePath.toUri());
+        System.out.println(pdfPath);
+        byte[] pdfContent = Files.readAllBytes(pdfPath);
+
+        ByteArrayResource resource = new ByteArrayResource(pdfContent);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=your-pdf-file.pdf");
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(pdfContent.length)
+                .body(resource);
     }
 
     @DeleteMapping("/{id}")

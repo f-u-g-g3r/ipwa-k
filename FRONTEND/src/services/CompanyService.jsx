@@ -27,3 +27,27 @@ export async function updateCompany(id, company) {
         }
     });
 }
+
+export async function uploadLogo(id, file) {
+    return axios.put(`${API_URL}/logos/${id}`, file, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+}
+
+export async function getLogo(path) {
+    try {
+        const response = await axios.get(`${path}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            },
+            responseType: 'blob'
+        });
+        const blob = response.data;
+        return URL.createObjectURL(blob);
+    } catch (error) {
+        console.error(error);
+    }
+}

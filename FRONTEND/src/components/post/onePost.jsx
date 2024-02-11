@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
-
+import {getPost, getPostPdf} from "../../services/PostService.jsx";
 import {Link, useParams} from "react-router-dom";
-import {getPost} from "../services/PostService.jsx";
 
 function OnePost() {
 
     const [post, setPost] = useState({});
+    const [pdf, setPdf] = useState("");
 
     let  { id } = useParams();
 
@@ -17,10 +17,25 @@ function OnePost() {
         }
     }
 
+    const fetchPdf = async () => {
+        try {
+            if (post.pathToPdf !== null) {
+                setPdf(await getPostPdf(post.pathToPdf))
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     useEffect(() => {
         fetchPost();
     }, []);
 
+    useEffect(() => {
+        if (post.pathToPdf !== undefined) {
+            fetchPdf()
+        }
+    }, [post])
 
 
     return(
@@ -33,6 +48,12 @@ function OnePost() {
             <p>Work description: {post.workDescription}</p>
             <p>Additional info: {post.additionalInfo}</p>
             <p>Salary: {post.salary}</p>
+            <p>Expiry date: {post.expiryDate}</p>
+            <p>Date posted: {post.datePosted}</p>
+
+            <div className="w-full">
+                <img src={pdf} />
+            </div>
         </>
     )
 }

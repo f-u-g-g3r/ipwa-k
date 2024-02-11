@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
-import {getCompany} from "../services/CompanyService.jsx";
+import {getCompany, getLogo} from "../../services/CompanyService.jsx";
 import {Link} from "react-router-dom";
 
 
 function PostCard(props) {
 
     const [company, setCompany] = useState("");
+    const [logo, setLogo] = useState("http://via.placeholder.com/200x200");
 
     const fetchCompany = async () => {
         try {
@@ -15,15 +16,31 @@ function PostCard(props) {
         }
     }
 
+    const fetchLogo = async () => {
+        try {
+            if (company.logoPath !== null) {
+                setLogo(await getLogo(company.logoPath));
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     useEffect(() => {
         fetchCompany()
     }, []);
+
+    useEffect(() => {
+        if (company.logoPath !== undefined) {
+            fetchLogo()
+        }
+    }, [company]);
 
     return (
         <>
             <Link to={`/posts/${props.post.id}`} className="card lg:card-side bg-base-100 hover:bg-base-300 shadow-lg my-10">
                 <figure>
-                    <img src="http://via.placeholder.com/200x200" style={{width:"224px", height:"224px"}} alt="Company Logo"/>
+                    <img  style={{width:"224px", height:"224px"}} src={logo} alt="Company Logo"/>
                 </figure>
                 <div className="card-body">
                     <h2 className="card-title">{props.post.workName}</h2>
@@ -34,6 +51,9 @@ function PostCard(props) {
                         <ul className="mx-5">skill3</ul>
                         <ul className="mx-5">skill4</ul>
                     </li>
+
+                    <p>Expiration date: {props.post.expiryDate}</p>
+                    <p>Date posted: {props.post.datePosted}</p>
                 </div>
             </Link>
         </>

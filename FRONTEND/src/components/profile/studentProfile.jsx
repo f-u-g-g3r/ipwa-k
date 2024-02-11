@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
-import {getStudent, updateStudent} from "../services/StudentService.jsx";
+import {getStudent, updateStudent} from "../../services/StudentService.jsx";
 import {Form, redirect} from "react-router-dom";
-import {getId} from "../services/AuthService.jsx";
+import {getId} from "../../services/AuthService.jsx";
 
 export async function actionStudentProfile({request}) {
     const formData = await request.formData();

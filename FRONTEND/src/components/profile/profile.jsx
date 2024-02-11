@@ -1,4 +1,4 @@
-import {getAuthority} from "../services/AuthService.jsx";
+import {getAuthority} from "../../services/AuthService.jsx";
 import StudentProfile from "./studentProfile.jsx";
 import CompanyProfile from "./companyProfile.jsx";
 import TeacherProfile from "./teacherProfile.jsx";

@@ -1,9 +1,9 @@
-import {auth, isAuth} from "../services/AuthService.jsx";
+import {auth, isAuth} from "./services/AuthService.jsx";
 import {Form, redirect} from "react-router-dom";
-import {getStudent} from "../services/StudentService.jsx";
-import {getCoordinator} from "../services/CoordinatorService.jsx";
-import {getCompany} from "../services/CompanyService.jsx";
-import {getTeacher} from "../services/TeacherService.jsx";
+import {getStudent} from "./services/StudentService.jsx";
+import {getCoordinator} from "./services/CoordinatorService.jsx";
+import {getCompany} from "./services/CompanyService.jsx";
+import {getTeacher} from "./services/TeacherService.jsx";
 
 
 export async function action({ request }) {

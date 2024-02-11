@@ -9,6 +9,7 @@ import Home from "./components/home.jsx";
 import Posts from "./components/post/posts.jsx";
 import PostForm, {actionPostForm} from "./components/post/postForm.jsx";
 import {isAuthLoader} from "./components/services/AuthService.jsx";
+import OnePost from "./components/post/onePost.jsx";
 
 const router = createBrowserRouter([
     {
@@ -35,7 +36,13 @@ const router = createBrowserRouter([
                 path: "/posts/new",
                 element: <PostForm/>,
                 action: actionPostForm,
-            }
+            },
+
+            {
+                path: "/posts/:id",
+                element: <OnePost/>,
+                loader: isAuthLoader
+            },
         ]
     },
 ]);

@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
-import {getCompany, getLogo} from "../../services/CompanyService.jsx";
+import {getCompany} from "../../services/CompanyService.jsx";
 import {Link} from "react-router-dom";
-import { Document, Page } from '@react-pdf/renderer';
 
 
 function PostCard(props) {

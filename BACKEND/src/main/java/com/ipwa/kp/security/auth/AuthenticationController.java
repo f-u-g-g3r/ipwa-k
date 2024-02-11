@@ -1,7 +1,9 @@
 package com.ipwa.kp.security.auth;
 
+import com.ipwa.kp.models.Company;
 import com.ipwa.kp.models.Student;
 import com.ipwa.kp.repositories.StudentRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +26,16 @@ public class AuthenticationController {
         //return new AuthenticationResponse("Error");
     }
 
-    @PostMapping("/test")
-    public AuthenticationResponse test(@RequestBody Student student) {
-        return authenticationService.registerUser(student);
+    @PostMapping("/students")
+    public AuthenticationResponse newStudent(@RequestBody Student student) {
+        return authenticationService.registerStudent(student);
+    }
+
+    @PostMapping("/companies")
+    @PreAuthorize("hasAuthority('COORDINATOR')")
+    @CrossOrigin(origins = "*")
+    public AuthenticationResponse newCompany(@RequestBody Company company) {
+        return authenticationService.registerCompany(company);
     }
 
 

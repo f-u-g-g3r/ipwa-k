@@ -103,7 +103,7 @@ public class AuthenticationService {
         return new AuthenticationResponse("error");
     }
 
-    public AuthenticationResponse registerUser(Student student) {
+    public AuthenticationResponse registerStudent(Student student) {
         student.setPassword(passwordEncoder.encode(student.getPassword()));
         studentRepository.save(student);
 
@@ -114,5 +114,18 @@ public class AuthenticationService {
         String jwtToken =jwtService.generateToken(extraClaims, student);
 
         return new AuthenticationResponse(jwtToken, student.getId(), student.getAuthorities());
+    }
+
+    public AuthenticationResponse registerCompany(Company company) {
+        company.setPassword(passwordEncoder.encode(company.getPassword()));
+        companyRepository.save(company);
+
+        Map<String, Object> extraClaims = new LinkedHashMap<>();
+        extraClaims.put("id", company.getId());
+        extraClaims.put("authority", company.getAuthorities());
+
+        String jwtToken =jwtService.generateToken(extraClaims, company);
+
+        return new AuthenticationResponse(jwtToken, company.getId(), company.getAuthorities());
     }
 }

@@ -20,6 +20,8 @@ public class Teacher implements UserDetails {
     private String email;
     private String password;
 
+    private String classGroup;
+
     private String username;
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -28,7 +30,7 @@ public class Teacher implements UserDetails {
     public Teacher() {
     }
 
-    public Teacher(Long id, String firstName, String lastName, String email, String password, String username, List<Student> students) {
+    public Teacher(Long id, String firstName, String lastName, String email, String password, String username, List<Student> students, String classGroup) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,6 +38,7 @@ public class Teacher implements UserDetails {
         this.password = password;
         this.username = username;
         this.students = students;
+        this.classGroup = classGroup;
     }
 
     public void setUsername(String username) {
@@ -91,6 +94,14 @@ public class Teacher implements UserDetails {
         this.students = students;
     }
 
+    public String getClassGroup() {
+        return classGroup;
+    }
+
+    public void setClassGroup(String classGroup) {
+        this.classGroup = classGroup;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -112,6 +123,7 @@ public class Teacher implements UserDetails {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", classGroup='" + classGroup + '\'' +
                 ", students=" + students +
                 '}';
     }
@@ -123,7 +135,11 @@ public class Teacher implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        if (username != null) {
+            return username;
+        } else {
+            return email;
+        }
     }
 
     @Override

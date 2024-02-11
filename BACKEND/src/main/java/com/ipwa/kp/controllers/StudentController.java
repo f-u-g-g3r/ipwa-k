@@ -24,6 +24,7 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "*")
     public Student one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));

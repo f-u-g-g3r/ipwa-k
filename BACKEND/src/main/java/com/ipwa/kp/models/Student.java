@@ -32,12 +32,13 @@ public class Student implements UserDetails {
     private String email;
     private String password;
     private Status accountStatus;
+    private String classGroup;
 
     private int appliedFor;
 
     public Student() {}
 
-    public Student(Long id, Resume resume, Teacher teacher, List<Post> posts, String username, String firstName, String lastName, String email, String password, Status accountStatus, int appliedFor) {
+    public Student(Long id, Resume resume, Teacher teacher, List<Post> posts, String username, String firstName, String lastName, String email, String password, Status accountStatus, int appliedFor, String classGroup) {
         this.id = id;
         this.resume = resume;
         this.teacher = teacher;
@@ -49,6 +50,7 @@ public class Student implements UserDetails {
         this.password = password;
         this.accountStatus = accountStatus;
         this.appliedFor = appliedFor;
+        this.classGroup = classGroup;
     }
 
     public Long getId() {
@@ -135,6 +137,14 @@ public class Student implements UserDetails {
         this.appliedFor = appliedFor;
     }
 
+    public String getClassGroup() {
+        return classGroup;
+    }
+
+    public void setClassGroup(String classGroup) {
+        this.classGroup = classGroup;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -160,6 +170,7 @@ public class Student implements UserDetails {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", classGroup='" + classGroup + '\'' +
                 ", accountStatus=" + accountStatus +
                 ", appliedFor=" + appliedFor +
                 '}';
@@ -172,7 +183,11 @@ public class Student implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        if (username != null) {
+            return username;
+        } else {
+            return email;
+        }
     }
 
     @Override

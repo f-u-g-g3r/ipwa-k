@@ -23,7 +23,9 @@ public class CompanyController {
     public List<Company> all() {
         return repository.findAll();
     }
+
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "*")
     public Company one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new CompanyNotFoundException(id));

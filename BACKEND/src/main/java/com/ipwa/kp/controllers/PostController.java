@@ -19,11 +19,13 @@ public class PostController {
     }
 
     @GetMapping
+    @CrossOrigin(origins = "*")
     public List<Post> all() {
         return repository.findAll();
     }
 
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "*")
     public Post one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
@@ -31,6 +33,7 @@ public class PostController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'COMPANY')")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> newPost(@RequestBody Post post) {
         return ResponseEntity.ok(repository.save(post));
     }

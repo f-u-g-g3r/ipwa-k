@@ -24,7 +24,9 @@ public class TeacherController {
     public List<Teacher> all() {
         return repository.findAll();
     }
+
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "*")
     public Teacher one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new TeacherNotFoundException(id));

@@ -22,6 +22,7 @@ public class StudentController {
     }
 
     @GetMapping
+    @CrossOrigin(origins = "*")
     public List<Student> all() {
         return repository.findAll();
     }
@@ -35,15 +36,25 @@ public class StudentController {
 
     @PatchMapping("/{id}")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody Map<Object, Object> fields) {
+    public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
         Student student = repository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
 
-        fields.forEach((key, value) -> {
-            Field field = ReflectionUtils.findField(Student.class, (String) key);
-            field.setAccessible (true);
-            ReflectionUtils.setField(field, student, value);
+        fields.forEach((fieldName, value) -> {
+            try {
+                Field field = Student.class.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                if (field.getType().isEnum() && value instanceof String) {
+                    Enum<?> enumValue = Enum.valueOf((Class<Enum>) field.getType(), (String) value);
+                    field.set(student, enumValue);
+                } else {
+                    field.set(student, value);
+                }
+            } catch (NoSuchFieldException | IllegalAccessException | IllegalArgumentException e) {
+                e.printStackTrace();
+            }
         });
+
         return ResponseEntity.ok(repository.save(student));
     }
 

@@ -1,7 +1,7 @@
 import {useState} from "react";
-import StudentProfileManagement from "./studentProfileManagement.jsx";
-import CompanyProfileManagement from "./companyProfileManagement.jsx";
-import TeacherProfileManagement from "./teacherProfileManagement.jsx";
+import StudentProfileManagement from "./studentsManagement/studentProfileManagement.jsx";
+import CompanyProfileManagement from "./companiesManagement/companyProfileManagement.jsx";
+import TeacherProfileManagement from "./teachersManagement/teacherProfileManagement.jsx";
 
 function HomeCoordinator() {
     const [action, setAction] = useState(0);
@@ -23,10 +23,10 @@ function HomeCoordinator() {
                     </div>
                     <div className="drawer-side">
                         <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-                        <ul className="menu p-4 w-80 min-h-full bg-base-300 text-base-content">
-                            <li><a onClick={() => handleActionChange(1)}>Student profile management</a></li>
-                            <li><a onClick={() => handleActionChange(2)}>Company profile management</a></li>
-                            <li><a onClick={() => handleActionChange(3)}>Teacher profile management</a></li>
+                        <ul className="menu p-4 w-80 min-h-full bg-base-300 text-base-content text-xl">
+                            <li><a onClick={() => handleActionChange(1)} className={action === 1 ? 'bg-gray-300' : ''}>Student profile management</a></li>
+                            <li><a onClick={() => handleActionChange(2)} className={action === 2 ? 'bg-gray-300' : ''}>Company profile management</a></li>
+                            <li><a onClick={() => handleActionChange(3)} className={action === 3 ? 'bg-gray-300' : ''}>Teacher profile management</a></li>
                         </ul>
 
                     </div>

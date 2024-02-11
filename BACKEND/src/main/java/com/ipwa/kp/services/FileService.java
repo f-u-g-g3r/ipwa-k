@@ -43,7 +43,7 @@ public class FileService {
         try {
             Path absolutePath = Paths.get("").toAbsolutePath();
             Path fileStorageLocation = Paths.get(absolutePath+"/uploads/posts").toAbsolutePath().normalize();
-
+            if (!Files.exists(fileStorageLocation)) { Files.createDirectories(fileStorageLocation); }
             if (".pdf".equals(fileExtension.apply(pdf.getOriginalFilename()))) {
                 PDDocument document = PDDocument.load(convertMultipartFileToFile(pdf));
 
@@ -60,7 +60,6 @@ public class FileService {
                 document.close();
             } else {
                 pngFileName = UUID.randomUUID() + fileExtension.apply(pdf.getOriginalFilename());
-                if (!Files.exists(fileStorageLocation)) { Files.createDirectories(fileStorageLocation); }
                 Files.copy(pdf.getInputStream(), fileStorageLocation.resolve(pngFileName), REPLACE_EXISTING);
             }
         }catch (Exception exception) {

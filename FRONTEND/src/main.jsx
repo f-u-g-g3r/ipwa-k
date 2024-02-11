@@ -8,12 +8,15 @@ import LoginForm, {action, loginLoader} from "./components/loginForm.jsx";
 import Home from "./components/home.jsx";
 import Posts from "./components/post/posts.jsx";
 import PostForm, {actionPostForm} from "./components/post/postForm.jsx";
-import {isAuthLoader} from "./services/AuthService.jsx";
+import {hasAuthority, isAuthLoader} from "./services/AuthService.jsx";
 import OnePost from "./components/post/onePost.jsx";
 import StudentProfile, {actionStudentProfile} from "./components/profile/studentProfile.jsx";
 import CompanyProfile, {actionCompanyProfile} from "./components/profile/companyProfile.jsx";
 import TeacherProfile from "./components/profile/teacherProfile.jsx";
 import CoordinatorProfile from "./components/profile/coordinatorProfile.jsx";
+import EditStudentProfile, {
+    actionEditStudent
+} from "./components/coordinator/studentsManagement/editStudentProfile.jsx";
 
 const router = createBrowserRouter([
     {
@@ -51,20 +54,30 @@ const router = createBrowserRouter([
                 path: "/student/profile",
                 element: <StudentProfile/>,
                 action: actionStudentProfile,
+                loader: isAuthLoader
             },
             {
                 path: "/company/profile",
                 element: <CompanyProfile/>,
                 action: actionCompanyProfile,
+                loader: isAuthLoader
             },
             {
                 path: "/teacher/profile",
                 element: <TeacherProfile/>,
+                loader: isAuthLoader
             },
             {
                 path: "/coordinator/profile",
                 element: <CoordinatorProfile/>,
+                loader: isAuthLoader
             },
+            {
+                path: "edit-student/:id",
+                element: <EditStudentProfile/>,
+                loader: hasAuthority("COORDINATOR"),
+                action: actionEditStudent
+            }
         ]
     },
 ]);

@@ -31,12 +31,14 @@ public class Student implements UserDetails {
     private String lastName;
     private String email;
     private String password;
-    private Status accountStatus;
+    private Status accountStatus = Status.INACTIVE;
     private String classGroup;
 
     private int appliedFor;
 
-    public Student() {}
+    public Student() {
+
+    }
 
     public Student(Long id, Resume resume, Teacher teacher, List<Post> posts, String username, String firstName, String lastName, String email, String password, Status accountStatus, int appliedFor, String classGroup) {
         this.id = id;

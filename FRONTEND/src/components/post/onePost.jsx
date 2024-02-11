@@ -51,8 +51,8 @@ function OnePost() {
             <p>Expiry date: {post.expiryDate}</p>
             <p>Date posted: {post.datePosted}</p>
 
-            <div className="w-full">
-                <img src={pdf} />
+            <div className="w-full flex justify-center">
+                <img className="w-1/2" src={pdf} />
             </div>
         </>
     )

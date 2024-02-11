@@ -14,7 +14,7 @@ export async function actionPostForm({request}) {
     if (file.name !== "") {
         const fileFormData = new FormData();
         fileFormData.append('file', file, file.name);
-        await uploadPostPdf(getId(), fileFormData);
+        await uploadPostPdf(data.id, fileFormData);
     }
 
     return redirect("/posts")

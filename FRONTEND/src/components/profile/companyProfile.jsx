@@ -106,7 +106,7 @@ function CompanyProfile() {
                         <div className="label">
                             <span className="label-text text-lg">Company logo</span>
                         </div>
-                        <input type="file" name="file" className="file-input file-input-bordered w-full max-w-lg"/>
+                        <input type="file" className="file-input file-input-bordered w-full max-w-lg"/>
                     </label>
                 </div>
 

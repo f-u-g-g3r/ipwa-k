@@ -21,6 +21,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
+    @CrossOrigin(origins = "*")
     public AuthenticationResponse authenticate(@RequestBody AuthenticationRequest request) {
             return authenticationService.authenticate(request);
         //return new AuthenticationResponse("Error");

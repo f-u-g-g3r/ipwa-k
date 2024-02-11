@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {getCompany} from "../../services/CompanyService.jsx";
+import {getCompany} from "../services/CompanyService.jsx";
 import {Link} from "react-router-dom";
 
 

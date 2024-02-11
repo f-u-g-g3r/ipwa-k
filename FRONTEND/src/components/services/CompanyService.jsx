@@ -19,3 +19,11 @@ export async function createCompany(companyData) {
     })
     return response.data;
 }
+
+export async function updateCompany(id, company) {
+    return axios.patch(`${API_URL}/${id}`, company, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+    });
+}

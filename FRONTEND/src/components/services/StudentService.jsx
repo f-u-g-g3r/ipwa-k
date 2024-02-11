@@ -10,3 +10,11 @@ export async function getStudent(studentId) {
     });
     return student.data;
 }
+
+export async function updateStudent(student, studentId) {
+    return await axios.patch(`${API_URL}/${studentId}`, student, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+    });
+}

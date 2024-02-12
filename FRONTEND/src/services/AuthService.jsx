@@ -4,10 +4,14 @@ import {redirect} from "react-router-dom";
 const API_URL = 'http://localhost:8080/auth';
 
 export async function auth(data) {
-    return axios.post(`${API_URL}/authenticate`, {
-        username: data.username,
-        password: data.password
-    });
+    try {
+        return axios.post(`${API_URL}/authenticate`, {
+            username: data.username,
+            password: data.password
+        });
+    } catch (e) {
+        return "Invalid credentials"
+    }
 }
 
 export function isAuthLoader() {
@@ -27,7 +31,9 @@ export function hasAuthority(authority) {
 
 }
 export function hasAuthorityLoader(authority) {
+    console.log(1);
     if (localStorage.getItem('authority') !== authority) {
+        console.log(2)
         return redirect("/home");
     }
 }

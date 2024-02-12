@@ -18,13 +18,15 @@ export function isAuthLoader() {
 }
 
 export function isAuth() {
-    if (!localStorage.getItem("token")) {
-        return false
-    }
-    return true
+    return localStorage.getItem("token");
+
 }
 
 export function hasAuthority(authority) {
+    return localStorage.getItem('authority') === authority;
+
+}
+export function hasAuthorityLoader(authority) {
     if (localStorage.getItem('authority') !== authority) {
         return redirect("/home");
     }

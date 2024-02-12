@@ -85,7 +85,7 @@ function PostForm() {
                 <div className="flex justify-center">
                     <label className="form-control w-full max-w-lg">
                         <div className="label">
-                            <span className="label-text">PDF file</span>
+                            <span className="label-text">PDF file or image</span>
                         </div>
                         <input type="file" name="file" className="file-input file-input-bordered w-full max-w-lg"/>
                     </label>

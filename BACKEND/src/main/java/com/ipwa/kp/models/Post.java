@@ -4,10 +4,8 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "posts")
@@ -139,8 +137,10 @@ public class Post {
     }
 
 
-    public List<Student> getStudents() {
-        return students;
+    public List<Long> getStudents() {
+        return students.stream()
+                .map(Student::getId)
+                .collect(Collectors.toList());
     }
 
     public void setStudents(List<Student> students) {
@@ -164,8 +164,8 @@ public class Post {
     public String toString() {
         return "Post{" +
                 "id=" + id +
-                ", company=" + company +
-                ", students=" + students +
+                ", company=" + company.getId() +
+                ", students=" + getStudents() +
                 ", workName='" + workName + '\'' +
                 ", workDescription='" + workDescription + '\'' +
                 ", salary=" + salary +

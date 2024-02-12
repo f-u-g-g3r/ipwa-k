@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "students")
@@ -71,8 +72,10 @@ public class Student implements UserDetails {
         this.teacher = teacher;
     }
 
-    public List<Post> getPosts() {
-        return posts;
+    public List<Long> getPosts() {
+        return posts.stream()
+                .map(Post::getId)
+                .collect(Collectors.toList());
     }
 
     public void setPosts(List<Post> posts) {
@@ -166,7 +169,7 @@ public class Student implements UserDetails {
                 "id=" + id +
                 ", resume=" + resume +
                 ", teacher=" + teacher +
-                ", posts=" + posts +
+                ", posts=" + getPosts() +
                 ", username='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

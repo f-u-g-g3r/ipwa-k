@@ -1,4 +1,5 @@
 import axios from "axios";
+import {getId, hasAuthority, isAuth} from "./AuthService.jsx";
 
 const API_URL = 'http://localhost:8080/students';
 
@@ -26,4 +27,20 @@ export async function updateStudent(student, studentId) {
             'Authorization': `Bearer ${localStorage.getItem("token")}`
         }
     });
+}
+
+export async function applyToJob(postId) {
+    if (isAuth() && hasAuthority("STUDENT")) {
+        try {
+            return axios.patch(`${API_URL}/apply/${getId()}/${postId}`, "", {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                },
+                responseType: 'blob'
+
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
 }

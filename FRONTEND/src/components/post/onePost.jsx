@@ -1,13 +1,15 @@
 import {useEffect, useState} from "react";
 import {getPost, getPostPdf} from "../../services/PostService.jsx";
 import {Link, useParams} from "react-router-dom";
+import {getId, hasAuthority} from "../../services/AuthService.jsx";
+import {applyToJob} from "../../services/StudentService.jsx";
 
 function OnePost() {
 
-    const [post, setPost] = useState({});
+    const [post, setPost] = useState({students: []});
     const [pdf, setPdf] = useState("");
 
-    let  { id } = useParams();
+    let {id} = useParams();
 
     const fetchPost = async () => {
         try {
@@ -37,12 +39,22 @@ function OnePost() {
         }
     }, [post])
 
+    const apply = async (postId) => {
+        await applyToJob(postId).then(
+            fetchPost
+        );
 
-    return(
+    }
+
+    return (
         <>
-            <Link to={`/posts`} className="btn btn-neutral my-10 w-1/12">Back</Link>
 
-
+            <div className="flex">
+                <Link to={`/posts`} className="btn btn-neutral w-1/12 ms-20">Back</Link>
+                {(hasAuthority("STUDENT") && !post.students.includes(parseInt(getId()))) ?
+                    <button className="btn btn-success w-1/12 ms-auto me-20" onClick={() => apply(post.id)}>Apply</button> :
+                        post.students.includes(parseInt(getId())) ? <button className="btn btn-error w-1/12 ms-auto me-20" onClick={() => apply(post.id)}>Unapply</button> : <></>}
+            </div>
             <p>Name: {post.name}</p>
             <p>Work name: {post.workName}</p>
             <p>Work description: {post.workDescription}</p>
@@ -52,7 +64,7 @@ function OnePost() {
             <p>Date posted: {post.datePosted}</p>
 
             <div className="w-full flex justify-center">
-                <img className="w-1/2" src={pdf} />
+                <img className="w-1/2" src={pdf}/>
             </div>
         </>
     )

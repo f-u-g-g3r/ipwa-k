@@ -1,5 +1,5 @@
 import axios from "axios";
-import {isAuth} from "./AuthService.jsx";
+import {getId, hasAuthority, isAuth} from "./AuthService.jsx";
 import {redirect} from "react-router-dom";
 
 const API_URL = 'http://localhost:8080/posts';

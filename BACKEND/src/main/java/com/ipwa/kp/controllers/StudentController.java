@@ -41,6 +41,12 @@ public class StudentController {
                 .orElseThrow(() -> new StudentNotFoundException(id));
     }
 
+    @GetMapping("/posts/{postId}")
+    @CrossOrigin(origins = "*")
+    public List<Student> allStudentsByPostId(@PathVariable Long postId) {
+        return repository.findAllByPostsId(postId).orElseThrow(() -> new PostNotFoundException(postId));
+    }
+
     @PatchMapping("/{id}")
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody Map<String, Object> fields) {

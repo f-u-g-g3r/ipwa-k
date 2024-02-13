@@ -36,9 +36,22 @@ export async function applyToJob(postId) {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
                 },
-                responseType: 'blob'
-
             });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+}
+
+export async function findStudentsByPostId(postId) {
+    if (isAuth()) {
+        try {
+            const students = axios.get(`${API_URL}/posts/${postId}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            return (await students).data;
         } catch (e) {
             console.log(e);
         }

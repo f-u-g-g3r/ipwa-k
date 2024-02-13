@@ -1,12 +1,14 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {getCompany, getLogo} from "../../services/CompanyService.jsx";
-import {Link} from "react-router-dom";
+import {Link, useOutletContext} from "react-router-dom";
+import {ActionContext} from "../company/homeCompany.jsx";
 
 
 function PostCard(props) {
 
     const [company, setCompany] = useState("");
     const [logo, setLogo] = useState("http://via.placeholder.com/200x200");
+    const value = useContext(ActionContext);
 
     const fetchCompany = async () => {
         try {
@@ -39,7 +41,8 @@ function PostCard(props) {
     return (
         <>
             <div className="flex">
-                <Link to={`/posts/${props.post.id}`} className="card lg:card-side bg-base-100 hover:bg-base-300 shadow-lg my-10 w-3/5">
+                <Link to={`/posts/${props.post.id}`}
+                      className="card lg:card-side bg-base-100 hover:bg-base-300 shadow-lg my-10 w-full">
                     <figure>
                         <img style={{width: "224px", height: "224px"}} src={logo} alt="Company Logo"/>
                     </figure>
@@ -56,15 +59,15 @@ function PostCard(props) {
                         <p>Expiration date: {props.post.expiryDate}</p>
                         <p>Date posted: {props.post.datePosted}</p>
                     </div>
-                    </Link>
-                    <div className="card-body w-2/5">
-                        {props.isCheck === true ?
-                            <>
-                                <p className="text-lg w-full">Students applied: {props.post.students.length}</p>
-                                <button className="btn btn-secondary text-xl h-14">Show info</button>
-                            </> : <></>}
+                </Link>
+                {props.isCheck === true ?
+                    <div className="card-body w-2/5 my-20">
+                        <p className="text-2xl w-full">Students applied: {props.post.students.length}</p>
+                        <button onClick={() => {value[0](2); value[1](props.post.id)}} className="btn btn-secondary text-xl h-14">Show info</button>
                     </div>
+                    : <></>}
             </div>
+
         </>
     )
 }

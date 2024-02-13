@@ -25,59 +25,41 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage/>,
         children: [
             {
-                path: "/login",
-                loader: loginLoader,
-                action: action,
-                element: <LoginForm/>
+                path: "/login", loader: loginLoader, action: action, element: <LoginForm/>
             },
             {
-                path: "/home",
-                element: <Home/>,
-                loader: isAuthLoader
+                path: "/home", element: <Home/>, loader: isAuthLoader
             },
             {
-                path: "/posts",
-                element: <Posts/>,
-                loader: isAuthLoader
+                path: "/home/:actionNum", element: <Home/>, loader: isAuthLoader
             },
             {
-                path: "/posts/new",
-                element: <PostForm/>,
-                action: actionPostForm,
+                path: "/posts", element: <Posts/>, loader: isAuthLoader
+            },
+            {
+                path: "/posts/new", element: <PostForm/>, action: actionPostForm,
             },
 
             {
-                path: "/posts/:id",
-                element: <OnePost/>,
-                loader: isAuthLoader
+                path: "/posts/:id", element: <OnePost/>, loader: isAuthLoader
             },
             {
-                path: "/student/profile",
-                element: <StudentProfile/>,
-                action: actionStudentProfile,
-                loader: isAuthLoader
+                path: "/student/profile", element: <StudentProfile/>,
+                action: actionStudentProfile, loader: isAuthLoader
             },
             {
-                path: "/company/profile",
-                element: <CompanyProfile/>,
-                action: actionCompanyProfile,
-                loader: isAuthLoader
+                path: "/company/profile", element: <CompanyProfile/>,
+                action: actionCompanyProfile, loader: isAuthLoader
             },
             {
-                path: "/teacher/profile",
-                element: <TeacherProfile/>,
-                loader: isAuthLoader
+                path: "/teacher/profile", element: <TeacherProfile/>, loader: isAuthLoader
             },
             {
-                path: "/coordinator/profile",
-                element: <CoordinatorProfile/>,
-                loader: isAuthLoader
+                path: "/coordinator/profile", element: <CoordinatorProfile/>, loader: isAuthLoader
             },
             {
-                path: "edit-student/:id",
-                element: <EditStudentProfile/>,
-                loader: hasAuthorityLoader("COORDINATOR"),
-                action: actionEditStudent
+                path: "edit-student/:id", element: <EditStudentProfile/>,
+                loader: hasAuthorityLoader("COORDINATOR"), action: actionEditStudent
             }
         ]
     },

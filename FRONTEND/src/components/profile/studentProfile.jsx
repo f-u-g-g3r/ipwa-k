@@ -6,6 +6,7 @@ import {getId} from "../../services/AuthService.jsx";
 export async function actionStudentProfile({request}) {
     const formData = await request.formData();
     const studentData = Object.fromEntries(formData);
+    console.log(studentData)
     await updateStudent(studentData, getId());
 
     const student = await getStudent(getId());
@@ -67,10 +68,26 @@ function StudentProfile() {
                         <a className="btn btn-neutral my-3">Reset password</a>
                         <p className="text-lg my-3">Username: {student.username}</p>
                         <p className="text-lg my-3">Group: {student.classGroup}</p>
-                        <p className="text-lg my-3">Class teacher: {student.teacher === null ? "null" : student.teacher}</p>
-                        <input type="submit" className="btn btn-success my-3 w-full" value="Update profile" />
+                        <p className="text-lg my-3">Class
+                            teacher: {student.teacher === null ? "null" : student.teacher}</p>
+
+
+                        <div className="flex justify-center">
+                            <label className="form-control w-full max-w-xs">
+                                <div className="label">
+                                    <span className="label-text text-lg">Upload CV</span>
+                                </div>
+                                <input type="file" name="file"
+                                       className="file-input file-input-bordered w-full max-w-lg"/>
+                            </label>
+                        </div>
+
+                        <input type="submit" className="btn btn-success my-3 w-full" value="Update profile"/>
+
                     </div>
+
                 </div>
+
             </Form>
         </>
     )

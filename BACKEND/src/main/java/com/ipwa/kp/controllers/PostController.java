@@ -51,6 +51,13 @@ public class PostController {
                 .orElseThrow(() -> new PostNotFoundException(id));
     }
 
+    @GetMapping("/company/{companyId}")
+    @CrossOrigin(origins = "*")
+    public List<Post> allByOwnerId(@PathVariable Long companyId) {
+        return repository.findAllByCompanyId(companyId)
+                .orElseThrow(() -> new PostNotFoundException(companyId));
+    }
+
     @PostMapping
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'COMPANY')")
     @CrossOrigin(origins = "*")

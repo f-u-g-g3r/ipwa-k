@@ -1,7 +1,5 @@
 import {savePost, uploadPostPdf} from "../../services/PostService.jsx";
 import {Form, redirect} from "react-router-dom";
-import {getId} from "../../services/AuthService.jsx";
-import {uploadLogo} from "../../services/CompanyService.jsx";
 
 export async function actionPostForm({request}) {
     const formData = await request.formData();

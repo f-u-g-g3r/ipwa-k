@@ -1,5 +1,6 @@
 import HomeCoordinator from "./coordinator/homeCoordinator.jsx";
 import {Link} from "react-router-dom";
+import HomeCompany from "./company/homeCompany.jsx";
 
 function Home() {
     const authority = localStorage.getItem('authority');
@@ -16,8 +17,13 @@ function Home() {
                                 <Link to={`/posts`} className="btn btn-primary">Job posts</Link>
                             </div>
                         </div>
-                    </div>:
+                    </div> :
+                        authority === "COMPANY" ? <>
+                            <HomeCompany/>
+                            </>:
                     <><h1>Home page!</h1></>}
+
+
         </>
     )
 }

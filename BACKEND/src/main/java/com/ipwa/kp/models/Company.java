@@ -128,19 +128,6 @@ public class Company implements UserDetails {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Company company = (Company) o;
-        return Objects.equals(id, company.id) && Objects.equals(name, company.name) && Objects.equals(username, company.username) && Objects.equals(registryCode, company.registryCode) && Objects.equals(email, company.email) && Objects.equals(password, company.password) && Objects.equals(phone, company.phone) && Objects.equals(contacts, company.contacts) && Objects.equals(address, company.address) && Objects.equals(logoPath, company.logoPath) && Objects.equals(posts, company.posts);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, username, registryCode, email, password, phone, contacts, address, logoPath, posts);
-    }
-
-    @Override
     public String toString() {
         return "Company{" +
                 "id=" + id +

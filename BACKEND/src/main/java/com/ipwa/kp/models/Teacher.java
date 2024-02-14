@@ -19,18 +19,19 @@ public class Teacher implements UserDetails {
     private String lastName;
     private String email;
     private String password;
-
-    private String classGroup;
-
     private String username;
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Student> students = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_group_id")
+    private ClassGroup classGroup;
+
     public Teacher() {
     }
 
-    public Teacher(Long id, String firstName, String lastName, String email, String password, String username, List<Student> students, String classGroup) {
+    public Teacher(Long id, String firstName, String lastName, String email, String password, String username, List<Student> students, ClassGroup classGroup) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -95,24 +96,11 @@ public class Teacher implements UserDetails {
     }
 
     public String getClassGroup() {
-        return classGroup;
+        return classGroup.getName();
     }
 
-    public void setClassGroup(String classGroup) {
+    public void setClassGroup(ClassGroup classGroup) {
         this.classGroup = classGroup;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Teacher teacher = (Teacher) o;
-        return Objects.equals(id, teacher.id) && Objects.equals(firstName, teacher.firstName) && Objects.equals(lastName, teacher.lastName) && Objects.equals(email, teacher.email) && Objects.equals(password, teacher.password) && Objects.equals(students, teacher.students);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, password, students);
     }
 
     @Override
@@ -123,8 +111,8 @@ public class Teacher implements UserDetails {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", classGroup='" + classGroup + '\'' +
-                ", students=" + students +
+                ", username='" + username + '\'' +
+                ", classGroup=" + classGroup +
                 '}';
     }
 

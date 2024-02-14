@@ -80,10 +80,6 @@ public class PostController {
     public ResponseEntity<?> editPost(@PathVariable Long postId, @RequestBody Post request) {
         Post post = repository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId));
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        System.out.println(request.getSalary());
-        System.out.println(request.getSalary() != null);
-        System.out.println(request.getSalary() instanceof Integer);
         if (request.getWorkName() != null) post.setWorkName(request.getWorkName());
         if (request.getWorkDescription() != null) post.setWorkDescription(request.getWorkDescription());
         if (request.getSalary() != null) post.setSalary(request.getSalary());

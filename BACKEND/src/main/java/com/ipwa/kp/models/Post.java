@@ -148,24 +148,10 @@ public class Post {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Post post = (Post) o;
-        return Objects.equals(salary, post.salary) && Objects.equals(id, post.id) && Objects.equals(company, post.company) && Objects.equals(students, post.students) && Objects.equals(workName, post.workName) && Objects.equals(workDescription, post.workDescription) && Objects.equals(claims, post.claims) && Objects.equals(additionalInfo, post.additionalInfo) && Objects.equals(pathToPdf, post.pathToPdf) && Objects.equals(expiryDate, post.expiryDate) && Objects.equals(datePosted, post.datePosted);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, company, students, workName, workDescription, salary, claims, additionalInfo, pathToPdf, expiryDate, datePosted);
-    }
-
-    @Override
     public String toString() {
         return "Post{" +
                 "id=" + id +
                 ", company=" + company.getId() +
-                ", students=" + getStudents() +
                 ", workName='" + workName + '\'' +
                 ", workDescription='" + workDescription + '\'' +
                 ", salary=" + salary +

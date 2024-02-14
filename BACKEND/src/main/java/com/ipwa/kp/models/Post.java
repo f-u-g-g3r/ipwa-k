@@ -27,7 +27,7 @@ public class Post {
 
     private String workName;
     private String workDescription;
-    private int salary;
+    private Integer salary;
     private String claims;
     private String additionalInfo;
     private String pathToPdf;
@@ -38,7 +38,7 @@ public class Post {
 
     }
 
-    public Post(Long id, Company company, List<Student> students, String workName, String workDescription, int salary, String claims, String additionalInfo, String pathToPdf, LocalDate expiryDate, LocalDate datePosted) {
+    public Post(Long id, Company company, List<Student> students, String workName, String workDescription, Integer salary, String claims, String additionalInfo, String pathToPdf, LocalDate expiryDate, LocalDate datePosted) {
         this.id = id;
         this.company = company;
         this.students = students;
@@ -100,11 +100,11 @@ public class Post {
         this.workDescription = workDescription;
     }
 
-    public int getSalary() {
+    public Integer getSalary() {
         return salary;
     }
 
-    public void setSalary(int salary) {
+    public void setSalary(Integer salary) {
         this.salary = salary;
     }
 
@@ -152,7 +152,7 @@ public class Post {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return salary == post.salary && Objects.equals(id, post.id) && Objects.equals(company, post.company) && Objects.equals(students, post.students) && Objects.equals(workName, post.workName) && Objects.equals(workDescription, post.workDescription) && Objects.equals(claims, post.claims) && Objects.equals(additionalInfo, post.additionalInfo) && Objects.equals(pathToPdf, post.pathToPdf) && Objects.equals(expiryDate, post.expiryDate) && Objects.equals(datePosted, post.datePosted);
+        return Objects.equals(salary, post.salary) && Objects.equals(id, post.id) && Objects.equals(company, post.company) && Objects.equals(students, post.students) && Objects.equals(workName, post.workName) && Objects.equals(workDescription, post.workDescription) && Objects.equals(claims, post.claims) && Objects.equals(additionalInfo, post.additionalInfo) && Objects.equals(pathToPdf, post.pathToPdf) && Objects.equals(expiryDate, post.expiryDate) && Objects.equals(datePosted, post.datePosted);
     }
 
     @Override

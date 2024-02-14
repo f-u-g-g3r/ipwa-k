@@ -40,11 +40,11 @@ function PostCard(props) {
 
     return (
         <>
-            <div className="flex">
+            <div className="flex justify-center">
                 <Link to={`/posts/${props.post.id}`}
-                      className="card lg:card-side bg-base-100 hover:bg-base-300 shadow-lg my-10 w-full">
+                      className="card lg:card-side bg-base-100 hover:bg-base-300 shadow-lg my-5 w-5/6 h-56">
                     <figure>
-                        <img style={{width: "224px", height: "224px"}} src={logo} alt="Company Logo"/>
+                        <img className="w-56" src={logo} alt="Company Logo"/>
                     </figure>
                     <div className="card-body">
                         <h2 className="card-title">{props.post.workName}</h2>
@@ -61,7 +61,7 @@ function PostCard(props) {
                     </div>
                 </Link>
                 {props.isCheck === true ?
-                    <div className="card-body w-2/5 my-20">
+                    <div className="card-body w-2/5 my-10">
                         <p className="text-2xl w-full">Students applied: {props.post.students.length}</p>
                         <button onClick={() => {value[0](2); value[1](props.post.id)}} className="btn btn-secondary text-xl h-14">Show info</button>
                     </div>

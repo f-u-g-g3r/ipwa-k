@@ -17,6 +17,7 @@ import CoordinatorProfile from "./components/profile/coordinatorProfile.jsx";
 import EditStudentProfile, {
     actionEditStudent
 } from "./components/coordinator/studentsManagement/editStudentProfile.jsx";
+import EditPostForm, {actionEditPostForm} from "./components/post/editPostForm.jsx";
 
 const router = createBrowserRouter([
     {
@@ -39,9 +40,11 @@ const router = createBrowserRouter([
             {
                 path: "/posts/new", element: <PostForm/>, action: actionPostForm,
             },
-
             {
                 path: "/posts/:id", element: <OnePost/>, loader: isAuthLoader
+            },
+            {
+                path: "/edit-post/:id", element: <EditPostForm/>, loader: isAuthLoader, action: actionEditPostForm
             },
             {
                 path: "/student/profile", element: <StudentProfile/>,

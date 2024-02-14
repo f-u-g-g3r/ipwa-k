@@ -38,6 +38,19 @@ export async function getPost(id) {
     }
 }
 
+export async function updatePost(postData, id) {
+    if (isAuth()) {
+        if (hasAuthority("COMPANY") || hasAuthority("COORDINATOR")) {
+            return await axios.patch(`${API_URL}/${id}`, postData, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+        }
+    }
+    return redirect("/login")
+}
+
 export async function getPostByCompanyId(companyId) {
     if (isAuth()) {
         const posts = await axios.get(`${API_URL}/company/${companyId}`, {

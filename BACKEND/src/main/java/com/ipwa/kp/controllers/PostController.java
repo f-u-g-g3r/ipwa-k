@@ -2,6 +2,7 @@ package com.ipwa.kp.controllers;
 
 import com.ipwa.kp.controllers.exceptions.CompanyNotFoundException;
 import com.ipwa.kp.controllers.exceptions.PostNotFoundException;
+import com.ipwa.kp.controllers.requests.PostEditRequest;
 import com.ipwa.kp.models.Company;
 import com.ipwa.kp.models.Post;
 import com.ipwa.kp.repositories.CompanyRepository;
@@ -14,14 +15,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/posts")
@@ -70,6 +74,26 @@ public class PostController {
         return ResponseEntity.ok(repository.save(post));
     }
 
+    @PatchMapping("/{postId}")
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'COMPANY')")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<?> editPost(@PathVariable Long postId, @RequestBody Post request) {
+        Post post = repository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId));
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println(request.getSalary());
+        System.out.println(request.getSalary() != null);
+        System.out.println(request.getSalary() instanceof Integer);
+        if (request.getWorkName() != null) post.setWorkName(request.getWorkName());
+        if (request.getWorkDescription() != null) post.setWorkDescription(request.getWorkDescription());
+        if (request.getSalary() != null) post.setSalary(request.getSalary());
+        if (request.getClaims() != null) post.setClaims(request.getClaims());
+        if (request.getAdditionalInfo() != null) post.setAdditionalInfo(request.getAdditionalInfo());
+        if (request.getExpiryDate() != null) post.setExpiryDate(request.getExpiryDate());
+
+        return ResponseEntity.ok(repository.save(post));
+    }
+
     @PutMapping("/pdf/{id}")
     @CrossOrigin(origins = "*")
     public String uploadPdf(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
@@ -90,7 +114,6 @@ public class PostController {
         Path filePath = fileStorageLocation.resolve(fileName).normalize();
 
         Path pdfPath = Paths.get(filePath.toUri());
-        System.out.println(pdfPath);
         byte[] pdfContent = Files.readAllBytes(pdfPath);
 
         ByteArrayResource resource = new ByteArrayResource(pdfContent);

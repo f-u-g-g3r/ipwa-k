@@ -93,7 +93,6 @@ function PostForm() {
                     <input type="submit" className="btn btn-neutral w-full max-w-lg mt-10"/>
                 </div>
             </Form>
-
         </div>
     )
 }

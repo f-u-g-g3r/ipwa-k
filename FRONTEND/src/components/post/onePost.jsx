@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {getPost, getPostPdf} from "../../services/PostService.jsx";
+import {getPost, getPostPdf, updatePost} from "../../services/PostService.jsx";
 import {Link, useParams} from "react-router-dom";
 import {getId, hasAuthority} from "../../services/AuthService.jsx";
 import {applyToJob} from "../../services/StudentService.jsx";
@@ -43,7 +43,12 @@ function OnePost() {
         await applyToJob(postId).then(
             fetchPost
         );
+    }
 
+    const edit = async (postId) => {
+        await updatePost(postId).then(
+            fetchPost
+        );
     }
 
     return (
@@ -53,7 +58,11 @@ function OnePost() {
                 <Link to={`/posts`} className="btn btn-neutral w-1/12 ms-20">Back</Link>
                 {(hasAuthority("STUDENT") && !post.students.includes(parseInt(getId()))) ?
                     <button className="btn btn-success w-1/12 ms-auto me-20" onClick={() => apply(post.id)}>Apply</button> :
-                        post.students.includes(parseInt(getId())) ? <button className="btn btn-error w-1/12 ms-auto me-20" onClick={() => apply(post.id)}>Unapply</button> : <></>}
+                    (hasAuthority("STUDENT") &&post.students.includes(parseInt(getId()))) ?
+                            <button className="btn btn-error w-1/12 ms-auto me-20" onClick={() => apply(post.id)}>Unapply</button> :
+                                (hasAuthority("COMPANY") && post.company == getId()) ?
+                                    <Link to={`/edit-post/${id}`} className="btn btn-info w-1/12 ms-auto me-20">Edit post</Link> :
+                                    <></>}
             </div>
             <p>Name: {post.name}</p>
             <p>Work name: {post.workName}</p>

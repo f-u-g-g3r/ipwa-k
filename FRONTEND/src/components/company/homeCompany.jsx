@@ -14,8 +14,6 @@ function HomeCompany() {
     }
     return(
         <>
-
-            <h1>Home company</h1>
             <div className="drawer lg:drawer-open">
                 <input id="my-drawer-2" type="checkbox" className="drawer-toggle"/>
                 <div className="drawer-content flex flex-col px-20 pt-5 bg-base-200">

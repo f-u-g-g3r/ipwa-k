@@ -2,10 +2,8 @@ package com.ipwa.kp.controllers;
 
 
 import com.ipwa.kp.controllers.exceptions.ClassGroupNotFoundException;
-import com.ipwa.kp.controllers.exceptions.StudentNotFoundException;
 import com.ipwa.kp.controllers.exceptions.TeacherNotFoundException;
 import com.ipwa.kp.models.ClassGroup;
-import com.ipwa.kp.models.Student;
 import com.ipwa.kp.models.Teacher;
 import com.ipwa.kp.repositories.ClassGroupRepository;
 import com.ipwa.kp.repositories.TeacherRepository;
@@ -50,9 +48,7 @@ public class TeacherController {
         ClassGroup group = classGroupRepository.findById(groupId)
                 .orElseThrow(() -> new ClassGroupNotFoundException(groupId));
 
-        List<Teacher> teachers = group.getTeachers();
-        teachers.add(teacher);
-        group.setTeachers(teachers);
+        group.setTeacher(teacher);
         classGroupRepository.save(group);
 
         teacher.setClassGroup(group);

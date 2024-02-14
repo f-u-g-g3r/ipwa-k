@@ -57,3 +57,18 @@ export async function findStudentsByPostId(postId) {
         }
     }
 }
+
+export async function addStudentToGroup(groupId, studentId) {
+    if (isAuth()) {
+        try {
+            const student = axios.patch(`${API_URL}/${groupId}/${studentId}`, "", {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            return (await student).data;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+}

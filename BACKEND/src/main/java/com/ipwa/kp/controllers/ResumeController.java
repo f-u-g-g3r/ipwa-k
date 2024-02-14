@@ -2,7 +2,6 @@ package com.ipwa.kp.controllers;
 
 import com.ipwa.kp.controllers.exceptions.ResumeNotFoundException;
 import com.ipwa.kp.models.Resume;
-import com.ipwa.kp.models.Teacher;
 import com.ipwa.kp.repositories.ResumeRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

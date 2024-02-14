@@ -1,7 +1,6 @@
 package com.ipwa.kp.controllers;
 
 import com.ipwa.kp.controllers.exceptions.ClassGroupNotFoundException;
-import com.ipwa.kp.controllers.exceptions.StudentNotFoundException;
 import com.ipwa.kp.models.ClassGroup;
 import com.ipwa.kp.models.Student;
 import com.ipwa.kp.models.Teacher;
@@ -42,18 +41,16 @@ public class ClassGroupController {
     @CrossOrigin(origins = "*")
     public void deleteGroup(@PathVariable Long id) {
         List<Student> students = studentRepository.findAllByClassGroupId(id)
-                        .orElseThrow(() -> new ClassGroupNotFoundException(id));
+                .orElseThrow(() -> new ClassGroupNotFoundException(id));
 
-        List<Teacher> teachers = teacherRepository.findAllByClassGroupId(id)
-                        .orElseThrow(() -> new ClassGroupNotFoundException(id));
+        Teacher teacher = teacherRepository.findByClassGroupId(id)
+                .orElseThrow(() -> new ClassGroupNotFoundException(id));
 
         for (Student student : students) {
             student.setClassGroup(null);
         }
 
-        for (Teacher teacher : teachers) {
-            teacher.setClassGroup(null);
-        }
+        teacher.setClassGroup(null);
 
         repository.deleteById(id);
     }

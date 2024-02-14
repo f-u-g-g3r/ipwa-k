@@ -2,7 +2,6 @@ package com.ipwa.kp.controllers;
 
 import com.ipwa.kp.controllers.exceptions.CompanyNotFoundException;
 import com.ipwa.kp.controllers.exceptions.PostNotFoundException;
-import com.ipwa.kp.controllers.requests.PostEditRequest;
 import com.ipwa.kp.models.Company;
 import com.ipwa.kp.models.Post;
 import com.ipwa.kp.repositories.CompanyRepository;
@@ -15,17 +14,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/posts")

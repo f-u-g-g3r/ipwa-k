@@ -14,17 +14,18 @@ public class ClassGroup {
     @OneToMany(mappedBy = "classGroup", fetch = FetchType.LAZY)
     private List<Student> students= new ArrayList<>();
 
-    @OneToMany(mappedBy = "classGroup", fetch = FetchType.LAZY)
-    private List<Teacher> teachers= new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "teacher")
+    private Teacher teacher;
 
     public ClassGroup() {
 
     }
 
-    public ClassGroup(String name, List<Student> students, List<Teacher> teachers) {
+    public ClassGroup(String name, List<Student> students, Teacher teacher) {
         this.name = name;
         this.students = students;
-        this.teachers = teachers;
+        this.teacher = teacher;
     }
 
     public Long getId() {
@@ -51,14 +52,17 @@ public class ClassGroup {
         this.students = students;
     }
 
-    public List<Teacher> getTeachers() {
-        return teachers;
+    public Long getTeacher() {
+        if (teacher != null) {
+            return teacher.getId();
+        } else {
+            return null;
+        }
     }
 
-    public void setTeachers(List<Teacher> teachers) {
-        this.teachers = teachers;
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
-
 
     @Override
     public String toString() {

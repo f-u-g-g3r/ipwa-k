@@ -2,7 +2,6 @@ package com.ipwa.kp.models;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
 
 @Entity
 @Table(name = "resume")

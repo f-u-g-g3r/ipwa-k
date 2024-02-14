@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "teachers")
@@ -24,8 +23,7 @@ public class Teacher implements UserDetails {
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Student> students = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_group_id")
+    @OneToOne(mappedBy = "teacher", fetch = FetchType.LAZY)
     private ClassGroup classGroup;
 
     public Teacher() {

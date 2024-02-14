@@ -11,14 +11,12 @@ import com.ipwa.kp.repositories.ClassGroupRepository;
 import com.ipwa.kp.repositories.PostRepository;
 import com.ipwa.kp.repositories.StudentRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/students")

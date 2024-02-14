@@ -1,11 +1,17 @@
 import {Form, Link, redirect, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getStudent, updateStudent} from "../../../services/StudentService.jsx";
+import {addStudentToGroup, getStudent, updateStudent} from "../../../services/StudentService.jsx";
 import {getId} from "../../../services/AuthService.jsx";
+import {getAllGroups} from "../../../services/ClassGroupService.jsx";
 
 export async function actionEditStudent({request}) {
     const formData = await request.formData();
     const studentData = Object.fromEntries(formData);
+
+    if (formData.get("classGroup") != null) {
+        await addStudentToGroup(formData.get("classGroup"), formData.get("studentId"));
+    }
+
     await updateStudent(studentData, getId());
 
     const student = await getStudent(getId());
@@ -20,6 +26,15 @@ function EditStudentProfile() {
 
     const [student, setStudent] = useState({});
     const [isActive, setIsActive] = useState(false);
+    const [groups, setGroups] = useState({});
+
+    const fetchGroups = async () => {
+        try {
+            setGroups(await getAllGroups());
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     const fetchStudent = async () => {
         try {
@@ -49,6 +64,7 @@ function EditStudentProfile() {
 
     useEffect(() => {
         fetchStudent()
+        fetchGroups()
     }, []);
 
     useEffect(() => {
@@ -119,23 +135,17 @@ function EditStudentProfile() {
                             <span className="label-text text-lg">Group</span>
                         </div>
                         <select className="select select-bordered w-full" name="classGroup">
-                            <option disabled selected>Group</option>
-                        </select>
-                    </label>
-                </div>
-                <div className="text-lg flex justify-center w-full">
-                    <label className="form-control w-full max-w-xs">
-                        <div className="label">
-                            <span className="label-text text-lg">Teacher</span>
-                        </div>
-                        <select className="select select-bordered w-full" name="teacher">
-                            <option disabled selected>Teacher</option>
+                            <option disabled>Group</option>
+                            {groups.length ?
+                                groups.map((group) => <option selected={student.classGroup === group.name} value={group.id} name={group.name}>{group.name}</option>) :
+                            <></>}
                         </select>
                     </label>
                 </div>
                 <div className="text-lg flex justify-center w-full">
                     <div className="w-full max-w-xs">
                         <a className="btn btn-neutral my-3">Reset password</a>
+                        <input type="hidden" name="studentId" value={student.id}/>
                         <input type="submit" className="btn btn-success my-3 w-full" value="Update profile"/>
                     </div>
                 </div>

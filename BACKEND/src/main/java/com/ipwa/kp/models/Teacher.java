@@ -96,7 +96,11 @@ public class Teacher implements UserDetails {
     }
 
     public String getClassGroup() {
-        return classGroup.getName();
+        if (classGroup != null) {
+            return classGroup.getName();
+        } else {
+            return null;
+        }
     }
 
     public void setClassGroup(ClassGroup classGroup) {

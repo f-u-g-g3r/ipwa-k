@@ -11,10 +11,10 @@ public class ClassGroup {
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     private String name;
 
-    @OneToMany(mappedBy = "classGroup", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "classGroup", fetch = FetchType.LAZY)
     private List<Student> students= new ArrayList<>();
 
-    @OneToMany(mappedBy = "classGroup", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "classGroup", fetch = FetchType.LAZY)
     private List<Teacher> teachers= new ArrayList<>();
 
     public ClassGroup() {

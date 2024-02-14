@@ -1,10 +1,13 @@
 package com.ipwa.kp.controllers;
 
 
+import com.ipwa.kp.controllers.exceptions.ClassGroupNotFoundException;
 import com.ipwa.kp.controllers.exceptions.PostNotFoundException;
 import com.ipwa.kp.controllers.exceptions.StudentNotFoundException;
+import com.ipwa.kp.models.ClassGroup;
 import com.ipwa.kp.models.Post;
 import com.ipwa.kp.models.Student;
+import com.ipwa.kp.repositories.ClassGroupRepository;
 import com.ipwa.kp.repositories.PostRepository;
 import com.ipwa.kp.repositories.StudentRepository;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +25,12 @@ import java.util.stream.Collectors;
 public class StudentController {
     private final StudentRepository repository;
     private final PostRepository postRepository;
+    private final ClassGroupRepository classGroupRepository;
 
-    public StudentController(StudentRepository repository, PostRepository postRepository) {
+    public StudentController(StudentRepository repository, PostRepository postRepository, ClassGroupRepository classGroupRepository) {
         this.repository = repository;
         this.postRepository = postRepository;
+        this.classGroupRepository = classGroupRepository;
     }
 
     @GetMapping
@@ -114,6 +119,24 @@ public class StudentController {
 
     @PostMapping
     public ResponseEntity<?> newStudent(@RequestBody Student student) {
+        return ResponseEntity.ok(repository.save(student));
+    }
+
+    @PatchMapping("/{groupId}/{studentId}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<?> addStudentToGroup(@PathVariable Long groupId, @PathVariable Long studentId) {
+        Student student = repository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException(studentId));
+        ClassGroup group = classGroupRepository.findById(groupId)
+                .orElseThrow(() -> new ClassGroupNotFoundException(groupId));
+
+        List<Student> students = group.getStudents();
+        students.add(student);
+        group.setStudents(students);
+        classGroupRepository.save(group);
+
+        student.setClassGroup(group);
+
         return ResponseEntity.ok(repository.save(student));
     }
 

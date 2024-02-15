@@ -10,7 +10,7 @@ import Posts from "./components/post/posts.jsx";
 import PostForm, {actionPostForm} from "./components/post/postForm.jsx";
 import {hasAuthorityLoader, isAuthLoader} from "./services/AuthService.jsx";
 import OnePost from "./components/post/onePost.jsx";
-import StudentProfile, {actionStudentProfile} from "./components/profile/studentProfile.jsx";
+import StudentProfile from "./components/profile/studentProfile.jsx";
 import CompanyProfile, {actionCompanyProfile} from "./components/profile/companyProfile.jsx";
 import TeacherProfile from "./components/profile/teacherProfile.jsx";
 import CoordinatorProfile from "./components/profile/coordinatorProfile.jsx";
@@ -47,8 +47,7 @@ const router = createBrowserRouter([
                 path: "/edit-post/:id", element: <EditPostForm/>, loader: isAuthLoader, action: actionEditPostForm
             },
             {
-                path: "/student/profile", element: <StudentProfile/>,
-                action: actionStudentProfile, loader: isAuthLoader
+                path: "/student/profile", element: <StudentProfile/>, loader: isAuthLoader
             },
             {
                 path: "/company/profile", element: <CompanyProfile/>,

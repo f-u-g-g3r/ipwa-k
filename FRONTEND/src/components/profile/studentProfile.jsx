@@ -1,33 +1,16 @@
 import {useEffect, useState} from "react";
 import {getCvPdf, getStudent, updateStudent, uploadCv} from "../../services/StudentService.jsx";
-import {Form, redirect} from "react-router-dom";
+import {Form, redirect, useNavigate} from "react-router-dom";
 import {getId} from "../../services/AuthService.jsx";
 import {getResume} from "../../services/ResumeService.jsx";
-
-export async function actionStudentProfile({request}) {
-    const formData = await request.formData();
-    const file = formData.get('file');
-    formData.delete('file');
-    const studentData = Object.fromEntries(formData);
-    await updateStudent(studentData, getId());
-    if (file.name !== "") {
-        const fileFormData = new FormData();
-        fileFormData.append('file', file, file.name);
-        await uploadCv(getId(), fileFormData);
-    }
-
-    const student = await getStudent(getId());
-    localStorage.setItem("firstName", student.firstName);
-    localStorage.setItem("lastName", student.lastName);
-
-    return redirect("/student/profile")
-}
 
 function StudentProfile() {
 
     const [student, setStudent] = useState({});
     const [pdf, setPdf] = useState("");
     const [resume, setResume] = useState({});
+
+    let navigate = useNavigate();
 
     const fetchStudent = async () => {
         try {
@@ -40,22 +23,37 @@ function StudentProfile() {
     const fetchResume = async () => {
         try {
             if (student.resume !== undefined) {
-                setResume(await getResume(student.resume));
+                setResume(await getResume(student.resume).then(
+                    async (resume) => setPdf(await getCvPdf(resume.path))
+                ));
             }
         } catch (e) {
             console.log(e)
         }
     }
 
-    const fetchPdf = async () => {
-        try {
-            if (resume.path !== undefined) {
+    const handleFileUploading = async (event) => {
 
-                setPdf(await getCvPdf(resume.path))
-            }
-        } catch (e) {
-            console.log(e);
+        event.preventDefault()
+        const formData = new FormData(event.target);
+        const file = formData.get('file');
+        formData.delete('file');
+        const studentData = Object.fromEntries(formData);
+        await updateStudent(studentData, getId());
+
+        const student = await getStudent(getId());
+        localStorage.setItem("firstName", student.firstName);
+        localStorage.setItem("lastName", student.lastName);
+
+        if (file.name !== "") {
+            const fileFormData = new FormData();
+            fileFormData.append('file', file, file.name);
+            await uploadCv(getId(), fileFormData).then(
+                fetchResume
+            );
         }
+
+        return navigate("/student/profile")
     }
 
     useEffect(() => {
@@ -66,16 +64,11 @@ function StudentProfile() {
         fetchResume()
     }, [student]);
 
-
-    useEffect(() => {
-        fetchPdf()
-    }, [resume]);
-
     return (
         <>
             <p className="text-2xl font-bold text-center my-10">Edit profile</p>
             <div className="flex justify-center">
-                <Form method="post" className="w-full" encType="multipart/form-data">
+                <form method="post" className="w-full" encType="multipart/form-data" onSubmit={handleFileUploading}>
                     <div className="text-lg flex justify-center w-full">
                         <label className="form-control w-full max-w-xs">
                             <div className="label">
@@ -126,7 +119,7 @@ function StudentProfile() {
                             <input type="submit" className="btn btn-success my-3 w-full" value="Update profile"/>
                         </div>
                     </div>
-                </Form>
+                </form>
                 <div className="w-1/2">
                     <img src={pdf}/>
                 </div>

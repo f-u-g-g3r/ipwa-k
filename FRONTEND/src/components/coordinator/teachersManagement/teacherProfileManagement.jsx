@@ -37,12 +37,14 @@ function TeacherProfileManagement() {
 
     const addNewTeacher = async () => {
         try {
-            await createTeacher(newTeacher).then(
-                setNewTeacher({
-                    username: "",
-                    password: "",
-                }));
-            fetchTeachers()
+            if (newTeacher.username !== "" && newTeacher.password !== "") {
+                await createTeacher(newTeacher).then(
+                    setNewTeacher({
+                        username: "",
+                        password: "",
+                    }));
+                fetchTeachers()
+            }
         } catch (e) {
             console.log(e)
         }

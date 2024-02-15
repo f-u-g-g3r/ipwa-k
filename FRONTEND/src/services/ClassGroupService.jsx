@@ -51,3 +51,18 @@ export async function deleteGroup(groupId) {
         }
     }
 }
+
+export async function getGroupByName(name) {
+    if (isAuth()) {
+        try {
+            const group = await axios.get(`${API_URL}/${name}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            return group.data;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+}

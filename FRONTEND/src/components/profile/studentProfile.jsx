@@ -10,6 +10,8 @@ import {
 import {Form, redirect, useNavigate} from "react-router-dom";
 import {getId} from "../../services/AuthService.jsx";
 import {getResume} from "../../services/ResumeService.jsx";
+import {getGroupByName} from "../../services/ClassGroupService.jsx";
+import {getTeacher} from "../../services/TeacherService.jsx";
 
 function StudentProfile() {
 
@@ -18,6 +20,7 @@ function StudentProfile() {
     const [motivationLetter, setMotivationLetter] = useState("");
     const [resume, setResume] = useState({});
     const [action, setAction] = useState(1);
+    const [teacher, setTeacher] = useState("");
 
     const cvInputRef = useRef();
     const letterInputRef = useRef();
@@ -95,12 +98,25 @@ function StudentProfile() {
         return navigate("/student/profile")
     }
 
+    const fetchTeacher = async () => {
+        if (student.classGroup !== undefined) {
+            await getGroupByName(student.classGroup).then(async (data) => {
+                if (data.teacher !== null) {
+                    await getTeacher(data.teacher).then((data) => {
+                        setTeacher(`${data.firstName} ${data.lastName}`)
+                    });
+                }
+            });
+        }
+    }
+
     useEffect(() => {
         fetchStudent()
     }, []);
 
     useEffect(() => {
         fetchResume()
+        fetchTeacher()
     }, [student]);
 
     useEffect(() => {
@@ -161,8 +177,7 @@ function StudentProfile() {
                             <a className="btn btn-neutral my-3">Reset password</a>
                             <p className="text-lg my-3">Username: {student.username}</p>
                             <p className="text-lg my-3">Group: {student.classGroup}</p>
-                            <p className="text-lg my-3">Class
-                                teacher: {student.teacher === null ? "null" : student.teacher}</p>
+                            <p className="text-lg my-3">Class teacher: {teacher}</p>
 
                             <input type="submit" className="btn btn-success my-3 w-full" value="Update profile"/>
                         </div>

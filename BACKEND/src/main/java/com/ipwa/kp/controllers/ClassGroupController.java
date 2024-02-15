@@ -37,6 +37,14 @@ public class ClassGroupController {
         return ResponseEntity.ok(repository.save(classGroup));
     }
 
+    @GetMapping("/{name}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<?> getClassGroupByName(@PathVariable String name) {
+        ClassGroup group = repository.findByName(name)
+                .orElseThrow(() -> new ClassGroupNotFoundException(name));
+        return ResponseEntity.ok(group);
+    }
+
     @DeleteMapping("/{id}")
     @CrossOrigin(origins = "*")
     public void deleteGroup(@PathVariable Long id) {

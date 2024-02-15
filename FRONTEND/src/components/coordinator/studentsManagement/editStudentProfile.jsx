@@ -1,8 +1,9 @@
 import {Form, Link, redirect, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {addStudentToGroup, getStudent, updateStudent} from "../../../services/StudentService.jsx";
+import {addStudentToGroup, getCvPdf, getStudent, updateStudent} from "../../../services/StudentService.jsx";
 import {getId} from "../../../services/AuthService.jsx";
 import {getAllGroups} from "../../../services/ClassGroupService.jsx";
+import {getResume} from "../../../services/ResumeService.jsx";
 
 export async function actionEditStudent({request}) {
     const formData = await request.formData();
@@ -27,6 +28,8 @@ function EditStudentProfile() {
     const [student, setStudent] = useState({});
     const [isActive, setIsActive] = useState(false);
     const [groups, setGroups] = useState({});
+    const [resume, setResume] = useState({});
+    const [cv, setCv] = useState("");
 
     const fetchGroups = async () => {
         try {
@@ -62,6 +65,18 @@ function EditStudentProfile() {
         }
     }
 
+    const fetchResume = async () => {
+        try {
+            if (student.resume !== undefined) {
+                setResume(await getResume(student.resume).then(
+                    async (resume) => setCv(await getCvPdf(resume.path))
+                ));
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     useEffect(() => {
         fetchStudent()
         fetchGroups()
@@ -73,84 +88,104 @@ function EditStudentProfile() {
         } else {
             setIsActive(false);
         }
+        fetchResume()
     }, [student]);
 
     return (
         <>
             <div className="flex justify-center">
-            <Link to={`/home`} className="btn btn-neutral w-1/6 mt-10 mx-auto">Back</Link>
+                <Link to={`/home`} className="btn btn-neutral w-1/6 mt-10 mx-auto">Back</Link>
             </div>
-            <p className="text-2xl font-bold text-center my-10">Edit student profile ({student.firstName + " " + student.lastName})</p>
-            <Form method="post" className="w-full">
-                <div className="text-lg flex justify-center w-full">
+
+
+            <p className="text-2xl font-bold text-center my-10">Edit student profile
+                ({student.firstName + " " + student.lastName})</p>
+
+            <div className="flex justify-center w-1/2 mb-5">
+                <ul className="menu menu-vertical lg:menu-horizontal bg-gray-300 ">
+                    <li><a className="bg-success hover:bg-gray-400">CV</a></li>
+                    <li><a className="hover:bg-gray-400">Motivation Letter</a></li>
+                </ul>
+            </div>
+            <div className="flex">
+                <div className="w-full">
+                    <img src={cv}/>
+                </div>
+
+                <div className="divider lg:divider-horizontal"></div>
+
+                <Form method="post" className="w-full">
+                    <div className="text-lg flex justify-center w-full">
                     <span className={"text-lg font-bold mt-2 " + (isActive ? "text-success" : "text-red-400")}>
                         Account status: {student.accountStatus}
                     </span>
-                    <button type="button" onClick={isActive ? deactivateStudent : activateStudent}
-                            className={"text-lg font-bold ms-5 " + (isActive ? "btn btn-error" : "btn btn-success")}>
-                        {isActive ? "Deactivate" : "Activate"}
-                    </button>
-                </div>
-
-                <div className="text-lg flex justify-center w-full">
-                    <label className="form-control w-full max-w-xs">
-                        <div className="label">
-                            <span className="label-text text-lg">First name</span>
-                        </div>
-                        <input type="text" defaultValue={student.firstName} name="firstName"
-                               className="input input-bordered w-full"/>
-                    </label>
-                </div>
-
-                <div className="text-lg flex justify-center w-full">
-                    <label className="form-control w-full max-w-xs">
-                        <div className="label">
-                            <span className="label-text text-lg">Last name</span>
-                        </div>
-                        <input type="text" defaultValue={student.lastName} name="lastName"
-                               className="input input-bordered w-full"/>
-                    </label>
-                </div>
-                <div className="text-lg flex justify-center w-full">
-                    <label className="form-control w-full max-w-xs">
-                        <div className="label">
-                            <span className="label-text text-lg">Email</span>
-                        </div>
-                        <input type="text" defaultValue={student.email} name="email"
-                               className="input input-bordered w-full"/>
-                    </label>
-                </div>
-                <div className="text-lg flex justify-center w-full">
-                    <label className="form-control w-full max-w-xs">
-                        <div className="label">
-                            <span className="label-text text-lg">Username</span>
-                        </div>
-                        <input type="text" defaultValue={student.username} name="username"
-                               className="input input-bordered w-full"/>
-                    </label>
-                </div>
-                <div className="text-lg flex justify-center w-full">
-                    <label className="form-control w-full max-w-xs">
-                        <div className="label">
-                            <span className="label-text text-lg">Group</span>
-                        </div>
-                        <select className="select select-bordered w-full" name="classGroup">
-                            <option disabled>Group</option>
-                            {groups.length ?
-                                groups.map((group) =>
-                                    <option selected={student.classGroup === group.name} value={group.id} name={group.name}>{group.name}</option>) :
-                            <></>}
-                        </select>
-                    </label>
-                </div>
-                <div className="text-lg flex justify-center w-full">
-                    <div className="w-full max-w-xs">
-                        <a className="btn btn-neutral my-3">Reset password</a>
-                        <input type="hidden" name="studentId" value={student.id}/>
-                        <input type="submit" className="btn btn-success my-3 w-full" value="Update profile"/>
+                        <button type="button" onClick={isActive ? deactivateStudent : activateStudent}
+                                className={"text-lg font-bold ms-5 " + (isActive ? "btn btn-error" : "btn btn-success")}>
+                            {isActive ? "Deactivate" : "Activate"}
+                        </button>
                     </div>
-                </div>
-            </Form>
+
+                    <div className="text-lg flex justify-center w-full">
+                        <label className="form-control w-full max-w-lg">
+                            <div className="label">
+                                <span className="label-text text-lg">First name</span>
+                            </div>
+                            <input type="text" defaultValue={student.firstName} name="firstName"
+                                   className="input input-bordered w-full"/>
+                        </label>
+                    </div>
+
+                    <div className="text-lg flex justify-center w-full">
+                        <label className="form-control w-full max-w-lg">
+                            <div className="label">
+                                <span className="label-text text-lg">Last name</span>
+                            </div>
+                            <input type="text" defaultValue={student.lastName} name="lastName"
+                                   className="input input-bordered w-full"/>
+                        </label>
+                    </div>
+                    <div className="text-lg flex justify-center w-full">
+                        <label className="form-control w-full max-w-lg">
+                            <div className="label">
+                                <span className="label-text text-lg">Email</span>
+                            </div>
+                            <input type="text" defaultValue={student.email} name="email"
+                                   className="input input-bordered w-full"/>
+                        </label>
+                    </div>
+                    <div className="text-lg flex justify-center w-full">
+                        <label className="form-control w-full max-w-lg">
+                            <div className="label">
+                                <span className="label-text text-lg">Username</span>
+                            </div>
+                            <input type="text" defaultValue={student.username} name="username"
+                                   className="input input-bordered w-full"/>
+                        </label>
+                    </div>
+                    <div className="text-lg flex justify-center w-full">
+                        <label className="form-control w-full max-w-lg">
+                            <div className="label">
+                                <span className="label-text text-lg">Group</span>
+                            </div>
+                            <select className="select select-bordered w-full" name="classGroup">
+                                <option disabled>Group</option>
+                                {groups.length ?
+                                    groups.map((group) =>
+                                        <option selected={student.classGroup === group.name} value={group.id}
+                                                name={group.name}>{group.name}</option>) :
+                                    <></>}
+                            </select>
+                        </label>
+                    </div>
+                    <div className="text-lg flex justify-center w-full">
+                        <div className="w-full max-w-lg">
+                            <a className="btn btn-neutral my-3">Reset password</a>
+                            <input type="hidden" name="studentId" value={student.id}/>
+                            <input type="submit" className="btn btn-success my-3 w-full" value="Update profile"/>
+                        </div>
+                    </div>
+                </Form>
+            </div>
         </>
     )
 }

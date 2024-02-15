@@ -91,7 +91,7 @@ public class PostController {
     public String uploadPdf(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
         Post post = repository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
-        String pdfUrl = fileService.uploadPostPdf.apply(file);
+        String pdfUrl = fileService.uploadPdf.apply(file, "posts");
         post.setPathToPdf(pdfUrl);
         repository.save(post);
         return pdfUrl;

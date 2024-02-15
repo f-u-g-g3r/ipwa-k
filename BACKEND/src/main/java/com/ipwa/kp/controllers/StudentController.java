@@ -161,27 +161,66 @@ public class StudentController {
         return ResponseEntity.ok("ok");
     }
 
-    @PutMapping("/pdf/{id}")
+    @PutMapping("/{id}/cv")
     @CrossOrigin(origins = "*")
     public String uploadCv(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
         Student student = repository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
-        String pdfUrl = fileService.uploadCV.apply(file);
+        String cvUrl = fileService.uploadPdf.apply(file, "cvs");
         Resume resume = resumeRepository.findById(student.getResume())
                         .orElseThrow(() -> new ResumeNotFoundException(student.getResume()));
-        resume.setPath(pdfUrl);
+        resume.setCv(cvUrl);
         student.setResume(resume);
 
         repository.save(student);
         resumeRepository.save(resume);
-        return pdfUrl;
+        return cvUrl;
     }
 
-    @GetMapping("/pdf/{fileName}")
+    @PutMapping("/{id}/motivationLetter")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<ByteArrayResource> getPdf(@PathVariable String fileName) throws IOException {
+    public String uploadMotivationLetter(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        Student student = repository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException(id));
+        String motivationLetterUrl = fileService.uploadPdf.apply(file, "motivationLetters");
+        Resume resume = resumeRepository.findById(student.getResume())
+                        .orElseThrow(() -> new ResumeNotFoundException(student.getResume()));
+        resume.setMotivationLetter(motivationLetterUrl);
+        student.setResume(resume);
+
+        repository.save(student);
+        resumeRepository.save(resume);
+        return motivationLetterUrl;
+    }
+
+    @GetMapping("/cv/{fileName}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<ByteArrayResource> getCv(@PathVariable String fileName) throws IOException {
         Path absolutePath = Paths.get("").toAbsolutePath();
-        Path fileStorageLocation = Paths.get(absolutePath+"/uploads/cv").toAbsolutePath().normalize();
+        Path fileStorageLocation = Paths.get(absolutePath+"/uploads/cvs").toAbsolutePath().normalize();
+        Path filePath = fileStorageLocation.resolve(fileName).normalize();
+
+        Path pdfPath = Paths.get(filePath.toUri());
+        byte[] pdfContent = Files.readAllBytes(pdfPath);
+
+        ByteArrayResource resource = new ByteArrayResource(pdfContent);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=your-pdf-file.pdf");
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(pdfContent.length)
+                .body(resource);
+    }
+
+    @GetMapping("/motivationLetter/{fileName}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<ByteArrayResource> getMotivationLetter(@PathVariable String fileName) throws IOException {
+        Path absolutePath = Paths.get("").toAbsolutePath();
+        Path fileStorageLocation = Paths.get(absolutePath+"/uploads/motivationLetters").toAbsolutePath().normalize();
         Path filePath = fileStorageLocation.resolve(fileName).normalize();
 
         Path pdfPath = Paths.get(filePath.toUri());

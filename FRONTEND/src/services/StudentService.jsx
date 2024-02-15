@@ -79,7 +79,7 @@ export async function addStudentToGroup(groupId, studentId) {
 export async function uploadCv(studentId, file) {
     if (isAuth()) {
         try {
-            await axios.put(`${API_URL}/pdf/${studentId}`, file, {
+            await axios.put(`${API_URL}/${studentId}/cv`, file, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
                 }
@@ -93,7 +93,41 @@ export async function uploadCv(studentId, file) {
 export async function getCvPdf(path) {
     if (isAuth()) {
         try {
-            const response = await axios.get(`${API_URL}/pdf/${path}`, {
+            const response = await axios.get(`${API_URL}/cv/${path}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                },
+                responseType: 'blob'
+
+            });
+            const blob = response.data;
+            return URL.createObjectURL(blob);
+        } catch (e) {
+            console.log(e)
+        }
+    } else {
+        return redirect("/login")
+    }
+}
+
+export async function uploadMotivationLetter(studentId, file) {
+    if (isAuth()) {
+        try {
+            await axios.put(`${API_URL}/${studentId}/motivationLetter`, file, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+        } catch (e) {
+            console.log(e)
+        }
+    }
+}
+
+export async function getMotivationLetter(path) {
+    if (isAuth()) {
+        try {
+            const response = await axios.get(`${API_URL}/motivationLetter/${path}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
                 },

@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -38,14 +39,14 @@ public class FileService {
         }
     };
 
-    public final Function<MultipartFile, String> uploadPostPdf = pdf -> {
+    public final BiFunction<MultipartFile, String, String> uploadPdf = (pdf, path) -> {
         String pngFileName;
         try {
             Path absolutePath = Paths.get("").toAbsolutePath();
-            Path fileStorageLocation = Paths.get(absolutePath+"/uploads/posts").toAbsolutePath().normalize();
+            Path fileStorageLocation = Paths.get(absolutePath+"/uploads/" + path).toAbsolutePath().normalize();
             if (!Files.exists(fileStorageLocation)) { Files.createDirectories(fileStorageLocation); }
             if (".pdf".equals(fileExtension.apply(pdf.getOriginalFilename()))) {
-                PDDocument document = PDDocument.load(convertMultipartFileToFilePost(pdf));
+                PDDocument document = PDDocument.load(convertMultipartFileToFile(pdf, fileStorageLocation));
 
                 PDFRenderer pdfRenderer = new PDFRenderer(document);
 
@@ -69,53 +70,9 @@ public class FileService {
         return pngFileName;
     };
 
-    public final Function<MultipartFile, String> uploadCV = pdf -> {
-        String pngFileName;
-        try {
-            Path absolutePath = Paths.get("").toAbsolutePath();
-            Path fileStorageLocation = Paths.get(absolutePath+"/uploads/cv").toAbsolutePath().normalize();
-            if (!Files.exists(fileStorageLocation)) { Files.createDirectories(fileStorageLocation); }
-            if (".pdf".equals(fileExtension.apply(pdf.getOriginalFilename()))) {
-                PDDocument document = PDDocument.load(convertMultipartFileToFileCV(pdf));
-
-                PDFRenderer pdfRenderer = new PDFRenderer(document);
-
-                BufferedImage bim = pdfRenderer.renderImageWithDPI(0, 300);
-                String uniqueFileName = UUID.randomUUID() + ".png";
-                String outputImagePath = fileStorageLocation + File.separator + uniqueFileName;
-
-                ImageIO.write(bim, "png", new File(outputImagePath));
-
-                pngFileName = uniqueFileName;
-
-                document.close();
-            } else {
-                pngFileName = UUID.randomUUID() + fileExtension.apply(pdf.getOriginalFilename());
-                Files.copy(pdf.getInputStream(), fileStorageLocation.resolve(pngFileName), REPLACE_EXISTING);
-            }
-        }catch (Exception exception) {
-            exception.printStackTrace();
-            throw new RuntimeException("Unable to save pdf file");
-        }
-        return pngFileName;
-    };
-
-    private static File convertMultipartFileToFilePost(MultipartFile multipartFile) throws IOException {
-        Path absolutePath = Paths.get("").toAbsolutePath();
-        Path fileStorageLocation = Paths.get(absolutePath+"/uploads/posts").toAbsolutePath().normalize();
-
-        String fileName = UUID.randomUUID().toString() + ".pdf";
-        File file = new File(fileStorageLocation.toFile(), fileName);
-        multipartFile.transferTo(file);
-        return file;
-    }
-
-    private static File convertMultipartFileToFileCV(MultipartFile multipartFile) throws IOException {
-        Path absolutePath = Paths.get("").toAbsolutePath();
-        Path fileStorageLocation = Paths.get(absolutePath+"/uploads/cv").toAbsolutePath().normalize();
-
-        String fileName = UUID.randomUUID().toString() + ".pdf";
-        File file = new File(fileStorageLocation.toFile(), fileName);
+    private static File convertMultipartFileToFile(MultipartFile multipartFile, Path path) throws IOException {
+        String fileName = UUID.randomUUID() + ".pdf";
+        File file = new File(path.toFile(), fileName);
         multipartFile.transferTo(file);
         return file;
     }

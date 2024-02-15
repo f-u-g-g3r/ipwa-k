@@ -1,5 +1,6 @@
 import axios from "axios";
 import {getId, hasAuthority, isAuth} from "./AuthService.jsx";
+import {redirect} from "react-router-dom";
 
 const API_URL = 'http://localhost:8080/students';
 
@@ -34,7 +35,8 @@ export async function applyToJob(postId) {
         try {
             return axios.patch(`${API_URL}/apply/${getId()}/${postId}`, "", {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Content-Type': 'multipart/form-data'
                 },
             });
         } catch (e) {
@@ -70,5 +72,40 @@ export async function addStudentToGroup(groupId, studentId) {
         } catch (e) {
             console.log(e);
         }
+    }
+}
+
+
+export async function uploadCv(studentId, file) {
+    if (isAuth()) {
+        try {
+            await axios.put(`${API_URL}/pdf/${studentId}`, file, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+        } catch (e) {
+            console.log(e)
+        }
+    }
+}
+
+export async function getCvPdf(path) {
+    if (isAuth()) {
+        try {
+            const response = await axios.get(`${API_URL}/pdf/${path}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                },
+                responseType: 'blob'
+
+            });
+            const blob = response.data;
+            return URL.createObjectURL(blob);
+        } catch (e) {
+            console.log(e)
+        }
+    } else {
+        return redirect("/login")
     }
 }

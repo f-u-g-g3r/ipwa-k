@@ -21,6 +21,7 @@ public class ResumeController {
     public List<Resume> all() {
         return repository.findAll();
     }
+
     @GetMapping("/{id}")
     public Resume one(@PathVariable Long id) {
         return repository.findById(id)

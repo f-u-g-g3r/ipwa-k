@@ -125,8 +125,11 @@ public class Student implements UserDetails {
         this.accountStatus = accountStatus;
     }
 
-    public Resume getResume() {
-        return resume;
+    public Long getResume() {
+        if (resume != null) {
+            return resume.getId();
+        }
+        return null;
     }
 
     public void setResume(Resume resume) {

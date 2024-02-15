@@ -1,9 +1,6 @@
 package com.ipwa.kp.security.auth;
 
-import com.ipwa.kp.models.Company;
-import com.ipwa.kp.models.InternshipCoordinator;
-import com.ipwa.kp.models.Student;
-import com.ipwa.kp.models.Teacher;
+import com.ipwa.kp.models.*;
 import com.ipwa.kp.repositories.*;
 import com.ipwa.kp.security.config.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +26,14 @@ public class AuthenticationService {
     private final CompanyRepository companyRepository;
     private final InternshipCoordinatorRepository coordinatorRepository;
     private final UserDetailsService userDetailsService;
+    private final ResumeRepository resumeRepository;
 
     private final JwtService jwtService;
 
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthenticationService(AuthenticationManager authenticationManager, StudentRepository studentRepository, TeacherRepository teacherRepository, CompanyRepository companyRepository, InternshipCoordinatorRepository coordinatorRepository, UserDetailsService userDetailsService, JwtService jwtService, PasswordEncoder passwordEncoder) {
+    public AuthenticationService(AuthenticationManager authenticationManager, ResumeRepository resumeRepository, StudentRepository studentRepository, TeacherRepository teacherRepository, CompanyRepository companyRepository, InternshipCoordinatorRepository coordinatorRepository, UserDetailsService userDetailsService, JwtService jwtService, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.studentRepository = studentRepository;
         this.teacherRepository = teacherRepository;
@@ -44,6 +42,7 @@ public class AuthenticationService {
         this.userDetailsService = userDetailsService;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.resumeRepository = resumeRepository;
     }
 
 
@@ -106,6 +105,10 @@ public class AuthenticationService {
     public AuthenticationResponse registerStudent(Student student) {
         student.setPassword(passwordEncoder.encode(student.getPassword()));
         studentRepository.save(student);
+        Resume resume = new Resume();
+        resume.setStudent(student);
+        student.setResume(resume);
+        resumeRepository.save(resume);
 
         Map<String, Object> extraClaims = new LinkedHashMap<>();
         extraClaims.put("id", student.getId());

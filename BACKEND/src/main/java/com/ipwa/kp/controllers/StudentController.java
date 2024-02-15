@@ -3,17 +3,30 @@ package com.ipwa.kp.controllers;
 
 import com.ipwa.kp.controllers.exceptions.ClassGroupNotFoundException;
 import com.ipwa.kp.controllers.exceptions.PostNotFoundException;
+import com.ipwa.kp.controllers.exceptions.ResumeNotFoundException;
 import com.ipwa.kp.controllers.exceptions.StudentNotFoundException;
 import com.ipwa.kp.models.ClassGroup;
 import com.ipwa.kp.models.Post;
+import com.ipwa.kp.models.Resume;
 import com.ipwa.kp.models.Student;
 import com.ipwa.kp.repositories.ClassGroupRepository;
 import com.ipwa.kp.repositories.PostRepository;
+import com.ipwa.kp.repositories.ResumeRepository;
 import com.ipwa.kp.repositories.StudentRepository;
+import com.ipwa.kp.services.FileService;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +37,15 @@ public class StudentController {
     private final StudentRepository repository;
     private final PostRepository postRepository;
     private final ClassGroupRepository classGroupRepository;
+    private final FileService fileService;
+    private final ResumeRepository resumeRepository;
 
-    public StudentController(StudentRepository repository, PostRepository postRepository, ClassGroupRepository classGroupRepository) {
+    public StudentController(StudentRepository repository, PostRepository postRepository, ClassGroupRepository classGroupRepository, FileService fileService, ResumeRepository resumeRepository) {
         this.repository = repository;
         this.postRepository = postRepository;
         this.classGroupRepository = classGroupRepository;
+        this.fileService = fileService;
+        this.resumeRepository = resumeRepository;
     }
 
     @GetMapping
@@ -142,5 +159,44 @@ public class StudentController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.ok("ok");
+    }
+
+    @PutMapping("/pdf/{id}")
+    @CrossOrigin(origins = "*")
+    public String uploadCv(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        Student student = repository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException(id));
+        String pdfUrl = fileService.uploadCV.apply(file);
+        Resume resume = resumeRepository.findById(student.getResume())
+                        .orElseThrow(() -> new ResumeNotFoundException(student.getResume()));
+        resume.setPath(pdfUrl);
+        student.setResume(resume);
+
+        repository.save(student);
+        resumeRepository.save(resume);
+        return pdfUrl;
+    }
+
+    @GetMapping("/pdf/{fileName}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<ByteArrayResource> getPdf(@PathVariable String fileName) throws IOException {
+        Path absolutePath = Paths.get("").toAbsolutePath();
+        Path fileStorageLocation = Paths.get(absolutePath+"/uploads/cv").toAbsolutePath().normalize();
+        Path filePath = fileStorageLocation.resolve(fileName).normalize();
+
+        Path pdfPath = Paths.get(filePath.toUri());
+        byte[] pdfContent = Files.readAllBytes(pdfPath);
+
+        ByteArrayResource resource = new ByteArrayResource(pdfContent);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=your-pdf-file.pdf");
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(pdfContent.length)
+                .body(resource);
     }
 }

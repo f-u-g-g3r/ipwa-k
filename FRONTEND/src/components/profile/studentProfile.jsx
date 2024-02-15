@@ -1,13 +1,20 @@
 import {useEffect, useState} from "react";
-import {getStudent, updateStudent} from "../../services/StudentService.jsx";
+import {getCvPdf, getStudent, updateStudent, uploadCv} from "../../services/StudentService.jsx";
 import {Form, redirect} from "react-router-dom";
 import {getId} from "../../services/AuthService.jsx";
+import {getResume} from "../../services/ResumeService.jsx";
 
 export async function actionStudentProfile({request}) {
     const formData = await request.formData();
+    const file = formData.get('file');
+    formData.delete('file');
     const studentData = Object.fromEntries(formData);
-    console.log(studentData)
     await updateStudent(studentData, getId());
+    if (file.name !== "") {
+        const fileFormData = new FormData();
+        fileFormData.append('file', file, file.name);
+        await uploadCv(getId(), fileFormData);
+    }
 
     const student = await getStudent(getId());
     localStorage.setItem("firstName", student.firstName);
@@ -19,22 +26,54 @@ export async function actionStudentProfile({request}) {
 function StudentProfile() {
 
     const [student, setStudent] = useState({});
+    const [pdf, setPdf] = useState("");
+    const [resume, setResume] = useState({});
 
     const fetchStudent = async () => {
         try {
             setStudent(await getStudent(getId()));
+
         } catch (e) {
             console.log(e)
         }
     }
+
+    const fetchResume = async () => {
+        try {
+            setResume(await getResume(student.resume));
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const fetchPdf = async () => {
+        try {
+            if (resume.path !== null) {
+                console.log(resume)
+                setPdf(await getCvPdf(resume))
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     useEffect(() => {
         fetchStudent()
     }, []);
 
+    // useEffect(() => {
+    //     fetchResume()
+    // }, [student]);
+    //
+    //
+    // useEffect(() => {
+    //     fetchPdf()
+    // }, [resume]);
+
     return (
         <>
             <p className="text-2xl font-bold text-center my-10">Edit profile</p>
-            <Form method="post" className="w-full">
+            <Form method="post" className="w-full" encType="multipart/form-data">
                 <div className="text-lg flex justify-center w-full">
                     <label className="form-control w-full max-w-xs">
                         <div className="label">
@@ -83,11 +122,12 @@ function StudentProfile() {
                         </div>
 
                         <input type="submit" className="btn btn-success my-3 w-full" value="Update profile"/>
-
                     </div>
 
+                    <div>
+                        <img src={pdf}/>
+                    </div>
                 </div>
-
             </Form>
         </>
     )

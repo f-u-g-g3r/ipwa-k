@@ -1,5 +1,5 @@
 import axios from "axios";
-import {getId, hasAuthority, isAuth} from "./AuthService.jsx";
+import {hasAuthority, isAuth} from "./AuthService.jsx";
 import {redirect} from "react-router-dom";
 
 const API_URL = 'http://localhost:8080/posts';
@@ -87,7 +87,6 @@ export async function getPostPdf(path) {
 
             });
             const blob = response.data;
-            console.log(blob)
             return URL.createObjectURL(blob);
         } catch (e) {
             console.log(e)

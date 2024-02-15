@@ -11,15 +11,6 @@ export async function getCompany(id) {
     return company.data;
 }
 
-export async function createCompany(companyData) {
-    const response = await axios.post("http://localhost:8080/auth/companies", companyData,{
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem("token")}`
-        }
-    })
-    return response.data;
-}
-
 export async function updateCompany(id, company) {
     return axios.patch(`${API_URL}/${id}`, company, {
         headers: {

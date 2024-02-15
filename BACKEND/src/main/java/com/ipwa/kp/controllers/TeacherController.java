@@ -24,6 +24,7 @@ public class TeacherController {
     }
 
     @GetMapping
+    @CrossOrigin(origins = "*")
     public List<Teacher> all() {
         return repository.findAll();
     }

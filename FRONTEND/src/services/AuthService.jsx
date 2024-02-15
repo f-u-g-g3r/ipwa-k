@@ -14,6 +14,34 @@ export async function auth(data) {
     }
 }
 
+export async function createCompany(companyData) {
+    const response = await axios.post(`${API_URL}/companies`, companyData,{
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+    })
+    return response.data;
+}
+
+export async function createTeacher(teacherData) {
+    console.log(1)
+    const response = await axios.post(`${API_URL}/teachers`, teacherData,{
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+    })
+    return response.data;
+}
+
+export async function createStudent(studentData) {
+    const response = await axios.post(`${API_URL}/students`, studentData,{
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+    })
+    return response.data;
+}
+
 export function isAuthLoader() {
     if (!localStorage.getItem("token")) {
         return redirect("/login")

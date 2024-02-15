@@ -137,7 +137,8 @@ function EditStudentProfile() {
                         <select className="select select-bordered w-full" name="classGroup">
                             <option disabled>Group</option>
                             {groups.length ?
-                                groups.map((group) => <option selected={student.classGroup === group.name} value={group.id} name={group.name}>{group.name}</option>) :
+                                groups.map((group) =>
+                                    <option selected={student.classGroup === group.name} value={group.id} name={group.name}>{group.name}</option>) :
                             <></>}
                         </select>
                     </label>

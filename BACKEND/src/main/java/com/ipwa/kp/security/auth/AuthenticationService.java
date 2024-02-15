@@ -128,4 +128,17 @@ public class AuthenticationService {
 
         return new AuthenticationResponse(jwtToken, company.getId(), company.getAuthorities());
     }
+
+    public AuthenticationResponse registerTeacher(Teacher teacher) {
+        teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
+        teacherRepository.save(teacher);
+
+        Map<String, Object> extraClaims = new LinkedHashMap<>();
+        extraClaims.put("id", teacher.getId());
+        extraClaims.put("authority", teacher.getAuthorities());
+
+        String jwtToken =jwtService.generateToken(extraClaims, teacher);
+
+        return new AuthenticationResponse(jwtToken, teacher.getId(), teacher.getAuthorities());
+    }
 }

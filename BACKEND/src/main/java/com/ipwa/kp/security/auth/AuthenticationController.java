@@ -2,6 +2,7 @@ package com.ipwa.kp.security.auth;
 
 import com.ipwa.kp.models.Company;
 import com.ipwa.kp.models.Student;
+import com.ipwa.kp.models.Teacher;
 import com.ipwa.kp.repositories.StudentRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,6 +29,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/students")
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'TEACHER')")
+    @CrossOrigin(origins = "*")
     public AuthenticationResponse newStudent(@RequestBody Student student) {
         return authenticationService.registerStudent(student);
     }
@@ -37,6 +40,12 @@ public class AuthenticationController {
     @CrossOrigin(origins = "*")
     public AuthenticationResponse newCompany(@RequestBody Company company) {
         return authenticationService.registerCompany(company);
+    }
+    @PostMapping("/teachers")
+    @PreAuthorize("hasAuthority('COORDINATOR')")
+    @CrossOrigin(origins = "*")
+    public AuthenticationResponse newTeacher(@RequestBody Teacher teacher) {
+        return authenticationService.registerTeacher(teacher);
     }
 
 

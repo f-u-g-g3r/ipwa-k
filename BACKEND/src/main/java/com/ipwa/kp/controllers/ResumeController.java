@@ -23,6 +23,7 @@ public class ResumeController {
     }
 
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "*")
     public Resume one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ResumeNotFoundException(id));

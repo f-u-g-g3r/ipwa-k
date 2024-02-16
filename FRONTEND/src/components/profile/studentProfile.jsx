@@ -7,7 +7,7 @@ import {
     uploadCv,
     uploadMotivationLetter
 } from "../../services/StudentService.jsx";
-import {Form, redirect, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {getId} from "../../services/AuthService.jsx";
 import {getResume} from "../../services/ResumeService.jsx";
 import {getGroupByName} from "../../services/ClassGroupService.jsx";

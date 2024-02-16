@@ -1,6 +1,12 @@
 import {Form, Link, redirect, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {addStudentToGroup, getCvPdf, getStudent, updateStudent} from "../../../services/StudentService.jsx";
+import {
+    addStudentToGroup,
+    getCvPdf,
+    getMotivationLetter,
+    getStudent,
+    updateStudent
+} from "../../../services/StudentService.jsx";
 import {getId} from "../../../services/AuthService.jsx";
 import {getAllGroups} from "../../../services/ClassGroupService.jsx";
 import {getResume} from "../../../services/ResumeService.jsx";
@@ -30,6 +36,8 @@ function EditStudentProfile() {
     const [groups, setGroups] = useState({});
     const [resume, setResume] = useState({});
     const [cv, setCv] = useState("");
+    const [motivationLetter, setMotivationLetter] = useState("");
+    const [action, setAction] = useState(1);
 
     const fetchGroups = async () => {
         try {
@@ -69,7 +77,14 @@ function EditStudentProfile() {
         try {
             if (student.resume !== undefined) {
                 setResume(await getResume(student.resume).then(
-                    async (resume) => setCv(await getCvPdf(resume.path))
+                    async (resume) => {
+                        if (resume.cv !== null) {
+                            setCv(await getCvPdf(resume.cv));
+                        }
+                        if (resume.motivationLetter !== null) {
+                            setMotivationLetter(await getMotivationLetter(resume.motivationLetter));
+                        }
+                    }
                 ));
             }
         } catch (e) {
@@ -101,15 +116,26 @@ function EditStudentProfile() {
             <p className="text-2xl font-bold text-center my-10">Edit student profile
                 ({student.firstName + " " + student.lastName})</p>
 
-            <div className="flex justify-center w-1/2 mb-5">
-                <ul className="menu menu-vertical lg:menu-horizontal bg-gray-300 ">
-                    <li><a className="bg-success hover:bg-gray-400">CV</a></li>
-                    <li><a className="hover:bg-gray-400">Motivation Letter</a></li>
+            <div className="flex mb-5">
+                <ul className="menu menu-vertical text-lg lg:menu-horizontal bg-gray-300 ">
+                    <li><a onClick={() => setAction(1)}
+                           className={action === 1 ? "bg-success" : "" + "hover:bg-gray-400"}>
+                        CV</a></li>
+                    <li><a onClick={() => setAction(2)}
+                           className={action === 2 ? "bg-success" : "" + "hover:bg-gray-400"}>
+                        Motivation Letter</a></li>
                 </ul>
             </div>
             <div className="flex">
                 <div className="w-full">
-                    <img src={cv}/>
+                    {action === 1 ?
+                        <div>
+                            {cv !== "" ? <img src={cv}/> : <>Cv not loaded</>}
+                        </div> :
+                        <div>
+                            {motivationLetter !== "" ? <img src={motivationLetter}/> : <>Motivation letter not loaded</>}
+                        </div>
+                    }
                 </div>
 
                 <div className="divider lg:divider-horizontal"></div>

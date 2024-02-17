@@ -2,6 +2,19 @@ import axios from "axios";
 
 const API_URL = 'http://localhost:8080/companies';
 
+export async function getCompanies() {
+    try {
+        const companies = await axios.get(`${API_URL}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+        return companies.data;
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 export async function getCompany(id) {
     const company = await axios.get(`${API_URL}/${id}`, {
         headers: {
@@ -11,7 +24,7 @@ export async function getCompany(id) {
     return company.data;
 }
 
-export async function updateCompany(id, company) {
+export async function updateCompany(company, id) {
     return axios.patch(`${API_URL}/${id}`, company, {
         headers: {
             'Authorization': `Bearer ${localStorage.getItem("token")}`

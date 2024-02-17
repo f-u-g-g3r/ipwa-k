@@ -57,6 +57,7 @@ function TeacherProfileManagement() {
 
     return (
         <>
+            <p className="text-xl font-medium text-center mb-10">Teachers</p>
             <div className="flex">
                 <label className="input input-bordered flex items-center gap-2 w-1/3">
                     Username:

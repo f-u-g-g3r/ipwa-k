@@ -18,6 +18,9 @@ import EditStudentProfile, {
     actionEditStudent
 } from "./components/coordinator/studentsManagement/editStudentProfile.jsx";
 import EditPostForm, {actionEditPostForm} from "./components/post/editPostForm.jsx";
+import EditCompanyProfile, {
+    actionEditCompany
+} from "./components/coordinator/companiesManagement/editCompanyProfile.jsx";
 
 const router = createBrowserRouter([
     {
@@ -62,6 +65,10 @@ const router = createBrowserRouter([
             {
                 path: "edit-student/:id", element: <EditStudentProfile/>,
                 loader: hasAuthorityLoader("COORDINATOR"), action: actionEditStudent
+            },
+            {
+                path: "edit-company/:id", element: <EditCompanyProfile/>,
+                loader: hasAuthorityLoader("COORDINATOR"), action: actionEditCompany
             }
         ]
     },

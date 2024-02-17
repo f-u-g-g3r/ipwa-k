@@ -19,9 +19,9 @@ export async function actionEditStudent({request}) {
         await addStudentToGroup(formData.get("classGroup"), formData.get("studentId"));
     }
 
-    await updateStudent(studentData, getId());
+    await updateStudent(studentData, formData.get("studentId"));
 
-    const student = await getStudent(getId());
+    const student = await getStudent(formData.get("studentId"));
     localStorage.setItem("firstName", student.firstName);
     localStorage.setItem("lastName", student.lastName);
 

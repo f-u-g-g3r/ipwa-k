@@ -35,6 +35,7 @@ public class CompanyController {
     }
 
     @GetMapping
+    @CrossOrigin(origins = "*")
     public List<Company> all() {
         return repository.findAll();
     }
@@ -48,15 +49,16 @@ public class CompanyController {
 
     @PatchMapping("/{id}")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody Map<Object, Object> fields) {
+    public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody Company request) {
         Company company = repository.findById(id)
                 .orElseThrow(() -> new CompanyNotFoundException(id));
-
-        fields.forEach((key, value) -> {
-            Field field = ReflectionUtils.findField(Company.class, (String) key);
-            field.setAccessible(true);
-            ReflectionUtils.setField(field, company, value);
-        });
+        if (request.getName() != null) company.setName(request.getName());
+        if (request.getAddress() != null) company.setAddress(request.getAddress());
+        if (request.getContacts() != null) company.setContacts(request.getContacts());
+        if (request.getPhone() != null) company.setPhone(request.getPhone());
+        if (request.getRegistryCode() != null) company.setRegistryCode(request.getRegistryCode());
+        if (request.getEmail() != null) company.setEmail(request.getEmail());
+        if (request.getUsername() != null) company.setUsername(request.getUsername());
         return ResponseEntity.ok(repository.save(company));
     }
 

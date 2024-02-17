@@ -40,7 +40,7 @@ public class JwtService {
         return claims.get("role", String.class);
     }
 
-    // test
+
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);

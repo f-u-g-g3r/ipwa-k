@@ -8,6 +8,8 @@ import com.ipwa.kp.repositories.CompanyRepository;
 import com.ipwa.kp.repositories.InternshipCoordinatorRepository;
 import com.ipwa.kp.repositories.StudentRepository;
 import com.ipwa.kp.repositories.TeacherRepository;
+import com.ipwa.kp.security.customUserDetails.CustomUserDetailsImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,71 +28,20 @@ public class ApplicationConfig {
     private final TeacherRepository teacherRepository;
     private final CompanyRepository companyRepository;
     private final InternshipCoordinatorRepository coordinatorRepository;
+    private final CustomUserDetailsImpl customUserDetails;
 
-    public ApplicationConfig(StudentRepository studentRepository, TeacherRepository teacherRepository, CompanyRepository companyRepository, InternshipCoordinatorRepository coordinatorRepository) {
+    public ApplicationConfig(StudentRepository studentRepository, TeacherRepository teacherRepository, CompanyRepository companyRepository, InternshipCoordinatorRepository coordinatorRepository, CustomUserDetailsImpl customUserDetails) {
         this.studentRepository = studentRepository;
         this.teacherRepository = teacherRepository;
         this.companyRepository = companyRepository;
         this.coordinatorRepository = coordinatorRepository;
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> {
-            Student student = studentRepository.findByEmail(username)
-                    .orElseGet(() -> studentRepository.findByUsername(username).orElse(null));
-
-            if (student == null) {
-                Teacher teacher = teacherRepository.findByEmail(username)
-                        .orElseGet(() -> teacherRepository.findByUsername(username)
-                                .orElse(null));
-
-                if (teacher != null) {
-                    return new User(
-                            teacher.getUsername(),
-                            teacher.getPassword(),
-                            teacher.getAuthorities()
-                    );
-                } else {
-                    Company company = companyRepository.findByEmail(username)
-                            .orElseGet(() -> companyRepository.findByUsername(username)
-                                    .orElse(null));
-
-                    if (company != null) {
-                        return new User(
-                                company.getUsername(),
-                                company.getPassword(),
-                                company.getAuthorities()
-                        );
-                    } else {
-                        InternshipCoordinator coordinator = coordinatorRepository.findByEmail(username)
-                                .orElse(null);
-
-                        if (coordinator != null) {
-                            return new User(
-                                    coordinator.getUsername(),
-                                    coordinator.getPassword(),
-                                    coordinator.getAuthorities()
-                            );
-                        }
-                    }
-                }
-            } else {
-                return new User(
-                        student.getUsername(),
-                        student.getPassword(),
-                        student.getAuthorities()
-                );
-            }
-
-            throw new UsernameNotFoundException(username);
-        };
+        this.customUserDetails = customUserDetails;
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(customUserDetails);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

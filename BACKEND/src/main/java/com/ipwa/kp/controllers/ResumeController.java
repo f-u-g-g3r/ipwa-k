@@ -4,6 +4,7 @@ import com.ipwa.kp.controllers.exceptions.ResumeNotFoundException;
 import com.ipwa.kp.models.Resume;
 import com.ipwa.kp.repositories.ResumeRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class ResumeController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('COORDINATOR')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.ok("ok");

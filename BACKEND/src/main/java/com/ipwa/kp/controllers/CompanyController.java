@@ -10,17 +10,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ReflectionUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/companies")
@@ -48,6 +46,7 @@ public class CompanyController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('COORDINATOR') or hasAuthority('COMPANY') and #id == authentication.principal.id")
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody Company request) {
         Company company = repository.findById(id)
@@ -62,12 +61,13 @@ public class CompanyController {
         return ResponseEntity.ok(repository.save(company));
     }
 
-    @PostMapping
-    public ResponseEntity<?> newCompany(@RequestBody Company company) {
-        return ResponseEntity.ok(repository.save(company));
-    }
+//    @PostMapping
+//    public ResponseEntity<?> newCompany(@RequestBody Company company) {
+//        return ResponseEntity.ok(repository.save(company));
+//    }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('COORDINATOR')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.ok("ok");
@@ -102,6 +102,7 @@ public class CompanyController {
     }
 
     @PutMapping("/logos/{id}")
+    @PreAuthorize("hasAuthority('COMPANY') and #id == authentication.principal.id")
     @CrossOrigin(origins = "*")
     public String uploadLogo(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
         Company company = repository.findById(id)

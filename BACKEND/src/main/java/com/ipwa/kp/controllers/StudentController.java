@@ -5,6 +5,7 @@ import com.ipwa.kp.controllers.exceptions.ClassGroupNotFoundException;
 import com.ipwa.kp.controllers.exceptions.PostNotFoundException;
 import com.ipwa.kp.controllers.exceptions.ResumeNotFoundException;
 import com.ipwa.kp.controllers.exceptions.StudentNotFoundException;
+import com.ipwa.kp.controllers.requests.StudentPatchRequest;
 import com.ipwa.kp.models.ClassGroup;
 import com.ipwa.kp.models.Post;
 import com.ipwa.kp.models.Resume;
@@ -50,13 +51,14 @@ public class StudentController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('COORDINATOR')")
     @CrossOrigin(origins = "*")
     public List<Student> all() {
         return repository.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("#id == authentication.principal.id")
+    @PreAuthorize("hasAnyAuthority('COMPANY', 'TEACHER', 'COORDINATOR') or #id == authentication.principal.id")
     @CrossOrigin(origins = "*")
     public Student one(@PathVariable Long id) {
         return repository.findById(id)
@@ -64,36 +66,28 @@ public class StudentController {
     }
 
     @GetMapping("/posts/{postId}")
+    @PreAuthorize("hasAnyAuthority('COMPANY', 'TEACHER', 'COORDINATOR')")
     @CrossOrigin(origins = "*")
     public List<Student> allStudentsByPostId(@PathVariable Long postId) {
         return repository.findAllByPostsId(postId).orElseThrow(() -> new PostNotFoundException(postId));
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('COORDINATOR') or hasAuthority('STUDENT') and #id == authentication.principal.id")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
+    public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody StudentPatchRequest request) {
         Student student = repository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
-
-        fields.forEach((fieldName, value) -> {
-            try {
-                Field field = Student.class.getDeclaredField(fieldName);
-                field.setAccessible(true);
-                if (field.getType().isEnum() && value instanceof String) {
-                    Enum<?> enumValue = Enum.valueOf((Class<Enum>) field.getType(), (String) value);
-                    field.set(student, enumValue);
-                } else {
-                    field.set(student, value);
-                }
-            } catch (NoSuchFieldException | IllegalAccessException | IllegalArgumentException e) {
-                e.printStackTrace();
-            }
-        });
+        if (request.getUsername() != null) student.setUsername(request.getUsername());
+        if (request.getFirstName() != null) student.setFirstName(request.getFirstName());
+        if (request.getLastName() != null) student.setLastName(request.getLastName());
+        if (request.getEmail() != null) student.setEmail(request.getEmail());
 
         return ResponseEntity.ok(repository.save(student));
     }
 
     @PatchMapping("/apply/{studentId}/{postId}")
+    @PreAuthorize("hasAuthority('STUDENT') and #studentId == authentication.principal.id")
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> applyFor(@PathVariable Long studentId, @PathVariable Long postId) {
         Student student = repository.findById(studentId)
@@ -134,12 +128,13 @@ public class StudentController {
         return ResponseEntity.ok(post);
     }
 
-    @PostMapping
-    public ResponseEntity<?> newStudent(@RequestBody Student student) {
-        return ResponseEntity.ok(repository.save(student));
-    }
+//    @PostMapping
+//    public ResponseEntity<?> newStudent(@RequestBody Student student) {
+//        return ResponseEntity.ok(repository.save(student));
+//    }
 
     @PatchMapping("/{groupId}/{studentId}")
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'TEACHER')")
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> addStudentToGroup(@PathVariable Long groupId, @PathVariable Long studentId) {
         Student student = repository.findById(studentId)
@@ -158,12 +153,14 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('COORDINATOR')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.ok("ok");
     }
 
     @PutMapping("/{id}/cv")
+    @PreAuthorize("hasAuthority('STUDENT') and #id == authentication.principal.id")
     @CrossOrigin(origins = "*")
     public String uploadCv(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
         Student student = repository.findById(id)
@@ -179,7 +176,14 @@ public class StudentController {
         return cvUrl;
     }
 
+    @GetMapping("/test/{id}")
+    @PreAuthorize("hasAuthority('STUDENT') and #id == authentication.principal.id")
+    public String test(@PathVariable Long id) {
+        return "123";
+    }
+
     @PutMapping("/{id}/motivationLetter")
+    @PreAuthorize("hasAuthority('STUDENT') and #id == authentication.principal.id")
     @CrossOrigin(origins = "*")
     public String uploadMotivationLetter(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
         Student student = repository.findById(id)
@@ -195,6 +199,8 @@ public class StudentController {
         return motivationLetterUrl;
     }
 
+
+    // to improve: get cv/letter by studentId, not by fileName
     @GetMapping("/cv/{fileName}")
     @CrossOrigin(origins = "*")
     public ResponseEntity<ByteArrayResource> getCv(@PathVariable String fileName) throws IOException {

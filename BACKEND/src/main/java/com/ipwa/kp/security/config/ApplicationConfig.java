@@ -24,17 +24,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class ApplicationConfig {
-    private final StudentRepository studentRepository;
-    private final TeacherRepository teacherRepository;
-    private final CompanyRepository companyRepository;
-    private final InternshipCoordinatorRepository coordinatorRepository;
     private final CustomUserDetailsImpl customUserDetails;
 
-    public ApplicationConfig(StudentRepository studentRepository, TeacherRepository teacherRepository, CompanyRepository companyRepository, InternshipCoordinatorRepository coordinatorRepository, CustomUserDetailsImpl customUserDetails) {
-        this.studentRepository = studentRepository;
-        this.teacherRepository = teacherRepository;
-        this.companyRepository = companyRepository;
-        this.coordinatorRepository = coordinatorRepository;
+    public ApplicationConfig(CustomUserDetailsImpl customUserDetails) {
         this.customUserDetails = customUserDetails;
     }
 

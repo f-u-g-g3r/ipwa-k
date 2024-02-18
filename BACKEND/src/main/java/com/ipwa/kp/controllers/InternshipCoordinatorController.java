@@ -1,6 +1,7 @@
 package com.ipwa.kp.controllers;
 
 import com.ipwa.kp.repositories.InternshipCoordinatorRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ public class InternshipCoordinatorController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('COORDINATOR')")
     @CrossOrigin(origins = "*")
     public InternshipCoordinator one(@PathVariable Long id) {
         return repository.findById(id)

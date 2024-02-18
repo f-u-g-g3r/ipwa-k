@@ -87,6 +87,7 @@ public class PostController {
     }
 
     @PutMapping("/pdf/{id}")
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'COMPANY')")
     @CrossOrigin(origins = "*")
     public String uploadPdf(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
         Post post = repository.findById(id)
@@ -122,6 +123,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('COMPANY', 'COORDINATOR')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.ok("ok");

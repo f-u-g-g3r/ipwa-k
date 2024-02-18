@@ -8,6 +8,7 @@ import com.ipwa.kp.repositories.ClassGroupRepository;
 import com.ipwa.kp.repositories.StudentRepository;
 import com.ipwa.kp.repositories.TeacherRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class ClassGroupController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('COORDINATOR')")
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> createClassGroup(@RequestBody ClassGroup classGroup) {
         return ResponseEntity.ok(repository.save(classGroup));
@@ -46,6 +48,7 @@ public class ClassGroupController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('COORDINATOR')")
     @CrossOrigin(origins = "*")
     public void deleteGroup(@PathVariable Long id) {
         List<Student> students = studentRepository.findAllByClassGroupId(id)

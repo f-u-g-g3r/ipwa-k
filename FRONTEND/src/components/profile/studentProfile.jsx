@@ -100,13 +100,15 @@ function StudentProfile() {
 
     const fetchTeacher = async () => {
         if (student.classGroup !== undefined) {
-            await getGroupByName(student.classGroup).then(async (data) => {
-                if (data.teacher !== null) {
-                    await getTeacher(data.teacher).then((data) => {
-                        setTeacher(`${data.firstName} ${data.lastName}`)
-                    });
-                }
-            });
+            if (student.classGroup !== null) {
+                await getGroupByName(student.classGroup).then(async (data) => {
+                    if (data.teacher !== null) {
+                        await getTeacher(data.teacher).then((data) => {
+                            setTeacher(`${data.firstName} ${data.lastName}`)
+                        });
+                    }
+                });
+            }
         }
     }
 

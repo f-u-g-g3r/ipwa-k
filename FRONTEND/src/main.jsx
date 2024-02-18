@@ -12,7 +12,7 @@ import {hasAuthorityLoader, isAuthLoader} from "./services/AuthService.jsx";
 import OnePost from "./components/post/onePost.jsx";
 import StudentProfile from "./components/profile/studentProfile.jsx";
 import CompanyProfile, {actionCompanyProfile} from "./components/profile/companyProfile.jsx";
-import TeacherProfile from "./components/profile/teacherProfile.jsx";
+import TeacherProfile, {actionTeacherProfile} from "./components/profile/teacherProfile.jsx";
 import CoordinatorProfile from "./components/profile/coordinatorProfile.jsx";
 import EditStudentProfile, {
     actionEditStudent
@@ -21,6 +21,9 @@ import EditPostForm, {actionEditPostForm} from "./components/post/editPostForm.j
 import EditCompanyProfile, {
     actionEditCompany
 } from "./components/coordinator/companiesManagement/editCompanyProfile.jsx";
+import EditTeacherProfile, {
+    actionEditTeacher
+} from "./components/coordinator/teachersManagement/editTeacherProfile.jsx";
 
 const router = createBrowserRouter([
     {
@@ -57,7 +60,7 @@ const router = createBrowserRouter([
                 action: actionCompanyProfile, loader: isAuthLoader
             },
             {
-                path: "/teacher/profile", element: <TeacherProfile/>, loader: isAuthLoader
+                path: "/teacher/profile", element: <TeacherProfile/>, loader: isAuthLoader, action: actionTeacherProfile
             },
             {
                 path: "/coordinator/profile", element: <CoordinatorProfile/>, loader: isAuthLoader
@@ -69,6 +72,10 @@ const router = createBrowserRouter([
             {
                 path: "edit-company/:id", element: <EditCompanyProfile/>,
                 loader: hasAuthorityLoader("COORDINATOR"), action: actionEditCompany
+            },
+            {
+                path: "edit-teacher/:id", element: <EditTeacherProfile/>,
+                loader: hasAuthorityLoader("COORDINATOR"), action: actionEditTeacher
             }
         ]
     },

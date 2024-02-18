@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {createTeacher, generateRandomString} from "../../../services/AuthService.jsx";
 import {getTeachers} from "../../../services/TeacherService.jsx";
+import {Link} from "react-router-dom";
 
 function TeacherProfileManagement() {
 
@@ -89,6 +90,7 @@ function TeacherProfileManagement() {
                     <th>Name</th>
                     <th>Email</th>
                     <th>Group</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -100,6 +102,10 @@ function TeacherProfileManagement() {
                                 `${teacher.firstName} ${teacher.lastName}`}</td>
                             <td>{teacher.email}</td>
                             <td>{teacher.classGroup}</td>
+                            <td>
+                                <a className="btn btn-info mx-1">Show</a>
+                                <Link to={`/edit-teacher/${teacher.id}`} className="btn btn-warning mx-1">Edit</Link>
+                            </td>
                         </tr>
                     ) : <></>}
                 </tbody>

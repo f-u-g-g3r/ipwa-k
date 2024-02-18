@@ -17,6 +17,18 @@ export async function getTeachers() {
     }
 }
 
+export async function updateTeacher(id, data) {
+    try {
+        return (await axios.patch(`${API_URL}/${id}`, data, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        })).data
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 export async function getTeacher(id) {
     try {
         const teacher = await axios.get(`${API_URL}/${id}`, {

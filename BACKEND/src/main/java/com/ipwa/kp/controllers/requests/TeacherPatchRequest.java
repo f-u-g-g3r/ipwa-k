@@ -1,23 +1,19 @@
 package com.ipwa.kp.controllers.requests;
 
-public class StudentPatchRequest {
-    private String username;
+public class TeacherPatchRequest {
     private String firstName;
     private String lastName;
     private String email;
+    private String username;
 
-    public StudentPatchRequest() {
+    public TeacherPatchRequest() {
     }
 
-    public StudentPatchRequest(String username, String firstName, String lastName, String email) {
-        this.username = username;
+    public TeacherPatchRequest(String firstName, String lastName, String email, String username) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
+        this.username = username;
     }
 
     public String getFirstName() {
@@ -30,5 +26,9 @@ public class StudentPatchRequest {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

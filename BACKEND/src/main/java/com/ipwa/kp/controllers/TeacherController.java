@@ -3,6 +3,7 @@ package com.ipwa.kp.controllers;
 
 import com.ipwa.kp.controllers.exceptions.ClassGroupNotFoundException;
 import com.ipwa.kp.controllers.exceptions.TeacherNotFoundException;
+import com.ipwa.kp.controllers.requests.TeacherPatchRequest;
 import com.ipwa.kp.models.ClassGroup;
 import com.ipwa.kp.models.Teacher;
 import com.ipwa.kp.repositories.ClassGroupRepository;
@@ -34,6 +35,20 @@ public class TeacherController {
     public Teacher one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new TeacherNotFoundException(id));
+    }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('COORDINATOR') or #id == authentication.principal.id and hasAuthority('TEACHER')")
+    public ResponseEntity<?> updateTeacher(@PathVariable Long id, @RequestBody TeacherPatchRequest request) {
+        Teacher teacher = repository.findById(id)
+                .orElseThrow(() -> new TeacherNotFoundException(id));
+
+        if (request.getEmail() != null) teacher.setEmail(request.getEmail());
+        if (request.getUsername() != null) teacher.setUsername(request.getUsername());
+        if (request.getFirstName() != null) teacher.setFirstName(request.getFirstName());
+        if (request.getLastName() != null) teacher.setLastName(request.getLastName());
+
+        return ResponseEntity.ok(repository.save(teacher));
     }
 
 //    @PostMapping

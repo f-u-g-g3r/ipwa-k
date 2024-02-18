@@ -7,7 +7,6 @@ export async function actionEditCompany({request}) {
     const formData = await request.formData();
     const companyData = Object.fromEntries(formData);
 
-    console.log(formData.get("companyId"))
     await updateCompany(companyData, formData.get("companyId"));
 
     const company = await getCompany(formData.get("companyId"));

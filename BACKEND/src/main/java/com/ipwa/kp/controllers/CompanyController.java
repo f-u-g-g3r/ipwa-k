@@ -33,13 +33,11 @@ public class CompanyController {
     }
 
     @GetMapping
-    @CrossOrigin(origins = "*")
     public List<Company> all() {
         return repository.findAll();
     }
 
     @GetMapping("/{id}")
-    @CrossOrigin(origins = "*")
     public Company one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new CompanyNotFoundException(id));
@@ -47,7 +45,6 @@ public class CompanyController {
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('COORDINATOR') or hasAuthority('COMPANY') and #id == authentication.principal.id")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody Company request) {
         Company company = repository.findById(id)
                 .orElseThrow(() -> new CompanyNotFoundException(id));
@@ -74,7 +71,6 @@ public class CompanyController {
     }
 
     @GetMapping("/logos/{fileName}")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<Resource> getLogo(@PathVariable String fileName) {
         try {
             Path absolutePath = Paths.get("").toAbsolutePath();
@@ -103,7 +99,6 @@ public class CompanyController {
 
     @PutMapping("/logos/{id}")
     @PreAuthorize("hasAuthority('COMPANY') and #id == authentication.principal.id")
-    @CrossOrigin(origins = "*")
     public String uploadLogo(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
         Company company = repository.findById(id)
                 .orElseThrow(() -> new CompanyNotFoundException(id));

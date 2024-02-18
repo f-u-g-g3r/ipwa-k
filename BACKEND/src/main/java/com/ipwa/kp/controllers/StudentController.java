@@ -52,14 +52,12 @@ public class StudentController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('COORDINATOR')")
-    @CrossOrigin(origins = "*")
     public List<Student> all() {
         return repository.findAll();
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('COMPANY', 'TEACHER', 'COORDINATOR') or #id == authentication.principal.id")
-    @CrossOrigin(origins = "*")
     public Student one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
@@ -67,14 +65,12 @@ public class StudentController {
 
     @GetMapping("/posts/{postId}")
     @PreAuthorize("hasAnyAuthority('COMPANY', 'TEACHER', 'COORDINATOR')")
-    @CrossOrigin(origins = "*")
     public List<Student> allStudentsByPostId(@PathVariable Long postId) {
         return repository.findAllByPostsId(postId).orElseThrow(() -> new PostNotFoundException(postId));
     }
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('COORDINATOR') or hasAuthority('STUDENT') and #id == authentication.principal.id")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody StudentPatchRequest request) {
         Student student = repository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
@@ -88,7 +84,6 @@ public class StudentController {
 
     @PatchMapping("/apply/{studentId}/{postId}")
     @PreAuthorize("hasAuthority('STUDENT') and #studentId == authentication.principal.id")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<?> applyFor(@PathVariable Long studentId, @PathVariable Long postId) {
         Student student = repository.findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException(studentId));
@@ -135,7 +130,6 @@ public class StudentController {
 
     @PatchMapping("/{groupId}/{studentId}")
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'TEACHER')")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<?> addStudentToGroup(@PathVariable Long groupId, @PathVariable Long studentId) {
         Student student = repository.findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException(studentId));
@@ -161,7 +155,6 @@ public class StudentController {
 
     @PutMapping("/{id}/cv")
     @PreAuthorize("hasAuthority('STUDENT') and #id == authentication.principal.id")
-    @CrossOrigin(origins = "*")
     public String uploadCv(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
         Student student = repository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
@@ -184,7 +177,6 @@ public class StudentController {
 
     @PutMapping("/{id}/motivationLetter")
     @PreAuthorize("hasAuthority('STUDENT') and #id == authentication.principal.id")
-    @CrossOrigin(origins = "*")
     public String uploadMotivationLetter(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
         Student student = repository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
@@ -202,7 +194,6 @@ public class StudentController {
 
     // to improve: get cv/letter by studentId, not by fileName
     @GetMapping("/cv/{fileName}")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<ByteArrayResource> getCv(@PathVariable String fileName) throws IOException {
         Path absolutePath = Paths.get("").toAbsolutePath();
         Path fileStorageLocation = Paths.get(absolutePath+"/uploads/cvs").toAbsolutePath().normalize();
@@ -225,7 +216,6 @@ public class StudentController {
     }
 
     @GetMapping("/motivationLetter/{fileName}")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<ByteArrayResource> getMotivationLetter(@PathVariable String fileName) throws IOException {
         Path absolutePath = Paths.get("").toAbsolutePath();
         Path fileStorageLocation = Paths.get(absolutePath+"/uploads/motivationLetters").toAbsolutePath().normalize();

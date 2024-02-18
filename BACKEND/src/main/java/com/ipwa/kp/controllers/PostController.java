@@ -39,20 +39,17 @@ public class PostController {
     }
 
     @GetMapping
-    @CrossOrigin(origins = "*")
     public List<Post> all() {
         return repository.findAll();
     }
 
     @GetMapping("/{id}")
-    @CrossOrigin(origins = "*")
     public Post one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
     }
 
     @GetMapping("/company/{companyId}")
-    @CrossOrigin(origins = "*")
     public List<Post> allByOwnerId(@PathVariable Long companyId) {
         return repository.findAllByCompanyId(companyId)
                 .orElseThrow(() -> new PostNotFoundException(companyId));
@@ -60,7 +57,6 @@ public class PostController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'COMPANY')")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<?> newPost(@RequestHeader(name = "Authorization") String token, @RequestBody Post post) {
         String jwt = token.substring(7);
         Long companyId = jwtService.extractId(jwt);
@@ -72,7 +68,6 @@ public class PostController {
 
     @PatchMapping("/{postId}")
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'COMPANY')")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<?> editPost(@PathVariable Long postId, @RequestBody Post request) {
         Post post = repository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId));
@@ -88,7 +83,6 @@ public class PostController {
 
     @PutMapping("/pdf/{id}")
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'COMPANY')")
-    @CrossOrigin(origins = "*")
     public String uploadPdf(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
         Post post = repository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
@@ -99,11 +93,10 @@ public class PostController {
     }
 
     @GetMapping("/pdf/{fileName}")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<ByteArrayResource> getPdf(@PathVariable String fileName) throws IOException {
 
         Path absolutePath = Paths.get("").toAbsolutePath();
-        Path fileStorageLocation = Paths.get(absolutePath+"/uploads/posts").toAbsolutePath().normalize();
+        Path fileStorageLocation = Paths.get(absolutePath + "/uploads/posts").toAbsolutePath().normalize();
         Path filePath = fileStorageLocation.resolve(fileName).normalize();
 
         Path pdfPath = Paths.get(filePath.toUri());

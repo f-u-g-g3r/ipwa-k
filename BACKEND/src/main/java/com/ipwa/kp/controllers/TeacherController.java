@@ -25,14 +25,12 @@ public class TeacherController {
     }
 
     @GetMapping
-    @CrossOrigin(origins = "*")
     public List<Teacher> all() {
         return repository.findAll();
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'STUDENT') or #id == authentication.principal.id")
-    @CrossOrigin(origins = "*")
     public Teacher one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new TeacherNotFoundException(id));
@@ -45,7 +43,6 @@ public class TeacherController {
 
     @PatchMapping("/{groupId}/{teacherId}")
     @PreAuthorize("hasAuthority('COORDINATOR')")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<?> addTeacherToGroup(@PathVariable Long groupId, @PathVariable Long teacherId) {
         Teacher teacher = repository.findById(teacherId)
                 .orElseThrow(() -> new TeacherNotFoundException(teacherId));

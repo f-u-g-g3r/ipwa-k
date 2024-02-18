@@ -27,20 +27,17 @@ public class ClassGroupController {
     }
 
     @GetMapping
-    @CrossOrigin(origins = "*")
     public List<ClassGroup> all() {
         return repository.findAll();
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('COORDINATOR')")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<?> createClassGroup(@RequestBody ClassGroup classGroup) {
         return ResponseEntity.ok(repository.save(classGroup));
     }
 
     @GetMapping("/{name}")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<?> getClassGroupByName(@PathVariable String name) {
         ClassGroup group = repository.findByName(name)
                 .orElseThrow(() -> new ClassGroupNotFoundException(name));
@@ -49,7 +46,6 @@ public class ClassGroupController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('COORDINATOR')")
-    @CrossOrigin(origins = "*")
     public void deleteGroup(@PathVariable Long id) {
         List<Student> students = studentRepository.findAllByClassGroupId(id)
                 .orElseThrow(() -> new ClassGroupNotFoundException(id));

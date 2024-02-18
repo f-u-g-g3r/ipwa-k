@@ -19,7 +19,6 @@ public class InternshipCoordinatorController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('COORDINATOR')")
-    @CrossOrigin(origins = "*")
     public InternshipCoordinator one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new CoordinatorNotFoundException(id));

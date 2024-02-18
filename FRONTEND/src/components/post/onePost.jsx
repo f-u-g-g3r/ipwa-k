@@ -58,7 +58,7 @@ function OnePost() {
                 <Link to={`/posts`} className="btn btn-neutral w-1/12 ms-20">Back</Link>
                 {(hasAuthority("STUDENT") && !post.students.includes(parseInt(getId()))) ?
                     <button className="btn btn-success w-1/12 ms-auto me-20" onClick={() => apply(post.id)}>Apply</button> :
-                    (hasAuthority("STUDENT") &&post.students.includes(parseInt(getId()))) ?
+                    (hasAuthority("STUDENT") && post.students.includes(parseInt(getId()))) ?
                             <button className="btn btn-error w-1/12 ms-auto me-20" onClick={() => apply(post.id)}>Unapply</button> :
                                 (hasAuthority("COMPANY") && post.company == getId()) ?
                                     <Link to={`/edit-post/${id}`} className="btn btn-info w-1/12 ms-auto me-20">Edit post</Link> :

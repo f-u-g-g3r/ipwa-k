@@ -28,8 +28,9 @@ public class Student implements UserDetails {
     private ClassGroup classGroup;
 
 
-    @ManyToMany(mappedBy = "students")
-    private List<Post> posts = new ArrayList<>();
+    @OneToMany(mappedBy = "student")
+    private List<PostStudent> postsStudents = new ArrayList<>();
+
 
     private String username;
     private String firstName;
@@ -38,25 +39,22 @@ public class Student implements UserDetails {
     private String password;
     private Status accountStatus = Status.INACTIVE;
 
-    private int appliedFor;
-
     public Student() {
 
     }
 
-    public Student(Long id, Resume resume, Teacher teacher, ClassGroup classGroup, List<Post> posts, String username, String firstName, String lastName, String email, String password, Status accountStatus, int appliedFor) {
+    public Student(Long id, Resume resume, Teacher teacher, ClassGroup classGroup, List<PostStudent> postsStudents, String username, String firstName, String lastName, String email, String password, Status accountStatus) {
         this.id = id;
         this.resume = resume;
         this.teacher = teacher;
         this.classGroup = classGroup;
-        this.posts = posts;
+        this.postsStudents = postsStudents;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.accountStatus = accountStatus;
-        this.appliedFor = appliedFor;
     }
 
     public Long getId() {
@@ -75,14 +73,12 @@ public class Student implements UserDetails {
         this.teacher = teacher;
     }
 
-    public List<Long> getPosts() {
-        return posts.stream()
-                .map(Post::getId)
-                .collect(Collectors.toList());
+    public List<PostStudent> getPostStudents() {
+        return postsStudents;
     }
 
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
+    public void setPostsStudents(List<PostStudent> postsStudents) {
+        this.postsStudents = postsStudents;
     }
 
     public String getFirstName() {
@@ -140,14 +136,6 @@ public class Student implements UserDetails {
         this.username = username;
     }
 
-    public int getAppliedFor() {
-        return appliedFor;
-    }
-
-    public void setAppliedFor(int appliedFor) {
-        this.appliedFor = appliedFor;
-    }
-
     public String getClassGroup() {
         if (classGroup != null) {
             return classGroup.getName();
@@ -173,7 +161,6 @@ public class Student implements UserDetails {
                 ", password='" + password + '\'' +
                 ", classGroup='" + classGroup + '\'' +
                 ", accountStatus=" + accountStatus +
-                ", appliedFor=" + appliedFor +
                 '}';
     }
 

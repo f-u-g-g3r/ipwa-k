@@ -7,7 +7,7 @@ export async function actionEditCompany({request}) {
     const formData = await request.formData();
     const companyData = Object.fromEntries(formData);
 
-    await updateCompany(companyData, formData.get("companyId"));
+    await updateCompany(formData.get("companyId"), companyData);
 
     const company = await getCompany(formData.get("companyId"));
     localStorage.setItem("name", company.name);

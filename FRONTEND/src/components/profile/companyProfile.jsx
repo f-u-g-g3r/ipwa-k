@@ -55,8 +55,8 @@ function CompanyProfile() {
         <>
             <p className="text-2xl font-bold text-center my-10">Edit profile</p>
             <Form method="post" className="w-full" encType="multipart/form-data">
-                <div className="text-lg flex justify-center w-ful my-1">
-                    <label className="form-control w-full max-w-xs">
+                <div className="text-lg flex justify-center w-full my-1">
+                    <label className="form-control w-full max-w-lg">
                         <div className="label">
                             <span className="label-text text-lg">Company name</span>
                         </div>
@@ -65,8 +65,8 @@ function CompanyProfile() {
                     </label>
                 </div>
 
-                <div className="text-lg flex justify-center w-ful my-1">
-                    <label className="form-control w-full max-w-xs">
+                <div className="text-lg flex justify-center w-full my-1">
+                    <label className="form-control w-full max-w-lg">
                         <div className="label">
                             <span className="label-text text-lg">Email</span>
                         </div>
@@ -75,14 +75,14 @@ function CompanyProfile() {
                     </label>
                 </div>
 
-                <div className="text-lg flex justify-center w-ful my-1">
-                    <div className="w-full max-w-xs">
+                <div className="text-lg flex justify-center w-full my-1">
+                    <div className="w-full max-w-lg">
                         <a className="btn btn-neutral my-3">Reset password</a>
                     </div>
                 </div>
 
-                <div className="text-lg flex justify-center w-ful my-1">
-                    <label className="form-control w-full max-w-xs">
+                <div className="text-lg flex justify-center w-full my-1">
+                    <label className="form-control w-full max-w-lg">
                         <div className="label">
                             <span className="label-text text-lg">Address</span>
                         </div>
@@ -91,8 +91,8 @@ function CompanyProfile() {
                     </label>
                 </div>
 
-                <div className="text-lg flex justify-center w-ful my-1">
-                    <label className="form-control w-full max-w-xs">
+                <div className="text-lg flex justify-center w-full my-1">
+                    <label className="form-control w-full max-w-lg">
                         <div className="label">
                             <span className="label-text text-lg">Phone</span>
                         </div>
@@ -101,8 +101,8 @@ function CompanyProfile() {
                     </label>
                 </div>
 
-                <div className="text-lg flex justify-center w-ful my-1">
-                    <label className="form-control w-full max-w-xs">
+                <div className="text-lg flex justify-center w-full my-1">
+                    <label className="form-control w-full max-w-lg">
                         <div className="label">
                             <span className="label-text text-lg">Contacts</span>
                         </div>
@@ -111,8 +111,8 @@ function CompanyProfile() {
                     </label>
                 </div>
 
-                <div className="text-lg flex justify-center w-ful my-1">
-                    <label className="form-control w-full max-w-xs">
+                <div className="text-lg flex justify-center w-full my-1">
+                    <label className="form-control w-full max-w-lg">
                         <div className="label">
                             <span className="label-text text-lg">Registry code</span>
                         </div>
@@ -122,7 +122,7 @@ function CompanyProfile() {
                 </div>
 
                 <div className="flex justify-center">
-                    <label className="form-control w-full max-w-xs">
+                    <label className="form-control w-full max-w-lg">
                         <div className="label">
                             <span className="label-text text-lg">Company logo</span>
                         </div>
@@ -137,10 +137,10 @@ function CompanyProfile() {
                     <>Company has no logo yet</>}
                 </div>
 
-                <div className="text-lg flex justify-center w-ful my-1">
-                    <div className="w-full max-w-xs">
+                <div className="text-lg flex justify-center w-full my-1">
+                    <div className="w-full max-w-lg">
                         <p className="text-lg my-3">Username: {company.username}</p>
-                        <input type="submit" className="btn btn-success my-3 w-full max-w-xs" value="Update profile" />
+                        <input type="submit" className="btn btn-success my-3 w-full max-w-lg" value="Update profile" />
                     </div>
                 </div>
             </Form>

@@ -24,7 +24,7 @@ export async function getCompany(id) {
     return company.data;
 }
 
-export async function updateCompany(company, id) {
+export async function updateCompany(id, company) {
     return axios.patch(`${API_URL}/${id}`, company, {
         headers: {
             'Authorization': `Bearer ${localStorage.getItem("token")}`

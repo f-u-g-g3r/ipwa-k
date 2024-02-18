@@ -35,8 +35,7 @@ export async function applyToJob(postId) {
         try {
             return axios.patch(`${API_URL}/apply/${getId()}/${postId}`, "", {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                    'Content-Type': 'multipart/form-data'
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
                 },
             });
         } catch (e) {

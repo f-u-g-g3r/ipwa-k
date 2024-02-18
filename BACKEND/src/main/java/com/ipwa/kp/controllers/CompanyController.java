@@ -1,6 +1,7 @@
 package com.ipwa.kp.controllers;
 
 import com.ipwa.kp.controllers.exceptions.CompanyNotFoundException;
+import com.ipwa.kp.controllers.requests.CompanyPatchRequest;
 import com.ipwa.kp.models.Company;
 import com.ipwa.kp.repositories.CompanyRepository;
 import com.ipwa.kp.services.FileService;
@@ -45,7 +46,7 @@ public class CompanyController {
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('COORDINATOR') or hasAuthority('COMPANY') and #id == authentication.principal.id")
-    public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody Company request) {
+    public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody CompanyPatchRequest request) {
         Company company = repository.findById(id)
                 .orElseThrow(() -> new CompanyNotFoundException(id));
         if (request.getName() != null) company.setName(request.getName());

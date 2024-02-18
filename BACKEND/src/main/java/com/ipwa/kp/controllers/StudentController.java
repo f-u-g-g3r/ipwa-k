@@ -6,14 +6,8 @@ import com.ipwa.kp.controllers.exceptions.PostNotFoundException;
 import com.ipwa.kp.controllers.exceptions.ResumeNotFoundException;
 import com.ipwa.kp.controllers.exceptions.StudentNotFoundException;
 import com.ipwa.kp.controllers.requests.StudentPatchRequest;
-import com.ipwa.kp.models.ClassGroup;
-import com.ipwa.kp.models.Post;
-import com.ipwa.kp.models.Resume;
-import com.ipwa.kp.models.Student;
-import com.ipwa.kp.repositories.ClassGroupRepository;
-import com.ipwa.kp.repositories.PostRepository;
-import com.ipwa.kp.repositories.ResumeRepository;
-import com.ipwa.kp.repositories.StudentRepository;
+import com.ipwa.kp.models.*;
+import com.ipwa.kp.repositories.*;
 import com.ipwa.kp.services.FileService;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +26,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/students")
@@ -41,13 +36,15 @@ public class StudentController {
     private final ClassGroupRepository classGroupRepository;
     private final FileService fileService;
     private final ResumeRepository resumeRepository;
+    private final PostStudentRepository postStudentRepository;
 
-    public StudentController(StudentRepository repository, PostRepository postRepository, ClassGroupRepository classGroupRepository, FileService fileService, ResumeRepository resumeRepository) {
+    public StudentController(StudentRepository repository, PostRepository postRepository, ClassGroupRepository classGroupRepository, FileService fileService, ResumeRepository resumeRepository, PostStudentRepository postStudentRepository) {
         this.repository = repository;
         this.postRepository = postRepository;
         this.classGroupRepository = classGroupRepository;
         this.fileService = fileService;
         this.resumeRepository = resumeRepository;
+        this.postStudentRepository = postStudentRepository;
     }
 
     @GetMapping
@@ -66,7 +63,7 @@ public class StudentController {
     @GetMapping("/posts/{postId}")
     @PreAuthorize("hasAnyAuthority('COMPANY', 'TEACHER', 'COORDINATOR')")
     public List<Student> allStudentsByPostId(@PathVariable Long postId) {
-        return repository.findAllByPostsId(postId).orElseThrow(() -> new PostNotFoundException(postId));
+        return repository.findAllByPostsStudentsId(postId).orElseThrow(() -> new PostNotFoundException(postId));
     }
 
     @PatchMapping("/{id}")
@@ -84,41 +81,19 @@ public class StudentController {
 
     @PatchMapping("/apply/{studentId}/{postId}")
     @PreAuthorize("hasAuthority('STUDENT') and #studentId == authentication.principal.id")
-    public ResponseEntity<?> applyFor(@PathVariable Long studentId, @PathVariable Long postId) {
+    public ResponseEntity<?> applyFor(@PathVariable Long studentId, @PathVariable Long postId) {    
         Student student = repository.findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException(studentId));
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId));
+        PostStudent postStudent = postStudentRepository.findByPostAndStudent(post, student)
+                .orElseGet(() -> new PostStudent(post, student));
 
-        List<Long> studentPosts = student.getPosts();
-        List<Post> posts = new ArrayList<>();
-        for (Long id : studentPosts) {
-            posts.add(postRepository.findById(id)
-                    .orElse(null));
-        }
-        if (posts.contains(post)) {
-            posts.remove(post);
+        if (postStudent.getId() == null) {
+            postStudentRepository.save(postStudent);
         } else {
-            posts.add(post);
+            postStudentRepository.delete(postStudent);
         }
-        student.setPosts(posts);
-        repository.save(student);
-
-
-        List<Long> postStudents = post.getStudents();
-        List<Student> students = new ArrayList<>();
-        for (Long id : postStudents) {
-            students.add(repository.findById(id)
-                    .orElse(null));
-        }
-        if (students.contains(student)) {
-            students.remove(student);
-        } else {
-            students.add(student);
-        }
-        post.setStudents(students);
-        postRepository.save(post);
-
 
         return ResponseEntity.ok(post);
     }
@@ -167,12 +142,6 @@ public class StudentController {
         repository.save(student);
         resumeRepository.save(resume);
         return cvUrl;
-    }
-
-    @GetMapping("/test/{id}")
-    @PreAuthorize("hasAuthority('STUDENT') and #id == authentication.principal.id")
-    public String test(@PathVariable Long id) {
-        return "123";
     }
 
     @PutMapping("/{id}/motivationLetter")

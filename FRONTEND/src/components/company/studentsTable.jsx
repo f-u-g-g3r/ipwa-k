@@ -22,8 +22,7 @@ function StudentsTable(props) {
             <table className="table table-lg">
                 <thead>
                 <tr>
-                    <th>First name</th>
-                    <th>Last name</th>
+                    <th>Name</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -32,9 +31,14 @@ function StudentsTable(props) {
                     <>
                 {students.map((student) => (
                     <tr>
-                        <td>{student.firstName}</td>
-                        <td>{student.lastName}</td>
-                        <td><button className="btn btn-success">Action</button> </td>
+                        <td>{`${student.firstName} ${student.lastName}`}</td>
+                        <td className="flex items-center">
+                            <button className="btn btn-info ">Show profile</button>
+                            <div className="ms-10">
+                                <button className="btn btn-success my-1 w-20">Accept</button><br />
+                                <button className="btn btn-error my-1 w-20">Decline</button>
+                            </div>
+                        </td>
                     </tr>
                 ))}
                 </>

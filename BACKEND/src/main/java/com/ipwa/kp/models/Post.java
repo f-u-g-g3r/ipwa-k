@@ -17,13 +17,9 @@ public class Post {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @ManyToMany
-    @JoinTable(
-            name = "post_student",
-            joinColumns = @JoinColumn(name = "post_id"),
-            inverseJoinColumns = @JoinColumn(name = "student_id")
-    )
-    private List<Student> students = new ArrayList<>();
+    @OneToMany(mappedBy = "post")
+    private List<PostStudent> postsStudents = new ArrayList<>();
+
 
     private String workName;
     private String workDescription;
@@ -38,10 +34,10 @@ public class Post {
 
     }
 
-    public Post(Long id, Company company, List<Student> students, String workName, String workDescription, Integer salary, String claims, String additionalInfo, String pathToPdf, LocalDate expiryDate, LocalDate datePosted) {
+    public Post(Long id, Company company, List<PostStudent> postsStudents, String workName, String workDescription, Integer salary, String claims, String additionalInfo, String pathToPdf, LocalDate expiryDate, LocalDate datePosted) {
         this.id = id;
         this.company = company;
-        this.students = students;
+        this.postsStudents = postsStudents;
         this.workName = workName;
         this.workDescription = workDescription;
         this.salary = salary;
@@ -137,21 +133,18 @@ public class Post {
     }
 
 
-    public List<Long> getStudents() {
-        return students.stream()
-                .map(Student::getId)
-                .collect(Collectors.toList());
+    public List<PostStudent> getPostStudents() {
+        return postsStudents;
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
+    public void setPostsStudents(List<PostStudent> postsStudents) {
+        this.postsStudents = postsStudents;
     }
 
     @Override
     public String toString() {
         return "Post{" +
                 "id=" + id +
-                ", company=" + company.getId() +
                 ", workName='" + workName + '\'' +
                 ", workDescription='" + workDescription + '\'' +
                 ", salary=" + salary +

@@ -10,7 +10,6 @@ export async function getTeachers() {
                 'Authorization': `Bearer ${localStorage.getItem("token")}`
             }
         })
-        console.log(teachers.data)
         return teachers.data;
     } catch (e) {
         console.log(e);

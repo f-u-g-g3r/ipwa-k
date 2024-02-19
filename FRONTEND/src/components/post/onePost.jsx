@@ -3,11 +3,15 @@ import {getPost, getPostPdf, updatePost} from "../../services/PostService.jsx";
 import {Link, useParams} from "react-router-dom";
 import {getId, hasAuthority} from "../../services/AuthService.jsx";
 import {applyToJob} from "../../services/StudentService.jsx";
+import home from "../home.jsx";
 
 function OnePost() {
 
     const [post, setPost] = useState({students: []});
     const [pdf, setPdf] = useState("");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const homeParam = urlParams.get('home');
 
     let {id} = useParams();
 
@@ -31,6 +35,7 @@ function OnePost() {
 
     useEffect(() => {
         fetchPost();
+
     }, []);
 
     useEffect(() => {
@@ -55,7 +60,7 @@ function OnePost() {
         <>
 
             <div className="flex">
-                <Link to={`/posts`} className="btn btn-neutral w-1/12 ms-20">Back</Link>
+                <Link to={homeParam === null ? `/posts` : `/home?action=1`} className="btn btn-neutral w-1/12 ms-20">Back</Link>
                 {(hasAuthority("STUDENT") && !post.students.includes(parseInt(getId()))) ?
                     <button className="btn btn-success w-1/12 ms-auto me-20" onClick={() => apply(post.id)}>Apply</button> :
                     (hasAuthority("STUDENT") && post.students.includes(parseInt(getId()))) ?
@@ -72,7 +77,7 @@ function OnePost() {
             <p>Expiry date: {post.expiryDate}</p>
             <p>Date posted: {post.datePosted}</p>
 
-            <div className="w-full flex justify-center">
+            <div className="w-full flex justify-center mb-20">
                 <img className="w-1/2" src={pdf}/>
             </div>
         </>

@@ -1,15 +1,40 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import StudentProfileManagement from "./studentsManagement/studentProfileManagement.jsx";
 import CompanyProfileManagement from "./companiesManagement/companyProfileManagement.jsx";
 import TeacherProfileManagement from "./teachersManagement/teacherProfileManagement.jsx";
 import ShowGroups from "./groupsManegement/showGroups.jsx";
+import {useNavigate} from "react-router-dom";
 
 function HomeCoordinator() {
     const [action, setAction] = useState(0);
+    const urlParams = new URLSearchParams(window.location.search);
+    const actionParam = urlParams.get('action');
+    const navigate = useNavigate();
 
     const handleActionChange = (actionToSet) => {
         setAction(actionToSet);
     }
+
+    useEffect(() => {
+        navigate(`/home?action=${action}`)
+    }, [action])
+
+    useEffect(() => {
+        switch (actionParam) {
+            case "1":
+                setAction(1);
+                break;
+            case "2":
+                setAction(2);
+                break;
+            case "3":
+                setAction(3);
+                break;
+            case "4":
+                setAction(4);
+                break;
+        }
+    });
 
     return(
         <>

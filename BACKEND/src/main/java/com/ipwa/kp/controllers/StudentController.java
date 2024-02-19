@@ -63,7 +63,7 @@ public class StudentController {
     @GetMapping("/posts/{postId}")
     @PreAuthorize("hasAnyAuthority('COMPANY', 'TEACHER', 'COORDINATOR')")
     public List<Student> allStudentsByPostId(@PathVariable Long postId) {
-        return repository.findAllByPostsStudentsId(postId).orElseThrow(() -> new PostNotFoundException(postId));
+        return repository.findAllByPostsStudentsPostId(postId).orElseThrow(() -> new PostNotFoundException(postId));
     }
 
     @PatchMapping("/{id}")
@@ -75,13 +75,14 @@ public class StudentController {
         if (request.getFirstName() != null) student.setFirstName(request.getFirstName());
         if (request.getLastName() != null) student.setLastName(request.getLastName());
         if (request.getEmail() != null) student.setEmail(request.getEmail());
+        if (request.getAccountStatus() != null) student.setAccountStatus(request.getAccountStatus());
 
         return ResponseEntity.ok(repository.save(student));
     }
 
     @PatchMapping("/apply/{studentId}/{postId}")
     @PreAuthorize("hasAuthority('STUDENT') and #studentId == authentication.principal.id")
-    public ResponseEntity<?> applyFor(@PathVariable Long studentId, @PathVariable Long postId) {    
+    public ResponseEntity<?> applyFor(@PathVariable Long studentId, @PathVariable Long postId) {
         Student student = repository.findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException(studentId));
         Post post = postRepository.findById(postId)

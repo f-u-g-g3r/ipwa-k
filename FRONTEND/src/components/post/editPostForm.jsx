@@ -1,4 +1,4 @@
-import {Form, redirect, useParams} from "react-router-dom";
+import {Form, Link, redirect, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {getPost, getPostPdf, savePost, updatePost, uploadPostPdf} from "../../services/PostService.jsx";
 
@@ -59,7 +59,8 @@ function EditPostForm() {
 
     return(
         <>
-            <div className="flex justify-center">
+            <Link to={`/posts/${id}`} className="btn btn-neutral w-1/12 mt-5">Back</Link>
+            <div className="flex justify-center mb-20">
                 <Form method="post" encType="multipart/form-data" className="w-2/3">
                     <div className="flex justify-center">
                         <label className="form-control w-full max-w-lg my-2">

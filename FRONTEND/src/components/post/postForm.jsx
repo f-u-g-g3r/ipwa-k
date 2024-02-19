@@ -22,7 +22,7 @@ function PostForm() {
 
 
     return (
-        <div className="">
+        <div className="mb-20">
             <Form method="post" encType="multipart/form-data">
                 <div className="flex justify-center">
                     <label className="form-control w-full max-w-lg my-2">

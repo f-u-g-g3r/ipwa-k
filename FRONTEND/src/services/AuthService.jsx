@@ -62,6 +62,7 @@ export function hasAuthorityLoader(authority) {
     if (localStorage.getItem('authority') !== authority) {
         return redirect("/home");
     }
+    return null;
 }
 
 export function getAuthority() {

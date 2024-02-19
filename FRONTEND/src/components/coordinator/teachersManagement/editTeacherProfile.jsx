@@ -12,7 +12,7 @@ export async function actionEditTeacher({request}) {
     localStorage.setItem("firstName", teacher.firstName);
     localStorage.setItem("lastName", teacher.lastName);
 
-    return redirect("/home")
+    return redirect("/home?action=3")
 }
 
 function EditTeacherProfile() {
@@ -35,7 +35,7 @@ function EditTeacherProfile() {
     return(
         <>
             <div className="flex justify-center">
-                <Link to={`/home`} className="btn btn-neutral w-1/6 mt-10 mx-auto">Back</Link>
+                <Link to={`/home?action=3`} className="btn btn-neutral w-1/6 mt-10 mx-auto">Back</Link>
             </div>
             <p className="text-2xl font-bold text-center my-10">Edit profile</p>
             <div className="flex justify-center ">

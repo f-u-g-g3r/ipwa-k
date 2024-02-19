@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import {getCompany, getLogo} from "../../services/CompanyService.jsx";
-import {Link, useOutletContext} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {ActionContext} from "../company/homeCompany.jsx";
 
 
@@ -41,7 +41,7 @@ function PostCard(props) {
     return (
         <>
             <div className="flex justify-center">
-                <Link to={`/posts/${props.post.id}`}
+                <Link to={props.isCheck ? `/posts/${props.post.id}?home=true` : `/posts/${props.post.id}`}
                       className="card lg:card-side bg-base-100 hover:bg-base-300 shadow-lg my-5 w-5/6 h-56">
                     <figure>
                         <img className="w-56" src={logo} alt="Company Logo"/>
@@ -60,11 +60,20 @@ function PostCard(props) {
                         <p>Date posted: {props.post.datePosted}</p>
                     </div>
                 </Link>
-                {props.isCheck === true ?
-                    <div className="card-body w-2/5 my-10">
-                        <p className="text-2xl w-full">Students applied: {props.post.students.length}</p>
-                        <button onClick={() => {value[0](2); value[1](props.post.id)}} className="btn btn-secondary text-xl h-14">Show info</button>
-                    </div>
+                {props.isCheck ?
+                    <>
+                        <div className="card-body w-2/5 my-10">
+                            <p className="text-2xl w-full">Students applied: {props.post.postStudents.length}</p>
+                            <button onClick={() => {
+                                value[0](2);
+                                value[1](props.post.id)
+                            }} className="btn btn-secondary text-xl h-14">Show info
+                            </button>
+                        </div>
+                        <div className="flex items-center w-1/5 ms-10">
+                            <button className="btn btn-error">Delete post</button>
+                        </div>
+                    </>
                     : <></>}
             </div>
 

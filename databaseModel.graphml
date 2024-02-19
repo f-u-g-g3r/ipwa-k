@@ -26,10 +26,10 @@ teacherId: Long
 first_name: String
 last_name: String
 email: String
+class_group: String
 username: String
 password: String
-account_status: Active/Inactive
-appliedFor: int<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y:ModelParameter><y:ErdAttributesNodeLabelModelParameter/></y:ModelParameter></y:NodeLabel>
+account_status: Active/Inactive<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y:ModelParameter><y:ErdAttributesNodeLabelModelParameter/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Boolean" name="y.view.ShadowNodePainter.SHADOW_PAINTING" value="true"/>
           </y:StyleProperties>
@@ -55,13 +55,14 @@ student_id: Long<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y:
     <node id="n2">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="123.76999999999975" width="107.68000000000018" x="877.5005499999997" y="772.585726966373"/>
+          <y:Geometry height="139.76999999999975" width="107.68000000000018" x="877.5005499999997" y="772.585726966373"/>
           <y:Fill color="#FFFFFF" color2="#FFFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="3.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#000000" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" lineColor="#000000" modelName="internal" modelPosition="t" textColor="#FFFFFF" verticalTextPosition="bottom" visible="true" width="48.021484375" x="29.829257812500032" xml:space="preserve" y="4.0">Teacher</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="92.20703125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="98.037109375" x="2.0" xml:space="preserve" y="30.701171875">id: Long
+          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#000000" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" lineColor="#000000" modelName="internal" modelPosition="t" textColor="#FFFFFF" verticalTextPosition="bottom" visible="true" width="48.021484375" x="29.829257812500146" xml:space="preserve" y="4.0">Teacher</y:NodeLabel>
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="106.908203125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="106.720703125" x="2.0" xml:space="preserve" y="30.701171875">id: Long
 first_name: String
 last_name: String
+class_group: String
 email: String
 username: String
 password: String<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y:ModelParameter><y:ErdAttributesNodeLabelModelParameter/></y:ModelParameter></y:NodeLabel>
@@ -105,19 +106,20 @@ student_id: Long<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y:
     <node id="n5">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="170.31999999999982" width="151.68000000000018" x="1009.1471999999999" y="617.6333517836256"/>
+          <y:Geometry height="186.31999999999982" width="151.68000000000018" x="1009.1471999999999" y="617.6333517836256"/>
           <y:Fill color="#FFFFFF" color2="#FFFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="3.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#000000" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" lineColor="#000000" modelName="internal" modelPosition="t" textColor="#FFFFFF" verticalTextPosition="bottom" visible="true" width="55.357421875" x="48.161289062500146" xml:space="preserve" y="4.0">Company</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="136.310546875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="142.087890625" x="2.0" xml:space="preserve" y="30.701171875">id: Long
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="151.01171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="114.05078125" x="2.0" xml:space="preserve" y="30.701171875">id: Long
 username: String
-company_name: String
+name: String
 registry_code: String
 email: String
+password: String
 phone: String
 contacts: String
 address: String
-companyLogoPath: String<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y:ModelParameter><y:ErdAttributesNodeLabelModelParameter/></y:ModelParameter></y:NodeLabel>
+logo_path: String<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y:ModelParameter><y:ErdAttributesNodeLabelModelParameter/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Boolean" name="y.view.ShadowNodePainter.SHADOW_PAINTING" value="true"/>
           </y:StyleProperties>
@@ -127,11 +129,11 @@ companyLogoPath: String<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelMo
     <node id="n6">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="170.31999999999982" width="134.88000000000034" x="1213.1471999999994" y="470.56062624999976"/>
+          <y:Geometry height="186.31999999999982" width="134.88000000000034" x="1213.1471999999994" y="470.56062624999976"/>
           <y:Fill color="#FFFFFF" color2="#FFFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="3.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#000000" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" lineColor="#000000" modelName="internal" modelPosition="t" textColor="#FFFFFF" verticalTextPosition="bottom" visible="true" width="28.01171875" x="53.434140625000055" xml:space="preserve" y="4.0">Post</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="136.310546875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="132.056640625" x="2.0" xml:space="preserve" y="30.701171875000057">id: Long
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="151.01171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="132.056640625" x="2.0" xml:space="preserve" y="30.701171875">id: Long
 company_id: Long
 work_name: String
 work_description: String
@@ -139,7 +141,8 @@ salary: Int
 claims: String
 additional_info: String
 date_posted: Date
-expiry_date: Date<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y:ModelParameter><y:ErdAttributesNodeLabelModelParameter/></y:ModelParameter></y:NodeLabel>
+expiry_date: Date
+path_to_pdf: String<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y:ModelParameter><y:ErdAttributesNodeLabelModelParameter/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Boolean" name="y.view.ShadowNodePainter.SHADOW_PAINTING" value="true"/>
           </y:StyleProperties>
@@ -149,9 +152,9 @@ expiry_date: Date<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y
     <edge id="e0" source="n6" target="n5">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="-29.320292758934556" tx="-2.112480262297595" ty="-47.49513566223072">
-            <y:Point x="1176.7795421334984" y="526.4003334910651"/>
-            <y:Point x="1176.7795421334984" y="655.2982161213947"/>
+          <y:Path sx="0.0" sy="-37.67466502374771" tx="-2.112480262297595" ty="-56.75686752340789">
+            <y:Point x="1176.7795421334984" y="526.045961226252"/>
+            <y:Point x="1176.7795421334984" y="654.0364842602175"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -175,8 +178,8 @@ expiry_date: Date<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y
     <edge id="e2" source="n6" target="n4">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="3.740299999999479" sy="-39.283618463125656" tx="0.997649999999112" ty="-13.802500000000066">
-            <y:Point x="1105.4612499999994" y="516.437007786874"/>
+          <y:Path sx="3.740299999999479" sy="-50.88239928362657" tx="0.997649999999112" ty="-13.802500000000066">
+            <y:Point x="1105.4612499999994" y="512.8382269663731"/>
             <y:Point x="1105.4612499999994" y="492.8382269663731"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
@@ -201,7 +204,7 @@ expiry_date: Date<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y
     <edge id="e4" source="n0" target="n2">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="85.84000000000003" sy="-51.5522012578615" tx="0.0" ty="-19.4194744663738">
+          <y:Path sx="85.84000000000003" sy="-51.5522012578615" tx="0.0" ty="-27.4194744663738">
             <y:Point x="833.50055" y="640.3390512421377"/>
             <y:Point x="833.50055" y="815.0512524999991"/>
           </y:Path>

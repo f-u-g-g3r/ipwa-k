@@ -12,7 +12,7 @@ export async function actionEditCompany({request}) {
     const company = await getCompany(formData.get("companyId"));
     localStorage.setItem("name", company.name);
 
-    return redirect("/home")
+    return redirect("/home?action=2")
 }
 
 function EditCompanyProfile() {
@@ -49,7 +49,7 @@ function EditCompanyProfile() {
     return(
         <>
             <div className="flex justify-center">
-                <Link to={`/home`} className="btn btn-neutral w-1/6 mt-10 mx-auto">Back</Link>
+                <Link to={`/home?action=2`} className="btn btn-neutral w-1/6 mt-10 mx-auto">Back</Link>
             </div>
             <p className="text-2xl font-bold text-center my-10">Edit profile</p>
             <Form method="post" className="w-full">

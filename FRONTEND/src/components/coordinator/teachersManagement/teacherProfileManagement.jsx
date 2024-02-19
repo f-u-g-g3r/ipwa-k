@@ -96,7 +96,7 @@ function TeacherProfileManagement() {
                 <tbody>
                 {teachers.length ?
                     teachers.map((teacher) =>
-                        <tr>
+                        <tr key={teacher.id}>
                             <td>{teacher.id}</td>
                             <td>{`${teacher.firstName} ${teacher.lastName}` === "null null" ? "Name is not given" :
                                 `${teacher.firstName} ${teacher.lastName}`}</td>

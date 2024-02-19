@@ -100,7 +100,7 @@ function ShowGroups() {
                 <tbody>
                 {groups.length ?
                     groups.map((group) =>
-                        <tr>
+                        <tr key={group.id}>
                             <td>{group.id}</td>
                             <td>{group.name}</td>
                             <td>{group.students.length}</td>
@@ -132,8 +132,8 @@ function ShowGroups() {
                             <input type="hidden" name="groupId" value={groupSelected}/>
                         </p>
                         <div className="modal-action">
-                            <button type="button" class="btn mx-2" onClick={() => assignTeacher.close()}>Close</button>
-                            <button type="submit" class="btn btn-warning mx-2" onClick={() => assignTeacher.close()}>Save</button>
+                            <button type="button" className="btn mx-2" onClick={() => assignTeacher.close()}>Close</button>
+                            <button type="submit" className="btn btn-warning mx-2" onClick={() => assignTeacher.close()}>Save</button>
                         </div>
                     </form>
                 </div>

@@ -130,10 +130,10 @@ function EditStudentProfile() {
                 <div className="w-full">
                     {action === 1 ?
                         <div>
-                            {cv !== "" ? <img src={cv}/> : <>Cv not loaded</>}
+                            {cv !== "" ? <img src={cv}/> : <>Cv is not loaded</>}
                         </div> :
                         <div>
-                            {motivationLetter !== "" ? <img src={motivationLetter}/> : <>Motivation letter not loaded</>}
+                            {motivationLetter !== "" ? <img src={motivationLetter}/> : <>Motivation letter is not loaded</>}
                         </div>
                     }
                 </div>

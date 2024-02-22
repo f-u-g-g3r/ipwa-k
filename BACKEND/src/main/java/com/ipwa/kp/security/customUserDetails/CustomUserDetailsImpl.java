@@ -8,8 +8,6 @@ import com.ipwa.kp.repositories.CompanyRepository;
 import com.ipwa.kp.repositories.InternshipCoordinatorRepository;
 import com.ipwa.kp.repositories.StudentRepository;
 import com.ipwa.kp.repositories.TeacherRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

@@ -35,7 +35,7 @@ function StudentsTable(props) {
                     <tr key={student.id}>
                         <td>{`${student.firstName} ${student.lastName}`}</td>
                         <td className="flex items-center">
-                            <button className="btn btn-info">Show profile</button>
+                            <Link to={`/show-student/${student.id}`} className="btn btn-info">Show profile</Link>
                             <div className="ms-10">
                                 <button className="btn btn-success my-1 w-20">Accept</button><br />
                                 <button className="btn btn-error my-1 w-20">Decline</button>

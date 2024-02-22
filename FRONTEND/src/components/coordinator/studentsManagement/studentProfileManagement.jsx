@@ -99,7 +99,7 @@ function StudentProfileManagement() {
                             <td><p>{student.classGroup}</p></td>
                             <td><p>{student.accountStatus}</p></td>
                             <td>
-                                <a className="btn btn-info mx-1">Show</a>
+                                <Link to={`/show-student/${student.id}`} className="btn btn-info mx-1">Show</Link>
                                 <Link to={`/edit-student/${student.id}`} className="btn btn-warning mx-1">Edit</Link></td>
                         </tr>
                     ))}

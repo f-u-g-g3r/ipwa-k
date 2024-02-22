@@ -8,7 +8,7 @@ import LoginForm, {action, loginLoader} from "./components/loginForm.jsx";
 import Home from "./components/home.jsx";
 import Posts from "./components/post/posts.jsx";
 import PostForm, {actionPostForm} from "./components/post/postForm.jsx";
-import {hasAuthorityLoader, isAuthLoader} from "./services/AuthService.jsx";
+import {hasAnyAuthorityLoader, hasAuthorityLoader, isAuthLoader} from "./services/AuthService.jsx";
 import OnePost from "./components/post/onePost.jsx";
 import StudentProfile from "./components/profile/studentProfile.jsx";
 import CompanyProfile, {actionCompanyProfile} from "./components/profile/companyProfile.jsx";
@@ -24,6 +24,7 @@ import EditCompanyProfile, {
 import EditTeacherProfile, {
     actionEditTeacher
 } from "./components/coordinator/teachersManagement/editTeacherProfile.jsx";
+import ShowStudentProfile from "./components/company/show-student-profile.jsx";
 
 const router = createBrowserRouter([
     {
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
             {
                 path: "edit-teacher/:id", element: <EditTeacherProfile/>,
                 loader: hasAuthorityLoader("COORDINATOR"), action: actionEditTeacher
+            },
+            {
+                path: "show-student/:id", element: <ShowStudentProfile/>,
+                loader: hasAnyAuthorityLoader("COMPANY", "COORDINATOR")
             }
         ]
     },

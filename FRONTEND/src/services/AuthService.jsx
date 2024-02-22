@@ -65,6 +65,15 @@ export function hasAuthorityLoader(authority) {
     return null;
 }
 
+export function hasAnyAuthorityLoader(...authorities) {
+    for (let authority of authorities) {
+        if (localStorage.getItem('authority') === authority) {
+            return null;
+        }
+    }
+    return redirect("/home");
+}
+
 export function getAuthority() {
     return localStorage.getItem("authority");
 }

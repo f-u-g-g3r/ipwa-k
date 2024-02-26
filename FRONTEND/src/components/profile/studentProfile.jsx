@@ -7,7 +7,7 @@ import {
     uploadCv,
     uploadMotivationLetter
 } from "../../services/StudentService.jsx";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {getId} from "../../services/AuthService.jsx";
 import {getResume} from "../../services/ResumeService.jsx";
 import {getGroupByName} from "../../services/ClassGroupService.jsx";
@@ -132,7 +132,10 @@ function StudentProfile() {
 
     return (
         <>
-            <p className="text-2xl font-bold text-center my-10">Edit profile</p>
+            <div className="flex justify-center">
+                <Link to={`/home`} className="btn btn-neutral w-1/12 my-10">Home</Link>
+            </div>
+            <p className="text-2xl font-bold text-center">Edit profile</p>
 
             <div className="flex justify-end mb-5">
                 <ul className="menu menu-vertical text-lg lg:menu-horizontal bg-gray-300 ">

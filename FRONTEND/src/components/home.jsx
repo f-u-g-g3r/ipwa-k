@@ -8,19 +8,19 @@ function Home() {
         <>
 
             {authority === "COORDINATOR" ? <HomeCoordinator/> :
+                authority === "COMPANY" ? <HomeCompany/> :
                 authority === "STUDENT" ?
-                    <div className="hero min-h-screen">
-                        <div className="hero-content text-center">
-                            <div className="max-w-md">
-                                <h1 className="text-5xl font-bold">Welcome</h1>
-                                <p className="py-6">Some text</p>
-                                <Link to={`/posts`} className="btn btn-primary">Job posts</Link>
+                    <div className="flex justify-center items-start my-20 min-h-screen">
+                        <div className="hero-content text-center w-full">
+                            <div className="w-full">
+                                <h1 className="text-5xl font-bold mb-20">Welcome {`${localStorage.getItem("firstName")} ${localStorage.getItem("lastName")}`}</h1>
+                                <Link to={`/posts`} className="btn btn-success text-2xl w-1/3 mx-4">Job posts</Link>
+                                <Link to={`/home`} className="btn btn-success text-2xl w-1/3 mx-4">My applications</Link>
+                                <Link to={`/student/profile`} className="btn btn-warning text-2xl w-1/3 mt-8">Configure profile info</Link>
                             </div>
                         </div>
                     </div> :
-                        authority === "COMPANY" ? <>
-                            <HomeCompany/>
-                            </>:
+
                     <><h1>Home page!</h1></>}
 
 

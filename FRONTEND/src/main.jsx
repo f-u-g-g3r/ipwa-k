@@ -25,6 +25,7 @@ import EditTeacherProfile, {
     actionEditTeacher
 } from "./components/coordinator/teachersManagement/editTeacherProfile.jsx";
 import ShowStudentProfile from "./components/company/show-student-profile.jsx";
+import StudentApplications from "./components/student/studentApplications.jsx";
 
 const router = createBrowserRouter([
     {
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
             {
                 path: "show-student/:id", element: <ShowStudentProfile/>,
                 loader: hasAnyAuthorityLoader("COMPANY", "COORDINATOR")
+            },
+            {
+                path: "my-applications", element: <StudentApplications/>,
+                loader: hasAuthorityLoader("STUDENT")
             }
         ]
     },

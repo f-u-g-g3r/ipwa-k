@@ -4,8 +4,10 @@ import com.ipwa.kp.controllers.exceptions.CompanyNotFoundException;
 import com.ipwa.kp.controllers.exceptions.PostNotFoundException;
 import com.ipwa.kp.models.Company;
 import com.ipwa.kp.models.Post;
+import com.ipwa.kp.models.Student;
 import com.ipwa.kp.repositories.CompanyRepository;
 import com.ipwa.kp.repositories.PostRepository;
+import com.ipwa.kp.repositories.StudentRepository;
 import com.ipwa.kp.security.config.JwtService;
 import com.ipwa.kp.services.FileService;
 import org.springframework.core.io.ByteArrayResource;
@@ -28,12 +30,14 @@ import java.util.List;
 public class PostController {
     private final PostRepository repository;
     private final CompanyRepository companyRepository;
+    private final StudentRepository studentRepository;
     private final JwtService jwtService;
     private final FileService fileService;
 
-    public PostController(PostRepository repository, CompanyRepository companyRepository, JwtService jwtService, FileService fileService) {
+    public PostController(PostRepository repository, CompanyRepository companyRepository, StudentRepository studentRepository, JwtService jwtService, FileService fileService) {
         this.repository = repository;
         this.companyRepository = companyRepository;
+        this.studentRepository = studentRepository;
         this.jwtService = jwtService;
         this.fileService = fileService;
     }
@@ -53,6 +57,13 @@ public class PostController {
     public List<Post> allByOwnerId(@PathVariable Long companyId) {
         return repository.findAllByCompanyId(companyId)
                 .orElseThrow(() -> new PostNotFoundException(companyId));
+    }
+
+    @GetMapping("/student/{studentId}")
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'TEACHER') or hasAuthority('STUDENT') and #studentId == authentication.principal.id")
+    public List<Post> allByStudentId(@PathVariable Long studentId) {
+        return repository.findAllByPostsStudentsStudentId(studentId)
+                .orElseThrow(() -> new PostNotFoundException(studentId));
     }
 
     @PostMapping

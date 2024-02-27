@@ -99,11 +99,6 @@ public class StudentController {
         return ResponseEntity.ok(post);
     }
 
-//    @PostMapping
-//    public ResponseEntity<?> newStudent(@RequestBody Student student) {
-//        return ResponseEntity.ok(repository.save(student));
-//    }
-
     @PatchMapping("/{groupId}/{studentId}")
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'TEACHER')")
     public ResponseEntity<?> addStudentToGroup(@PathVariable Long groupId, @PathVariable Long studentId) {

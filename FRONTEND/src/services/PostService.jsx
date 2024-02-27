@@ -62,6 +62,18 @@ export async function getPostByCompanyId(companyId) {
     }
 }
 
+export async function getPostsByStudentId(studentId) {
+    if (isAuth()) {
+        const posts = await axios.get(`${API_URL}/student/${studentId}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        });
+
+        return posts.data;
+    }
+}
+
 export async function uploadPostPdf(id, file) {
     if (isAuth()) {
         const post = await axios.put(`${API_URL}/pdf/${id}`, file, {

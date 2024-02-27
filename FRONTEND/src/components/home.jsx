@@ -15,7 +15,7 @@ function Home() {
                             <div className="w-full">
                                 <h1 className="text-5xl font-bold mb-20">Welcome {`${localStorage.getItem("firstName")} ${localStorage.getItem("lastName")}`}</h1>
                                 <Link to={`/posts`} className="btn btn-success text-2xl w-1/3 mx-4">Job posts</Link>
-                                <Link to={`/home`} className="btn btn-success text-2xl w-1/3 mx-4">My applications</Link>
+                                <Link to={`/my-applications`} className="btn btn-success text-2xl w-1/3 mx-4">My applications</Link>
                                 <Link to={`/student/profile`} className="btn btn-warning text-2xl w-1/3 mt-8">Configure profile info</Link>
                             </div>
                         </div>

@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 @Table(name = "posts")
 public class Post {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -7,7 +7,7 @@ import {Link, useNavigate} from "react-router-dom";
 export const ActionContext = createContext();
 function HomeCompany() {
 
-    const [action,  setAction] = useState(0);
+    const [action,  setAction] = useState(1);
     const [postId, setPostId] = useState(0);
     const urlParams = new URLSearchParams(window.location.search);
     const actionParam = urlParams.get('action');

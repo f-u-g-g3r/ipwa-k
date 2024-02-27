@@ -13,6 +13,8 @@ function OnePost() {
 
     const urlParams = new URLSearchParams(window.location.search);
     const homeParam = urlParams.get('home');
+    const stHomeParam = urlParams.get('stHome');
+
 
     let {id} = useParams();
 
@@ -69,7 +71,7 @@ function OnePost() {
         <>
 
             <div className="flex">
-                <Link to={homeParam === null ? `/posts` : `/home?action=1`} className="btn btn-neutral w-1/12 ms-20">Back</Link>
+                <Link to={homeParam !== null ? `/home?action=1` : stHomeParam !== null ? `/my-applications` : `/posts`} className="btn btn-neutral w-1/12 ms-20">Back</Link>
                 {(hasAuthority("STUDENT") && !isApplied) ?
                     <button className="btn btn-success w-1/12 ms-auto me-20" onClick={() => apply(post.id)}>Apply</button> :
                     (hasAuthority("STUDENT") && isApplied) ?

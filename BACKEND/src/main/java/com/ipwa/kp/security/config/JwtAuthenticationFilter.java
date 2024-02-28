@@ -37,7 +37,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
-        Long id = null;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -47,18 +46,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         jwt = authHeader.substring(7); // cutting word "Bearer " from our token
         userEmail = jwtService.extractUsername(jwt);
 
-        Long userId = jwtService.extractId(jwt);
-
-        String requestURI = request.getRequestURI();
-        String[] uriParts = requestURI.split("/");
-
-//        if (uriParts.length > 2) {
-//            id = Long.parseLong(uriParts[2]);
-//        } else {
-//            System.out.println(123);
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);

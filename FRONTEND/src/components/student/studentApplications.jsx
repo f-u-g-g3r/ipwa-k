@@ -3,11 +3,13 @@ import {getStudent} from "../../services/StudentService.jsx";
 import {getId} from "../../services/AuthService.jsx";
 import {getPost, getPostsByStudentId} from "../../services/PostService.jsx";
 import {Link} from "react-router-dom";
+import {getCompaniesByStudentId} from "../../services/CompanyService.jsx";
 
 function StudentApplications() {
 
     const [student, setStudent] = useState({postStudents: []});
     const [posts, setPosts] = useState({});
+    const [companies, setCompanies] = useState([]);
 
     const fetchStudent = async () => {
         try {
@@ -25,18 +27,32 @@ function StudentApplications() {
         }
     }
 
-    const test = (postId) => {
+    const fetchCompanies = async (id) => {
+        try {
+            setCompanies(await getCompaniesByStudentId(id))
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const getPostInfo = (postId) => {
         let post;
-        if (posts.length > 0) {
+        let company;
+        if (posts.length > 0 && companies.length > 0) {
             for (let onePost of posts) {
-                if (onePost.id == postId) {
+                if (onePost.id === postId) {
                     post = onePost;
+                    for (let oneCompany of companies) {
+                        if (oneCompany.id === post.company) {
+                            company = oneCompany;
+                        }
+                    }
                 }
             }
             return (
                 <>
                     <td>{post.workName}</td>
-                    <td>{post.company}</td>
+                    <td>{company.name}</td>
                     <td>{post.expiryDate}</td>
                 </>
             )
@@ -47,6 +63,7 @@ function StudentApplications() {
     useEffect(() => {
         fetchStudent();
         fetchPosts(getId());
+        fetchCompanies(getId());
     }, []);
 
     return (
@@ -73,7 +90,7 @@ function StudentApplications() {
                 {student.postStudents.map((application) => (
                     <tr key={application.id}>
                         <td>{application.id}</td>
-                        {test(application.post)}
+                        {getPostInfo(application.post)}
                         <td>{application.createdAt}</td>
                         <td className="font-bold">{application.status}</td>
                         <td>

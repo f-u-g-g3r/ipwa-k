@@ -1,6 +1,7 @@
 package com.ipwa.kp.controllers;
 
 import com.ipwa.kp.controllers.exceptions.CompanyNotFoundException;
+import com.ipwa.kp.controllers.exceptions.StudentNotFoundException;
 import com.ipwa.kp.controllers.requests.CompanyPatchRequest;
 import com.ipwa.kp.models.Company;
 import com.ipwa.kp.repositories.CompanyRepository;
@@ -69,6 +70,12 @@ public class CompanyController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.ok("ok");
+    }
+
+    @GetMapping("/posts/{studentId}")
+    public List<Company> oneByStudentId(@PathVariable Long studentId) {
+        return repository.findByPostsPostsStudentsStudentId(studentId)
+                .orElseThrow(() -> new StudentNotFoundException(studentId));
     }
 
     @GetMapping("/logos/{fileName}")

@@ -21,8 +21,8 @@ function StudentsTable(props) {
     return(
         <>
             <Link to={`/home?action=1`} className="btn btn-neutral w-1/12 ms-20">Back</Link>
-            <table className="table table-lg">
-                <thead>
+            <table className="table border-slate-500 bg-gray-200 table-lg">
+                <thead className="bg-gray-300">
                 <tr>
                     <th>Name</th>
                     <th>Action</th>

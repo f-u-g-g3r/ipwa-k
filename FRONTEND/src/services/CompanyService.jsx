@@ -55,3 +55,16 @@ export async function getLogo(path) {
         console.error(error);
     }
 }
+
+export async function getCompaniesByStudentId(studentId) {
+    try {
+        const companies = await axios.get(`${API_URL}/posts/${studentId}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        });
+        return companies.data;
+    } catch (e) {
+        console.log(e)
+    }
+}

@@ -1,16 +1,18 @@
-
-import {useEffect, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 import PostCard from "./postCard.jsx";
 import PostSearch from "./postSearch.jsx";
-import {getPosts} from "../../services/PostService.jsx";
+import {getPosts, getPostsByPage} from "../../services/PostService.jsx";
 import {Link} from "react-router-dom";
+import Pagination from "../pagination/pagination.jsx";
 
+export const ActionContext = createContext();
 function Posts() {
-    const [posts, setPosts] = useState({});
+    const [posts, setPosts] = useState({content: []});
 
-    const fetchPosts = async () => {
+    const fetchPosts = async (pageNumber = 0) => {
         try {
-            setPosts(await getPosts());
+            console.log(pageNumber)
+            setPosts(await getPostsByPage(pageNumber))
         } catch (e) {
             console.log(e)
         }
@@ -19,17 +21,24 @@ function Posts() {
         fetchPosts()
     }, []);
 
-    return(
+    useEffect(() => {
+        console.log(posts)
+    }, [posts]);
+
+    return (
         <>
             <div className="flex justify-center my-10">
                 <Link to={`/home`} className="btn btn-neutral w-1/12">Home</Link>
             </div>
             <PostSearch/>
-            {posts.length ? (
+            {posts.content.length ? (
                 <>
-                    {posts.map((post) => (
+                    {posts.content.map((post) => (
                         <PostCard key={post.id} post={post}/>
                     ))}
+                    <ActionContext.Provider value={[fetchPosts]}>
+                        <Pagination posts={posts}/>
+                    </ActionContext.Provider>
                 </>
             ) : (
                 <p>

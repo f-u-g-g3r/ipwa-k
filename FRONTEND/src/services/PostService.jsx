@@ -25,6 +25,19 @@ export async function getPosts() {
     }
 }
 
+export async function getPostsByPage(pageNumber) {
+    if (isAuth()) {
+        const posts = await axios.get(`${API_URL}?page=${pageNumber}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+        return posts.data;
+    } else {
+        return redirect("/login")
+    }
+}
+
 export async function getPost(id) {
     if (isAuth()) {
         const post = await axios.get(`${API_URL}/${id}`, {

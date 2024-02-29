@@ -11,6 +11,9 @@ import com.ipwa.kp.repositories.StudentRepository;
 import com.ipwa.kp.security.config.JwtService;
 import com.ipwa.kp.services.FileService;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/posts")
@@ -43,8 +47,18 @@ public class PostController {
     }
 
     @GetMapping
-    public List<Post> all() {
-        return repository.findAll();
+    public Page<Post> all(@RequestParam Optional<String> sortBy,
+                          @RequestParam Optional<Integer> page,
+                          @RequestParam Optional<String> direction) {
+        Sort.Direction sort = Sort.Direction.ASC;
+        if (direction.isPresent() && direction.get().equals("DESC")) {
+            sort = Sort.Direction.DESC;
+        }
+        return repository.findAll(PageRequest.of(
+                page.orElse(0),
+                1,
+                sort, sortBy.orElse("id")
+        ));
     }
 
     @GetMapping("/{id}")

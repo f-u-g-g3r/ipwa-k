@@ -64,6 +64,8 @@ export async function updatePost(postData, id) {
     return redirect("/login")
 }
 
+
+
 export async function getPostByCompanyId(companyId) {
     if (isAuth()) {
         const posts = await axios.get(`${API_URL}/company/${companyId}`, {
@@ -118,5 +120,23 @@ export async function getPostPdf(path) {
         }
     } else {
         return redirect("/login")
+    }
+}
+
+export async function deletePostById(id) {
+    if (isAuth() && (hasAuthority("COMPANY") || hasAuthority("COORDINATOR"))) {
+        try {
+            await axios.delete(`${API_URL}/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+            return "Post successfully deleted";
+        } catch (error) {
+            console.error("error", error);
+            throw error;
+        }
+    } else {
+        return redirect("/login");
     }
 }

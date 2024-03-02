@@ -1,9 +1,8 @@
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {getCompany, getLogo} from "../../services/CompanyService.jsx";
 import {Link} from "react-router-dom";
 import {ActionContext} from "../company/homeCompany.jsx";
-import DeleteButton from "./deletePost";
-
+import { deletePostById } from "../../services/PostService.jsx";
 
 
 function PostCard(props) {
@@ -20,6 +19,16 @@ function PostCard(props) {
         }
     }
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     const fetchLogo = async () => {
         try {
             if (company.logoPath !== null) {
@@ -29,6 +38,17 @@ function PostCard(props) {
             console.log(e)
         }
     }
+    const handleDeletePost = async () => {
+        try {
+            await deletePostById(props.post.id);
+            console.log("Post successfully deleted");
+            if (props.onDeletePost) {
+                props.onDeletePost(props.post.id);
+            }
+        } catch (error) {
+            console.error("error", error);
+        }
+    };
 
     useEffect(() => {
         fetchCompany()
@@ -72,13 +92,29 @@ function PostCard(props) {
                             }} className="btn btn-secondary text-xl h-14">Show info
                             </button>
                         </div>
-
-
-                            <DeleteButton />
-
-
-
-
+                        <div className="flex items-center w-1/5 ms-10">
+                            <button className="btn btn-error" onClick={() => document.getElementById('modalWindowId').showModal()}>
+                                Delete Post
+                            </button>
+                            <dialog id="modalWindowId" className="modal">
+                                <div className="modal-box">
+                                    <h3 className="font-bold text-lg">Are you sure you want to delete this post?</h3>
+                                    <div className="modal-action">
+                                        <form method="dialog">
+                                            <button className="btn" onClick={closeModal}>No</button>
+                                            <button
+                                                className="btn btn-error"
+                                                onClick={() => {
+                                                    handleDeletePost();
+                                                    closeModal();
+                                                }}
+                                            >Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </dialog>
+                        </div>
 
 
                     </>

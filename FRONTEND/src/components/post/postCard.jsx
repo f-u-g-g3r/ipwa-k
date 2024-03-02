@@ -2,6 +2,8 @@ import {useContext, useEffect, useState} from "react";
 import {getCompany, getLogo} from "../../services/CompanyService.jsx";
 import {Link} from "react-router-dom";
 import {ActionContext} from "../company/homeCompany.jsx";
+import DeleteButton from "./deletePost";
+
 
 
 function PostCard(props) {
@@ -70,9 +72,15 @@ function PostCard(props) {
                             }} className="btn btn-secondary text-xl h-14">Show info
                             </button>
                         </div>
-                        <div className="flex items-center w-1/5 ms-10">
-                            <button className="btn btn-error">Delete post</button>
-                        </div>
+
+
+                            <DeleteButton />
+
+
+
+
+
+
                     </>
                     : <></>}
             </div>

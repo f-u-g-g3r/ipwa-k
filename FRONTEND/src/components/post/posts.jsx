@@ -11,7 +11,6 @@ function Posts() {
 
     const fetchPosts = async (pageNumber = 0) => {
         try {
-            console.log(pageNumber)
             setPosts(await getPostsByPage(pageNumber))
         } catch (e) {
             console.log(e)
@@ -20,10 +19,6 @@ function Posts() {
     useEffect(() => {
         fetchPosts()
     }, []);
-
-    useEffect(() => {
-        console.log(posts)
-    }, [posts]);
 
     return (
         <>
@@ -36,9 +31,7 @@ function Posts() {
                     {posts.content.map((post) => (
                         <PostCard key={post.id} post={post}/>
                     ))}
-                    <ActionContext.Provider value={[fetchPosts]}>
-                        <Pagination posts={posts}/>
-                    </ActionContext.Provider>
+                    <Pagination data={posts} fetchAction={fetchPosts}/>
                 </>
             ) : (
                 <p>

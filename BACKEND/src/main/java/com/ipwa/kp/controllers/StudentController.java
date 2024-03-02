@@ -10,6 +10,9 @@ import com.ipwa.kp.models.*;
 import com.ipwa.kp.repositories.*;
 import com.ipwa.kp.services.FileService;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,10 +26,7 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 @RequestMapping("/students")
@@ -49,8 +49,18 @@ public class StudentController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('COORDINATOR')")
-    public List<Student> all() {
-        return repository.findAll();
+    public Page<Student> all(@RequestParam Optional<String> sortBy,
+                             @RequestParam Optional<Integer> page,
+                             @RequestParam Optional<String> direction) {
+        Sort.Direction sort = Sort.Direction.ASC;
+        if (direction.isPresent() && direction.get().equals("DESC")) {
+            sort = Sort.Direction.DESC;
+        }
+        return repository.findAll(PageRequest.of(
+                page.orElse(0),
+                5,
+                sort, sortBy.orElse("id")
+        ));
     }
 
     @GetMapping("/{id}")

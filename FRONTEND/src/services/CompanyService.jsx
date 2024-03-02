@@ -1,4 +1,6 @@
 import axios from "axios";
+import {isAuth} from "./AuthService.jsx";
+import {redirect} from "react-router-dom";
 
 const API_URL = 'http://localhost:8080/companies';
 
@@ -12,6 +14,19 @@ export async function getCompanies() {
         return companies.data;
     } catch (e) {
         console.log(e);
+    }
+}
+
+export async function getCompaniesByPage(pageNumber) {
+    if (isAuth()) {
+        const companies = await axios.get(`${API_URL}?page=${pageNumber}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+        return companies.data;
+    } else {
+        return redirect("/login")
     }
 }
 

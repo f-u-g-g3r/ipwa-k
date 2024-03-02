@@ -22,6 +22,19 @@ export async function getStudents() {
     return student.data;
 }
 
+export async function getStudentsByPage(pageNumber) {
+    if (isAuth()) {
+        const students = await axios.get(`${API_URL}?page=${pageNumber}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+        return students.data;
+    } else {
+        return redirect("/login")
+    }
+}
+
 export async function updateStudent(student, studentId) {
     return await axios.patch(`${API_URL}/${studentId}`, student, {
         headers: {

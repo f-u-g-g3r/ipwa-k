@@ -1,11 +1,13 @@
 import {useEffect, useState} from "react";
 import {createCompany, generateRandomString} from "../../../services/AuthService.jsx";
-import {getCompanies} from "../../../services/CompanyService.jsx";
+import {getCompanies, getCompaniesByPage} from "../../../services/CompanyService.jsx";
 import {Link} from "react-router-dom";
+import {getStudentsByPage} from "../../../services/StudentService.jsx";
+import Pagination from "../../pagination/pagination.jsx";
 
 
 function CompanyProfileManagement() {
-    const [companies, setCompanies] = useState({});
+    const [companies, setCompanies] = useState({content: []});
     const [newCompany, setNewCompany] = useState({
         username: "",
         password: "",
@@ -27,9 +29,9 @@ function CompanyProfileManagement() {
         setNewCompany(n => ({...n, password: generateRandomString(12)}));
     }
 
-    const fetchCompanies = async () => {
+    const fetchCompanies = async (pageNumber = 0) => {
         try {
-            setCompanies(await getCompanies());
+            setCompanies(await getCompaniesByPage(pageNumber));
         } catch (e) {
             console.log(e)
         }
@@ -84,7 +86,8 @@ function CompanyProfileManagement() {
                 <button className="btn btn-success mt-5 w-1/2" onClick={() => addNewCompany()}>Add</button>
             </div>
 
-            {companies.length ? (
+            {companies.content.length ? (
+                <>
                 <table className="table text-center mt-10">
                     <thead>
                     <tr>
@@ -95,7 +98,7 @@ function CompanyProfileManagement() {
                     </tr>
                     </thead>
                     <tbody>
-                    {companies.map((company) => (
+                    {companies.content.map((company) => (
                         <tr key={company.id}>
                             <td><p>{company.id}</p></td>
                             <td><p>{company.name}</p></td>
@@ -108,6 +111,8 @@ function CompanyProfileManagement() {
                     ))}
                     </tbody>
                 </table>
+                <Pagination data={companies} fetchAction={fetchCompanies}/>
+                </>
             ) : <></>}
         </>
     )

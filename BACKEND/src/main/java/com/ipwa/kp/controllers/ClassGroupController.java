@@ -7,11 +7,15 @@ import com.ipwa.kp.models.Teacher;
 import com.ipwa.kp.repositories.ClassGroupRepository;
 import com.ipwa.kp.repositories.StudentRepository;
 import com.ipwa.kp.repositories.TeacherRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/class-groups")
 @RestController
@@ -29,6 +33,21 @@ public class ClassGroupController {
     @GetMapping
     public List<ClassGroup> all() {
         return repository.findAll();
+    }
+
+    @GetMapping("/pages")
+    public Page<ClassGroup> allByPage(@RequestParam Optional<String> sortBy,
+                                      @RequestParam Optional<Integer> page,
+                                      @RequestParam Optional<String> direction) {
+        Sort.Direction sort = Sort.Direction.ASC;
+        if (direction.isPresent() && direction.get().equals("DESC")) {
+            sort = Sort.Direction.DESC;
+        }
+        return repository.findAll(PageRequest.of(
+                page.orElse(0),
+                5,
+                sort, sortBy.orElse("id")
+        ));
     }
 
     @PostMapping

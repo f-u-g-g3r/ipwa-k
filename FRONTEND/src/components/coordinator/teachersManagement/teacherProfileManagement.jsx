@@ -1,19 +1,20 @@
 import {useEffect, useState} from "react";
 import {createTeacher, generateRandomString} from "../../../services/AuthService.jsx";
-import {getTeachers} from "../../../services/TeacherService.jsx";
+import {getTeachers, getTeachersByPage} from "../../../services/TeacherService.jsx";
 import {Link} from "react-router-dom";
+import Pagination from "../../pagination/pagination.jsx";
 
 function TeacherProfileManagement() {
 
-    const [teachers, setTeachers] = useState({});
+    const [teachers, setTeachers] = useState({content: []});
     const [newTeacher, setNewTeacher] = useState({
         username: "",
         password: "",
     });
 
-    const fetchTeachers = async () => {
+    const fetchTeachers = async (pageNumber = 0) => {
         try {
-            setTeachers(await getTeachers());
+            setTeachers(await getTeachersByPage(pageNumber));
         } catch (e) {
             console.log(e)
         }
@@ -83,33 +84,39 @@ function TeacherProfileManagement() {
                 <button className="btn btn-success mt-5 w-1/2" onClick={() => addNewTeacher()}>Add</button>
             </div>
 
-            <table className="table mt-10">
-                <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Group</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                {teachers.length ?
-                    teachers.map((teacher) =>
-                        <tr key={teacher.id}>
-                            <td>{teacher.id}</td>
-                            <td>{`${teacher.firstName} ${teacher.lastName}` === "null null" ? "Name is not given" :
-                                `${teacher.firstName} ${teacher.lastName}`}</td>
-                            <td>{teacher.email}</td>
-                            <td>{teacher.classGroup}</td>
-                            <td>
-                                <a className="btn btn-info mx-1">Show</a>
-                                <Link to={`/edit-teacher/${teacher.id}`} className="btn btn-warning mx-1">Edit</Link>
-                            </td>
+            {teachers.content.length ?
+                <>
+                    <table className="table mt-10">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Group</th>
+                            <th>Action</th>
                         </tr>
-                    ) : <></>}
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                        {teachers.content.map((teacher) =>
+                            <tr key={teacher.id}>
+                                <td>{teacher.id}</td>
+                                <td>{`${teacher.firstName} ${teacher.lastName}` === "null null" ? "Name is not given" :
+                                    `${teacher.firstName} ${teacher.lastName}`}</td>
+                                <td>{teacher.email}</td>
+                                <td>{teacher.classGroup}</td>
+                                <td>
+                                    <a className="btn btn-info mx-1">Show</a>
+                                    <Link to={`/edit-teacher/${teacher.id}`}
+                                          className="btn btn-warning mx-1">Edit</Link>
+                                </td>
+                            </tr>
+                        )}
+                        </tbody>
+                    </table>
+                    <Pagination data={teachers} fetchAction={fetchTeachers}/>
+                </>
+                : <></>
+            }
 
         </>
     )

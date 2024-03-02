@@ -34,14 +34,12 @@ import java.util.Optional;
 public class PostController {
     private final PostRepository repository;
     private final CompanyRepository companyRepository;
-    private final StudentRepository studentRepository;
     private final JwtService jwtService;
     private final FileService fileService;
 
-    public PostController(PostRepository repository, CompanyRepository companyRepository, StudentRepository studentRepository, JwtService jwtService, FileService fileService) {
+    public PostController(PostRepository repository, CompanyRepository companyRepository, JwtService jwtService, FileService fileService) {
         this.repository = repository;
         this.companyRepository = companyRepository;
-        this.studentRepository = studentRepository;
         this.jwtService = jwtService;
         this.fileService = fileService;
     }
@@ -56,7 +54,7 @@ public class PostController {
         }
         return repository.findAll(PageRequest.of(
                 page.orElse(0),
-                1,
+                5,
                 sort, sortBy.orElse("id")
         ));
     }

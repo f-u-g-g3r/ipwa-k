@@ -1,5 +1,6 @@
 import axios from "axios";
 import {isAuth} from "./AuthService.jsx";
+import {redirect} from "react-router-dom";
 
 const API_URL = 'http://localhost:8080/teachers';
 
@@ -13,6 +14,19 @@ export async function getTeachers() {
         return teachers.data;
     } catch (e) {
         console.log(e);
+    }
+}
+
+export async function getTeachersByPage(pageNumber) {
+    if (isAuth()) {
+        const teachers = await axios.get(`${API_URL}?page=${pageNumber}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+        return teachers.data;
+    } else {
+        return redirect("/login")
     }
 }
 

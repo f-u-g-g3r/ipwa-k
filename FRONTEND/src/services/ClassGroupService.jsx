@@ -22,6 +22,19 @@ export async function getAllGroups() {
     }
 }
 
+export async function getGroupsByPage(pageNumber) {
+    if (isAuth()) {
+        const groups = await axios.get(`${API_URL}/pages?page=${pageNumber}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+        return groups.data;
+    } else {
+        return redirect("/login")
+    }
+}
+
 export async function addNewGroup(group) {
     if (isAuth() && hasAuthority("COORDINATOR")) {
         try {

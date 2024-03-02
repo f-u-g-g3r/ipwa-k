@@ -1,19 +1,20 @@
 import {useEffect, useState} from "react";
-import {addNewGroup, getAllGroups} from "../../../services/ClassGroupService.jsx";
+import {addNewGroup, getAllGroups, getGroupsByPage} from "../../../services/ClassGroupService.jsx";
 import {Form, useFetcher, useFormAction} from "react-router-dom";
 import {addTeacherToGroup, getTeacher, getTeachers} from "../../../services/TeacherService.jsx";
+import Pagination from "../../pagination/pagination.jsx";
 
 function ShowGroups() {
 
-    const [groups, setGroups] = useState({});
+    const [groups, setGroups] = useState({content: []});
     const [newGroup, setNewGroup] = useState("");
     const [teacherNames, setTeacherNames] = useState({});
     const [teachers, setTeachers] = useState({});
     const [groupSelected, setGroupSelected] = useState(0);
 
-    const fetchGroups = async () => {
+    const fetchGroups = async (pageNumber = 0) => {
         try {
-            setGroups(await getAllGroups());
+            setGroups(await getGroupsByPage(pageNumber));
         } catch (e) {
             console.log(e)
         }
@@ -87,33 +88,40 @@ function ShowGroups() {
                     <button type="submit" className="btn btn-success ms-2">Add</button>
                 </div>
             </Form>
-            <table className="table mt-10">
-                <thead>
-                <tr>
-                    <td>Id</td>
-                    <td>Name</td>
-                    <td>Number of students</td>
-                    <td>Teacher</td>
-                    <td>Action</td>
-                </tr>
-                </thead>
-                <tbody>
-                {groups.length ?
-                    groups.map((group) =>
-                        <tr key={group.id}>
-                            <td>{group.id}</td>
-                            <td>{group.name}</td>
-                            <td>{group.students.length}</td>
-                            <td>{teacherNames[group.id]}</td>
-                            <td>
-                                <button className="btn btn-success" onClick={() => {assignTeacher.showModal(); setGroupSelected(group.id)}}>Assign
-                                    teacher to group
-                                </button>
-                            </td>
-                        </tr>) :
-                    <></>}
-                </tbody>
-            </table>
+            {groups.content.length ?
+                <>
+                    <table className="table mt-10">
+                        <thead>
+                        <tr>
+                            <td>Id</td>
+                            <td>Name</td>
+                            <td>Number of students</td>
+                            <td>Teacher</td>
+                            <td>Action</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {groups.content.map((group) =>
+                            <tr key={group.id}>
+                                <td>{group.id}</td>
+                                <td>{group.name}</td>
+                                <td>{group.students.length}</td>
+                                <td>{teacherNames[group.id]}</td>
+                                <td>
+                                    <button className="btn btn-success" onClick={() => {
+                                        assignTeacher.showModal();
+                                        setGroupSelected(group.id)
+                                    }}>Assign
+                                        teacher to group
+                                    </button>
+                                </td>
+                            </tr>)}
+                        </tbody>
+                    </table>
+                    <Pagination data={groups} fetchAction={fetchGroups}/>
+                </>
+                : <></>}
 
             <dialog id="assignTeacher" className="modal">
                 <div className="modal-box">
@@ -124,16 +132,20 @@ function ShowGroups() {
                                 {teachers.length ?
                                     teachers.map((teacher) =>
                                         `${teacher.firstName} ${teacher.lastName}` !== 'null null' ?
-                                        <option value={teacher.id}>{`${teacher.firstName} ${teacher.lastName}`}</option> :
-                                        <></>
+                                            <option
+                                                value={teacher.id}>{`${teacher.firstName} ${teacher.lastName}`}</option> :
+                                            <></>
                                     ) : <></>
                                 }
                             </select>
                             <input type="hidden" name="groupId" value={groupSelected}/>
                         </p>
                         <div className="modal-action">
-                            <button type="button" className="btn mx-2" onClick={() => assignTeacher.close()}>Close</button>
-                            <button type="submit" className="btn btn-warning mx-2" onClick={() => assignTeacher.close()}>Save</button>
+                            <button type="button" className="btn mx-2" onClick={() => assignTeacher.close()}>Close
+                            </button>
+                            <button type="submit" className="btn btn-warning mx-2"
+                                    onClick={() => assignTeacher.close()}>Save
+                            </button>
                         </div>
                     </form>
                 </div>

@@ -17,6 +17,8 @@ function HomeCompany() {
         setAction(actionToSet)
     }
 
+
+
     useEffect(() => {
         navigate(`/home?action=${action}`)
     }, [action])

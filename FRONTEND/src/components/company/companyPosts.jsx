@@ -1,9 +1,12 @@
-import {useEffect, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 import {getPostByCompanyId} from "../../services/PostService.jsx";
 import {getId} from "../../services/AuthService.jsx";
 import PostCard from "../post/postCard.jsx";
 import {Link} from "react-router-dom";
+import {ActionContext} from "../post/posts.jsx";
 
+
+export const ActionContextFetchPosts = createContext();
 function CompanyPosts() {
     const [posts, setPosts] = useState({});
 
@@ -22,7 +25,9 @@ function CompanyPosts() {
             {posts.length ? (
                     <>
                         {posts.map((post) => (
-                            <PostCard key={post.id} isCheck={true} post={post}/>
+                            <ActionContextFetchPosts.Provider value={fetchPosts}>
+                                <PostCard key={post.id} isCheck={true} post={post}/>
+                            </ActionContextFetchPosts.Provider>
                         ))}
                     </>
                 ) :

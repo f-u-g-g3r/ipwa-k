@@ -1,15 +1,19 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {getCompany, getLogo} from "../../services/CompanyService.jsx";
-import {Link} from "react-router-dom";
+import {Link, redirect, useNavigate} from "react-router-dom";
 import {ActionContext} from "../company/homeCompany.jsx";
-import { deletePostById } from "../../services/PostService.jsx";
+import {deletePostById} from "../../services/PostService.jsx";
+import DeleteModal from "./deleteModal.jsx";
+import {ActionContextFetchPosts} from "../company/companyPosts.jsx";
 
 
 function PostCard(props) {
 
     const [company, setCompany] = useState("");
     const [logo, setLogo] = useState("http://via.placeholder.com/200x200");
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const value = useContext(ActionContext);
+    const fetchPosts = useContext(ActionContextFetchPosts);
 
     const fetchCompany = async () => {
         try {
@@ -19,11 +23,10 @@ function PostCard(props) {
         }
     }
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => {
         setIsModalOpen(true);
-    };
+    }
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -38,13 +41,13 @@ function PostCard(props) {
             console.log(e)
         }
     }
-    const handleDeletePost = async () => {
+
+
+    const handleDeletePost = async (id) => {
         try {
-            await deletePostById(props.post.id);
-            console.log("Post successfully deleted");
-            if (props.onDeletePost) {
-                props.onDeletePost(props.post.id);
-            }
+            await deletePostById(id);
+            fetchPosts();
+
         } catch (error) {
             console.error("error", error);
         }
@@ -93,30 +96,14 @@ function PostCard(props) {
                             </button>
                         </div>
                         <div className="flex items-center w-1/5 ms-10">
-                            <button className="btn btn-error" onClick={() => document.getElementById('modalWindowId').showModal()}>
+                            <button className="btn btn-error" onClick={() => openModal()}>
                                 Delete Post
                             </button>
-                            <dialog id="modalWindowId" className="modal">
-                                <div className="modal-box">
-                                    <h3 className="font-bold text-lg">Are you sure you want to delete this post?</h3>
-                                    <div className="modal-action">
-                                        <form method="dialog">
-                                            <button className="btn" onClick={closeModal}>No</button>
-                                            <button
-                                                className="btn btn-error"
-                                                onClick={() => {
-                                                    handleDeletePost();
-                                                    closeModal();
-                                                }}
-                                            >Delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </dialog>
+
                         </div>
-
-
+                        <ActionContext.Provider value={[handleDeletePost, closeModal]}>
+                            {isModalOpen ? <DeleteModal post={props.post}/> : <></>}
+                        </ActionContext.Provider>
                     </>
                     : <></>}
             </div>

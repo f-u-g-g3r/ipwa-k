@@ -10,6 +10,7 @@ import com.ipwa.kp.repositories.PostRepository;
 import com.ipwa.kp.repositories.StudentRepository;
 import com.ipwa.kp.security.config.JwtService;
 import com.ipwa.kp.services.FileService;
+import jakarta.transaction.Transactional;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -137,6 +138,7 @@ public class PostController {
                 .contentLength(pdfContent.length)
                 .body(resource);
     }
+
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('COMPANY', 'COORDINATOR')")

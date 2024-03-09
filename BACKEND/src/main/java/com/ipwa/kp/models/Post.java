@@ -18,7 +18,7 @@ public class Post {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostStudent> postsStudents = new ArrayList<>();
 
 

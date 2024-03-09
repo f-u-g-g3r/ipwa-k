@@ -36,6 +36,7 @@ function StudentProfileManagement() {
         }
     }
 
+
     const addNewStudent = async () => {
         try {
             if (newStudent.username !== "" && newStudent.password !== "") {

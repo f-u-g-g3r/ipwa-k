@@ -69,15 +69,15 @@ const router = createBrowserRouter([
             },
             {
                 path: "edit-student/:id", element: <EditStudentProfile/>,
-                loader: hasAuthorityLoader("COORDINATOR"), action: actionEditStudent
+                loader: () => hasAuthorityLoader("COORDINATOR"), action: actionEditStudent
             },
             {
                 path: "edit-company/:id", element: <EditCompanyProfile/>,
-                loader: hasAuthorityLoader("COORDINATOR"), action: actionEditCompany
+                loader: () => hasAuthorityLoader("COORDINATOR"), action: actionEditCompany
             },
             {
                 path: "edit-teacher/:id", element: <EditTeacherProfile/>,
-                loader: hasAuthorityLoader("COORDINATOR"), action: actionEditTeacher
+                loader: () => hasAuthorityLoader("COORDINATOR"), action: actionEditTeacher
             },
             {
                 path: "show-student/:id", element: <ShowStudentProfile/>,
@@ -85,7 +85,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "my-applications", element: <StudentApplications/>,
-                loader: hasAuthorityLoader("STUDENT")
+                loader: () => hasAuthorityLoader("STUDENT")
             }
         ]
     },

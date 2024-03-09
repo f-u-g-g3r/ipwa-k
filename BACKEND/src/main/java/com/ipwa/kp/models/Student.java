@@ -28,7 +28,7 @@ public class Student implements UserDetails {
     private ClassGroup classGroup;
 
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<PostStudent> postsStudents = new ArrayList<>();
 
 

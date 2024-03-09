@@ -24,7 +24,6 @@ export async function createCompany(companyData) {
 }
 
 export async function createTeacher(teacherData) {
-    console.log(1)
     const response = await axios.post(`${API_URL}/teachers`, teacherData,{
         headers: {
             'Authorization': `Bearer ${localStorage.getItem("token")}`
@@ -58,11 +57,14 @@ export function hasAuthority(authority) {
     return localStorage.getItem('authority') === authority;
 
 }
-export function hasAuthorityLoader(authority) {
+export async function hasAuthorityLoader(authority) {
+    // Проверяем авторизацию
     if (localStorage.getItem('authority') !== authority) {
-        return redirect("/home");
+        // Если нет авторизации, выполняем редирект на /home
+        window.location.href = "/home";
+        return false;
     }
-    return null;
+    return true;
 }
 
 export function hasAnyAuthorityLoader(...authorities) {

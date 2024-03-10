@@ -8,6 +8,7 @@ import com.ipwa.kp.controllers.exceptions.StudentNotFoundException;
 import com.ipwa.kp.controllers.requests.StudentPatchRequest;
 import com.ipwa.kp.models.*;
 import com.ipwa.kp.repositories.*;
+import com.ipwa.kp.security.auth.AuthenticationService;
 import com.ipwa.kp.services.FileService;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
@@ -37,14 +38,16 @@ public class StudentController {
     private final FileService fileService;
     private final ResumeRepository resumeRepository;
     private final PostStudentRepository postStudentRepository;
+    private final AuthenticationService authenticationService;
 
-    public StudentController(StudentRepository repository, PostRepository postRepository, ClassGroupRepository classGroupRepository, FileService fileService, ResumeRepository resumeRepository, PostStudentRepository postStudentRepository) {
+    public StudentController(StudentRepository repository, PostRepository postRepository, ClassGroupRepository classGroupRepository, FileService fileService, ResumeRepository resumeRepository, PostStudentRepository postStudentRepository, AuthenticationService authenticationService) {
         this.repository = repository;
         this.postRepository = postRepository;
         this.classGroupRepository = classGroupRepository;
         this.fileService = fileService;
         this.resumeRepository = resumeRepository;
         this.postStudentRepository = postStudentRepository;
+        this.authenticationService = authenticationService;
     }
 
     @GetMapping
@@ -81,10 +84,10 @@ public class StudentController {
     public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody StudentPatchRequest request) {
         Student student = repository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
-        if (request.getUsername() != null) student.setUsername(request.getUsername());
+        if (request.getUsername() != null && authenticationService.isEmailNotTaken(request.getEmail()) && authenticationService.isUsernameNotTaken(request.getUsername())) student.setUsername(request.getUsername());
         if (request.getFirstName() != null) student.setFirstName(request.getFirstName());
         if (request.getLastName() != null) student.setLastName(request.getLastName());
-        if (request.getEmail() != null) student.setEmail(request.getEmail());
+        if (request.getEmail() != null  && authenticationService.isEmailNotTaken(request.getEmail()) && authenticationService.isUsernameNotTaken(request.getUsername())) student.setEmail(request.getEmail());
         if (request.getAccountStatus() != null) student.setAccountStatus(request.getAccountStatus());
 
         return ResponseEntity.ok(repository.save(student));

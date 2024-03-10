@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 @Service
 public class AuthenticationService {
@@ -103,45 +104,85 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse registerStudent(Student student) {
-        student.setPassword(passwordEncoder.encode(student.getPassword()));
-        studentRepository.save(student);
-        Resume resume = new Resume();
-        resume.setStudent(student);
-        student.setResume(resume);
-        resumeRepository.save(resume);
+        if (isUsernameNotTaken(student.getUsername()) && isEmailNotTaken(student.getUsername())) {
+            student.setPassword(passwordEncoder.encode(student.getPassword()));
+            studentRepository.save(student);
+            Resume resume = new Resume();
+            resume.setStudent(student);
+            student.setResume(resume);
+            resumeRepository.save(resume);
 
-        Map<String, Object> extraClaims = new LinkedHashMap<>();
-        extraClaims.put("id", student.getId());
-        extraClaims.put("authority", student.getAuthorities());
+            Map<String, Object> extraClaims = new LinkedHashMap<>();
+            extraClaims.put("id", student.getId());
+            extraClaims.put("authority", student.getAuthorities());
 
-        String jwtToken =jwtService.generateToken(extraClaims, student);
+            String jwtToken = jwtService.generateToken(extraClaims, student);
 
-        return new AuthenticationResponse(jwtToken, student.getId(), student.getAuthorities());
+            return new AuthenticationResponse(jwtToken, student.getId(), student.getAuthorities());
+        } else {
+            return new AuthenticationResponse("Username " + student.getUsername() + " is already taken.");
+        }
     }
 
     public AuthenticationResponse registerCompany(Company company) {
-        company.setPassword(passwordEncoder.encode(company.getPassword()));
-        companyRepository.save(company);
+        if (isUsernameNotTaken(company.getUsername()) && isEmailNotTaken(company.getUsername())) {
+            company.setPassword(passwordEncoder.encode(company.getPassword()));
+            companyRepository.save(company);
 
-        Map<String, Object> extraClaims = new LinkedHashMap<>();
-        extraClaims.put("id", company.getId());
-        extraClaims.put("authority", company.getAuthorities());
+            Map<String, Object> extraClaims = new LinkedHashMap<>();
+            extraClaims.put("id", company.getId());
+            extraClaims.put("authority", company.getAuthorities());
 
-        String jwtToken =jwtService.generateToken(extraClaims, company);
+            String jwtToken = jwtService.generateToken(extraClaims, company);
 
-        return new AuthenticationResponse(jwtToken, company.getId(), company.getAuthorities());
+            return new AuthenticationResponse(jwtToken, company.getId(), company.getAuthorities());
+        } else {
+            return new AuthenticationResponse("Username " + company.getUsername() + " is already taken.");
+        }
     }
 
     public AuthenticationResponse registerTeacher(Teacher teacher) {
-        teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
-        teacherRepository.save(teacher);
+        if (isUsernameNotTaken(teacher.getUsername()) && isEmailNotTaken(teacher.getUsername())) {
+            teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
+            teacherRepository.save(teacher);
 
-        Map<String, Object> extraClaims = new LinkedHashMap<>();
-        extraClaims.put("id", teacher.getId());
-        extraClaims.put("authority", teacher.getAuthorities());
+            Map<String, Object> extraClaims = new LinkedHashMap<>();
+            extraClaims.put("id", teacher.getId());
+            extraClaims.put("authority", teacher.getAuthorities());
 
-        String jwtToken =jwtService.generateToken(extraClaims, teacher);
+            String jwtToken = jwtService.generateToken(extraClaims, teacher);
 
-        return new AuthenticationResponse(jwtToken, teacher.getId(), teacher.getAuthorities());
+            return new AuthenticationResponse(jwtToken, teacher.getId(), teacher.getAuthorities());
+        } else {
+            return new AuthenticationResponse("Username " + teacher.getUsername() + " is already taken.");
+        }
+    }
+
+    public Boolean isEmailNotTaken(String email) {
+        Boolean isTaken = false;
+        isTaken = studentRepository.existsByEmail(email);
+        if (!isTaken) {
+            isTaken = teacherRepository.existsByEmail(email);
+            if (!isTaken) {
+                isTaken = companyRepository.existsByEmail(email);
+                if (!isTaken) {
+                    isTaken = coordinatorRepository.existsByEmail(email);
+                }
+            }
+        }
+        return !isTaken;
+    }
+
+    public Boolean isUsernameNotTaken(String username) {
+        Boolean isTaken;
+        isTaken = studentRepository.existsByUsername(username);
+        if (!isTaken) {
+            isTaken = teacherRepository.existsByUsername(username);
+            if (!isTaken) {
+                isTaken = companyRepository.existsByUsername(username);
+            }
+        }
+        System.out.println(!isTaken);
+        return !isTaken;
     }
 }

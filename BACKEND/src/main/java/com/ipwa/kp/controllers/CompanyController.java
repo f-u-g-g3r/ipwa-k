@@ -5,6 +5,7 @@ import com.ipwa.kp.controllers.exceptions.StudentNotFoundException;
 import com.ipwa.kp.controllers.requests.CompanyPatchRequest;
 import com.ipwa.kp.models.Company;
 import com.ipwa.kp.repositories.CompanyRepository;
+import com.ipwa.kp.security.auth.AuthenticationService;
 import com.ipwa.kp.services.FileService;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -31,11 +32,13 @@ import java.util.Optional;
 public class CompanyController {
     private final CompanyRepository repository;
     private final FileService fileService;
+    private final AuthenticationService authenticationService;
 
 
-    public CompanyController(CompanyRepository repository, FileService fileService) {
+    public CompanyController(CompanyRepository repository, FileService fileService, AuthenticationService authenticationService) {
         this.repository = repository;
         this.fileService = fileService;
+        this.authenticationService = authenticationService;
     }
 
     @GetMapping
@@ -69,8 +72,8 @@ public class CompanyController {
         if (request.getContacts() != null) company.setContacts(request.getContacts());
         if (request.getPhone() != null) company.setPhone(request.getPhone());
         if (request.getRegistryCode() != null) company.setRegistryCode(request.getRegistryCode());
-        if (request.getEmail() != null) company.setEmail(request.getEmail());
-        if (request.getUsername() != null) company.setUsername(request.getUsername());
+        if (request.getEmail() != null  && authenticationService.isEmailNotTaken(request.getEmail()) && authenticationService.isUsernameNotTaken(request.getUsername())) company.setEmail(request.getEmail());
+        if (request.getUsername() != null  && authenticationService.isEmailNotTaken(request.getEmail()) && authenticationService.isUsernameNotTaken(request.getUsername())) company.setUsername(request.getUsername());
         return ResponseEntity.ok(repository.save(company));
     }
 

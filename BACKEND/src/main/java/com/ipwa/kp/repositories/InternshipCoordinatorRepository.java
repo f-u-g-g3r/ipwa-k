@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface InternshipCoordinatorRepository extends JpaRepository<InternshipCoordinator, Long> {
     Optional<InternshipCoordinator> findByEmail(String email);
+
+    Boolean existsByEmail(String email);
 }

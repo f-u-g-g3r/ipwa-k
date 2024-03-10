@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
     Optional<List<Student>> findAllByClassGroupId(Long classGroupId);
-
     Optional<Student> findByEmail(String email);
     Optional<Student> findByUsername(String username);
-
     Optional<List<Student>> findAllByPostsStudentsPostId(Long postsStudentsId);
+    Boolean existsByEmail(String email);
+    Boolean existsByUsername(String username);
 }

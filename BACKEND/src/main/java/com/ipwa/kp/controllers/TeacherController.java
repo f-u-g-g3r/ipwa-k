@@ -8,6 +8,7 @@ import com.ipwa.kp.models.ClassGroup;
 import com.ipwa.kp.models.Teacher;
 import com.ipwa.kp.repositories.ClassGroupRepository;
 import com.ipwa.kp.repositories.TeacherRepository;
+import com.ipwa.kp.security.auth.AuthenticationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,10 +23,12 @@ import java.util.Optional;
 public class TeacherController {
     private final TeacherRepository repository;
     private final ClassGroupRepository classGroupRepository;
+    private final AuthenticationService authenticationService;
 
-    public TeacherController(TeacherRepository repository, ClassGroupRepository classGroupRepository) {
+    public TeacherController(TeacherRepository repository, ClassGroupRepository classGroupRepository, AuthenticationService authenticationService) {
         this.repository = repository;
         this.classGroupRepository = classGroupRepository;
+        this.authenticationService = authenticationService;
     }
 
     @GetMapping
@@ -56,18 +59,13 @@ public class TeacherController {
         Teacher teacher = repository.findById(id)
                 .orElseThrow(() -> new TeacherNotFoundException(id));
 
-        if (request.getEmail() != null) teacher.setEmail(request.getEmail());
-        if (request.getUsername() != null) teacher.setUsername(request.getUsername());
+        if (request.getEmail() != null && authenticationService.isEmailNotTaken(request.getEmail()) && authenticationService.isUsernameNotTaken(request.getUsername())) teacher.setEmail(request.getEmail());
+        if (request.getUsername() != null && authenticationService.isEmailNotTaken(request.getEmail()) && authenticationService.isUsernameNotTaken(request.getUsername())) teacher.setUsername(request.getUsername());
         if (request.getFirstName() != null) teacher.setFirstName(request.getFirstName());
         if (request.getLastName() != null) teacher.setLastName(request.getLastName());
 
         return ResponseEntity.ok(repository.save(teacher));
     }
-
-//    @PostMapping
-//    public ResponseEntity<?> newTeacher(@RequestBody Teacher teacher) {
-//        return ResponseEntity.ok(repository.save(teacher));
-//    }
 
     @PatchMapping("/{groupId}/{teacherId}")
     @PreAuthorize("hasAuthority('COORDINATOR')")

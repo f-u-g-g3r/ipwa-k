@@ -22,6 +22,7 @@ export async function action({ request }) {
                 const student = await getStudent(data.id);
                 localStorage.setItem("firstName", student.firstName);
                 localStorage.setItem("lastName", student.lastName);
+                localStorage.setItem("studentStatus", student.accountStatus);
                 break;
 
             case "COMPANY":

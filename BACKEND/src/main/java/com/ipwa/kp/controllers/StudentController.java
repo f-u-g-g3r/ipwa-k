@@ -117,17 +117,27 @@ public class StudentController {
     public ResponseEntity<?> addStudentToGroup(@PathVariable Long groupId, @PathVariable Long studentId) {
         Student student = repository.findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException(studentId));
-        ClassGroup group = classGroupRepository.findById(groupId)
-                .orElseThrow(() -> new ClassGroupNotFoundException(groupId));
 
-        List<Student> students = group.getStudents();
-        students.add(student);
-        group.setStudents(students);
-        classGroupRepository.save(group);
+        if (groupId == -1) {
+            ClassGroup group = classGroupRepository.findByName(student.getClassGroup())
+                    .orElseThrow(() -> new ClassGroupNotFoundException(groupId));
+            List<Student> students = group.getStudents();
+            students.remove(student);
+            group.setStudents(students);
+            classGroupRepository.save(group);
+            student.setClassGroup(null);
+            return ResponseEntity.ok(repository.save(student));
+        } else {
+            ClassGroup group = classGroupRepository.findById(groupId)
+                    .orElseThrow(() -> new ClassGroupNotFoundException(groupId));
 
-        student.setClassGroup(group);
-
-        return ResponseEntity.ok(repository.save(student));
+            List<Student> students = group.getStudents();
+            students.add(student);
+            group.setStudents(students);
+            classGroupRepository.save(group);
+            student.setClassGroup(group);
+            return ResponseEntity.ok(repository.save(student));
+        }
     }
 
     @DeleteMapping("/{id}")

@@ -58,21 +58,20 @@ export function hasAuthority(authority) {
 
 }
 export async function hasAuthorityLoader(authority) {
-    // Проверяем авторизацию
     if (localStorage.getItem('authority') !== authority) {
-        // Если нет авторизации, выполняем редирект на /home
-        window.location.href = "/home";
+        redirect("/home");
         return false;
     }
     return true;
 }
 
-export function hasAnyAuthorityLoader(...authorities) {
+export async function hasAnyAuthorityLoader(...authorities) {
     for (let authority of authorities) {
         if (localStorage.getItem('authority') === authority) {
-            return null;
+            return true;
         }
     }
+
     return redirect("/home");
 }
 

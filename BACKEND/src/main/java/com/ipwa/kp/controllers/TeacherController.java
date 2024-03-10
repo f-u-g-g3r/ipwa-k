@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -32,7 +34,7 @@ public class TeacherController {
     }
 
     @GetMapping
-    public Page<Teacher> all(@RequestParam Optional<String> sortBy,
+    public Page<Teacher> allInPage(@RequestParam Optional<String> sortBy,
                              @RequestParam Optional<Integer> page,
                              @RequestParam Optional<String> direction) {
         Sort.Direction sort = Sort.Direction.ASC;
@@ -44,6 +46,11 @@ public class TeacherController {
                 5,
                 sort, sortBy.orElse("id")
         ));
+    }
+
+    @GetMapping("/nonPage")
+    public List<Teacher> all() {
+        return repository.findAll();
     }
 
     @GetMapping("/{id}")
@@ -70,18 +77,38 @@ public class TeacherController {
     @PatchMapping("/{groupId}/{teacherId}")
     @PreAuthorize("hasAuthority('COORDINATOR')")
     public ResponseEntity<?> addTeacherToGroup(@PathVariable Long groupId, @PathVariable Long teacherId) {
-        Teacher teacher = repository.findById(teacherId)
-                .orElseThrow(() -> new TeacherNotFoundException(teacherId));
         ClassGroup group = classGroupRepository.findById(groupId)
                 .orElseThrow(() -> new ClassGroupNotFoundException(groupId));
 
-        group.setTeacher(teacher);
-        classGroupRepository.save(group);
-
-        teacher.setClassGroup(group);
-
-        return ResponseEntity.ok(repository.save(teacher));
+        if (teacherId == -1) {
+            Teacher teacher = repository.findById(group.getTeacher())
+                    .orElseThrow(() -> new TeacherNotFoundException(teacherId));
+            group.setTeacher(null);
+            classGroupRepository.save(group);
+            teacher.setClassGroup(null);
+            return ResponseEntity.ok(repository.save(teacher));
+        } else {
+            Teacher teacher = repository.findById(teacherId)
+                    .orElseThrow(() -> new TeacherNotFoundException(teacherId));
+            group.setTeacher(teacher);
+            classGroupRepository.save(group);
+            teacher.setClassGroup(group);
+            return ResponseEntity.ok(repository.save(teacher));
+        }
     }
+
+//    @PatchMapping("/{groupId}/{teacherId}")
+//    @PreAuthorize("hasAuthority('COORDINATOR')")
+//    public ResponseEntity<?> removeTeacherFromGroup(@PathVariable Long groupId, @PathVariable Long teacherId) {
+//        Teacher teacher = repository.findById(teacherId)
+//                .orElseThrow(() -> new TeacherNotFoundException(teacherId));
+//        ClassGroup group = classGroupRepository.findById(groupId)
+//                .orElseThrow(() -> new ClassGroupNotFoundException(groupId));
+//        group.setTeacher(null);
+//        classGroupRepository.save(group);
+//        teacher.setClassGroup(null);
+//        return ResponseEntity.ok(repository.save(teacher));
+//    }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('COORDINATOR')")

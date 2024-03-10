@@ -72,7 +72,7 @@ function OnePost() {
 
             <div className="flex">
                 <Link to={homeParam !== null ? `/home?action=1` : stHomeParam !== null ? `/my-applications` : `/posts`} className="btn btn-neutral w-1/12 ms-20">Back</Link>
-                {(hasAuthority("STUDENT") && !isApplied) ?
+                {(hasAuthority("STUDENT") && !isApplied && localStorage.getItem("studentStatus") === "ACTIVE") ?
                     <button className="btn btn-success w-1/12 ms-auto me-20" onClick={() => apply(post.id)}>Apply</button> :
                     (hasAuthority("STUDENT") && isApplied) ?
                             <button className="btn btn-error w-1/12 ms-auto me-20" onClick={() => apply(post.id)}>Unapply</button> :

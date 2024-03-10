@@ -76,8 +76,8 @@ function Nav() {
                         <></>}
                 </ul>
             </div>
-            <div className="navbar-end">
-                <div className="dropdown dropdown-hover">
+            <div className="navbar-end ">
+                <div className="dropdown dropdown-hover dropdown-end">
                     <div tabIndex={0} role="button" className="btn btn-active h-auto">
                         <div className="">
                             <p className="text-lg w-full">{userData !== undefined ? userData : 'Guest'}</p>

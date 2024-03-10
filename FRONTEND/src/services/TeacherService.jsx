@@ -17,6 +17,19 @@ export async function getTeachers() {
     }
 }
 
+export async function getTeachersNonPage() {
+    try {
+        const teachers = await axios.get(`${API_URL}/nonPage`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+        return teachers.data;
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 export async function getTeachersByPage(pageNumber) {
     if (isAuth()) {
         const teachers = await axios.get(`${API_URL}?page=${pageNumber}`, {

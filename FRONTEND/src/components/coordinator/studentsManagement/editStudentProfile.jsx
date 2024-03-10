@@ -194,7 +194,7 @@ function EditStudentProfile() {
                                 <span className="label-text text-lg">Group</span>
                             </div>
                             <select className="select select-bordered w-full" name="classGroup">
-                                <option disabled>Group</option>
+                                <option value="-1" className="font-bold">No group</option>
                                 {groups.length ?
                                     groups.map((group) =>
                                         <option selected={student.classGroup === group.name} value={group.id}

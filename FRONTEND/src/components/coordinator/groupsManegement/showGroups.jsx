@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {addNewGroup, getAllGroups, getGroupsByPage} from "../../../services/ClassGroupService.jsx";
 import {Form, useFetcher, useFormAction} from "react-router-dom";
-import {addTeacherToGroup, getTeacher, getTeachers} from "../../../services/TeacherService.jsx";
+import {addTeacherToGroup, getTeacher, getTeachers, getTeachersNonPage} from "../../../services/TeacherService.jsx";
 import Pagination from "../../pagination/pagination.jsx";
 
 function ShowGroups() {
@@ -22,7 +22,7 @@ function ShowGroups() {
 
     const fetchTeachers = async () => {
         try {
-            setTeachers(await getTeachers());
+            setTeachers(await getTeachersNonPage());
         } catch (e) {
             console.log(e)
         }
@@ -40,11 +40,12 @@ function ShowGroups() {
         }
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         const data = {
             name: newGroup
         }
-        await addNewGroup(data).then(fetchGroups)
+        await addNewGroup(data).then(fetchGroups(0))
     }
 
 
@@ -55,7 +56,10 @@ function ShowGroups() {
         const teacherId = formData.get('teacherId');
         const groupId = formData.get('groupId');
 
-        await addTeacherToGroup(groupId, teacherId).then(fetchGroups);
+        await addTeacherToGroup(groupId, teacherId).then(() => {
+            fetchGroups(0);
+            fetchTeachers();
+        });
 
     }
 
@@ -67,7 +71,7 @@ function ShowGroups() {
     useEffect(() => {
         const fetchData = async () => {
             const names = {};
-            for (const group of groups) {
+            for (const group of groups.content) {
                 const name = await fetchTeacherName(group.teacher);
                 names[group.id] = name;
             }
@@ -129,6 +133,7 @@ function ShowGroups() {
                         <h3 className="font-bold text-lg">Assign teacher to group</h3>
                         <p className="py-4">
                             <select name="teacherId" className="select select-bordered w-full">
+                                <option value="-1">No teacher</option>
                                 {teachers.length ?
                                     teachers.map((teacher) =>
                                         `${teacher.firstName} ${teacher.lastName}` !== 'null null' ?

@@ -136,16 +136,16 @@ function StudentProfile() {
                 <Link to={`/home`} className="btn btn-neutral w-1/12 my-10">Home</Link>
             </div>
             <p className="text-2xl font-bold text-center">Edit profile</p>
-
-            <div className="flex justify-end mb-5">
-                <ul className="menu menu-vertical text-lg lg:menu-horizontal bg-gray-300 ">
-                    <li><a onClick={() => setAction(1)}
-                           className={action === 1 ? "bg-success" : "" + "hover:bg-gray-400"}>
-                        CV</a></li>
-                    <li><a onClick={() => setAction(2)}
-                           className={action === 2 ? "bg-success" : "" + "hover:bg-gray-400"}>
-                        Motivation Letter</a></li>
-                </ul>
+            <div className="flex">
+                <div className="w-1/2"></div>
+                <div className="flex w-1/2 justify-center mb-5">
+                    <div role="tablist" className="tabs tabs-bordered">
+                        <a role="tab" onClick={() => setAction(1)}
+                           className={action === 1 ? "tab tab-active" : "" + "tab"}>CV</a>
+                        <a role="tab" onClick={() => setAction(2)}
+                           className={action === 2 ? "tab tab-active" : "" + "tab"}>Motivation Letter</a>
+                    </div>
+                </div>
             </div>
             <div className="flex justify-center ">
                 <form method="post" className="w-1/2" onSubmit={handleSubmit}>

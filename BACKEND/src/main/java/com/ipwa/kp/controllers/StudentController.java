@@ -39,7 +39,7 @@ public class StudentController {
     @GetMapping("/posts/{postId}")
     @PreAuthorize("hasAnyAuthority('COMPANY', 'TEACHER', 'COORDINATOR')")
     public List<Student> allStudentsByPostId(@PathVariable Long postId) {
-        return service.getAllStudentsByPostId(postId)
+        return service.getAllStudentsByPostId(postId);
     }
 
     @PatchMapping("/{id}")

@@ -59,7 +59,6 @@ function EditPostForm() {
 
     return(
         <>
-            <Link to={`/posts/${id}`} className="btn btn-neutral w-1/12 mt-5">Back</Link>
             <div className="flex justify-center mb-20">
                 <Form method="post" encType="multipart/form-data" className="w-2/3">
                     <div className="flex justify-center">

@@ -22,9 +22,6 @@ function Posts() {
 
     return (
         <>
-            <div className="flex justify-center my-10">
-                <Link to={`/home`} className="btn btn-neutral w-1/12">Home</Link>
-            </div>
             <PostSearch/>
             {posts.content.length ? (
                 <>

@@ -132,9 +132,6 @@ function StudentProfile() {
 
     return (
         <>
-            <div className="flex justify-center">
-                <Link to={`/home`} className="btn btn-neutral w-1/12 my-10">Home</Link>
-            </div>
             <p className="text-2xl font-bold text-center">Edit profile</p>
             <div className="flex">
                 <div className="w-1/2"></div>

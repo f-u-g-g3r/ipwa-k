@@ -68,10 +68,6 @@ function StudentApplications() {
 
     return (
         <>
-            <div className="flex justify-center my-10">
-                <Link to={`/home`} className="btn btn-neutral w-1/12">Home</Link>
-            </div>
-
             <p className="text-3xl font-bold text-center my-10">Your applications</p>
 
             <table className="table border-slate-500 bg-gray-200 table-lg">

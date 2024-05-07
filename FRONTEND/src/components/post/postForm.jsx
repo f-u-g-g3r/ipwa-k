@@ -24,9 +24,6 @@ function PostForm() {
     return (
 
         <div className="mb-20">
-            <div className="flex justify-center my-10">
-                <Link to={`/home`} className="btn btn-neutral w-1/12">Home</Link>
-            </div>
             <Form method="post" encType="multipart/form-data">
                 <div className="flex justify-center">
                     <label className="form-control w-full max-w-lg my-2">

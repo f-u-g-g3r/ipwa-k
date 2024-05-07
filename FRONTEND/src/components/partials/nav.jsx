@@ -65,7 +65,7 @@ function Nav() {
                         <li><a>Item 3</a></li>
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">Praktika portaal</a>
+                <Link to={`/home`} className="btn btn-ghost text-xl">Praktika portaal</Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">

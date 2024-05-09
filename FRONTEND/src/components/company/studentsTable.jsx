@@ -26,7 +26,7 @@ function StudentsTable(props) {
                 <tr>
                     <th>Name</th>
                     <th>Action</th>
-                </tr>
+                </tr>a
                 </thead>
                 <tbody>
                 {students ? (

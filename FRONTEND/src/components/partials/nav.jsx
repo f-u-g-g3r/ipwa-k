@@ -80,8 +80,8 @@ function Nav() {
                 <div className="dropdown dropdown-hover dropdown-end">
                     <div tabIndex={0} role="button" className="btn btn-active h-auto">
                         <div className="">
-                            <p className="text-lg w-full">{userData !== undefined ? userData : 'Guest'}</p>
-                            <p className="text-sm font-medium capitalize">{authority}</p>
+                            <p className="text-xl w-full">{userData !== undefined ? userData : 'Guest'}</p>
+                            <p className="text-lg font-medium capitalize">{authority}</p>
                         </div>
                     </div>
                     {userData !== "Guest" ?

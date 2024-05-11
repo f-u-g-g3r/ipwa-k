@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
-import {getStudentsByPage} from "../../../services/StudentService.jsx";
+import {getStudentsByClassGroupName, getStudentsByPage} from "../../../services/StudentService.jsx";
 import {Link} from "react-router-dom";
 import Pagination from "../../pagination/pagination.jsx";
+import {hasAuthority} from "../../../services/AuthService.jsx";
 
 export default function AllStudentsTable() {
     const [students, setStudents] = useState({content: []});
@@ -9,7 +10,11 @@ export default function AllStudentsTable() {
 
     const fetchStudents = async (pageNumber = 0) => {
         try {
-            setStudents(await getStudentsByPage(pageNumber));
+            if (hasAuthority("COORDINATOR")) {
+                setStudents(await getStudentsByPage(pageNumber));
+            } else if (hasAuthority("TEACHER")) {
+                setStudents(await getStudentsByClassGroupName(pageNumber, localStorage.getItem("classGroup")))
+            }
         } catch (e) {
             console.log(e)
         }

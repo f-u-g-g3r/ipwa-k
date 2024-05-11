@@ -35,6 +35,7 @@ export async function action({ request }) {
                 const teacher = await getTeacher(data.id);
                 localStorage.setItem("firstName", teacher.firstName);
                 localStorage.setItem("lastName", teacher.lastName);
+                localStorage.setItem("classGroup", teacher.classGroup);
                 break;
 
             case "COORDINATOR":

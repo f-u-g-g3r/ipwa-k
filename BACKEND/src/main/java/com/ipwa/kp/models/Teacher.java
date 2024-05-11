@@ -20,7 +20,7 @@ public class Teacher implements UserDetails {
     private String password;
     private String username;
 
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
     private List<Student> students = new ArrayList<>();
 
     @OneToOne(mappedBy = "teacher", fetch = FetchType.LAZY)

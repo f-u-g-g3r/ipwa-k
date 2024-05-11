@@ -42,6 +42,15 @@ public class StudentController {
         return service.getAllStudentsByPostId(postId);
     }
 
+    @GetMapping("/group/{group}")
+    @PreAuthorize("hasAnyAuthority('TEACHER', 'COORDINATOR')")
+    public Page<Student> allStudentsByGroup(@RequestParam Optional<String> sortBy,
+                                            @RequestParam Optional<Integer> page,
+                                            @RequestParam Optional<String> direction,
+                                            @PathVariable String group) {
+        return service.getAllStudentsByGroupInPage(sortBy, page, direction, group);
+    }
+
     @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('COORDINATOR') or hasAuthority('STUDENT') and #id == authentication.principal.id")
     public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody StudentPatchRequest request) {

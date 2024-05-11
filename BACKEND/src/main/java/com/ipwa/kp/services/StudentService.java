@@ -59,6 +59,19 @@ public class StudentService {
         ));
     }
 
+    public Page<Student> getAllStudentsByGroupInPage(Optional<String> sortBy, Optional<Integer> page, Optional<String> direction, String group) {
+        Sort.Direction sort = Sort.Direction.ASC;
+        if (direction.isPresent() && direction.get().equals("DESC")) {
+            sort = Sort.Direction.DESC;
+        }
+        return repository.findAllByClassGroupName(group, PageRequest.of(
+                page.orElse(0),
+                5,
+                sort, sortBy.orElse("id")
+        ))
+                .orElse(null);
+    }
+
     public Student getOneById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
@@ -113,7 +126,6 @@ public class StudentService {
         } else {
             ClassGroup group = classGroupRepository.findById(groupId)
                     .orElseThrow(() -> new ClassGroupNotFoundException(groupId));
-
             List<Student> students = group.getStudents();
             students.add(student);
             group.setStudents(students);

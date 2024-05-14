@@ -1,12 +1,17 @@
 package com.ipwa.kp.security.auth;
 
+import com.ipwa.kp.controllers.exceptions.ClassGroupNotFoundException;
+import com.ipwa.kp.controllers.exceptions.TeacherNotFoundException;
 import com.ipwa.kp.models.*;
 import com.ipwa.kp.repositories.*;
 import com.ipwa.kp.security.config.JwtService;
+import com.ipwa.kp.security.customUserDetails.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,26 +33,24 @@ public class AuthenticationService {
     private final InternshipCoordinatorRepository coordinatorRepository;
     private final UserDetailsService userDetailsService;
     private final ResumeRepository resumeRepository;
+    private final ClassGroupRepository classGroupRepository;
 
     private final JwtService jwtService;
 
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public AuthenticationService(AuthenticationManager authenticationManager, ResumeRepository resumeRepository, StudentRepository studentRepository, TeacherRepository teacherRepository, CompanyRepository companyRepository, InternshipCoordinatorRepository coordinatorRepository, UserDetailsService userDetailsService, JwtService jwtService, PasswordEncoder passwordEncoder) {
+    public AuthenticationService(AuthenticationManager authenticationManager, StudentRepository studentRepository, TeacherRepository teacherRepository, CompanyRepository companyRepository, InternshipCoordinatorRepository coordinatorRepository, UserDetailsService userDetailsService, ResumeRepository resumeRepository, ClassGroupRepository classGroupRepository, JwtService jwtService, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.studentRepository = studentRepository;
         this.teacherRepository = teacherRepository;
         this.companyRepository = companyRepository;
         this.coordinatorRepository = coordinatorRepository;
         this.userDetailsService = userDetailsService;
+        this.resumeRepository = resumeRepository;
+        this.classGroupRepository = classGroupRepository;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
-        this.resumeRepository = resumeRepository;
     }
-
-
-
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
@@ -103,9 +106,17 @@ public class AuthenticationService {
         return new AuthenticationResponse("error");
     }
 
-    public AuthenticationResponse registerStudent(Student student) {
+    public AuthenticationResponse registerStudent(Student student, Authentication authentication) {
         if (isUsernameNotTaken(student.getUsername()) && isEmailNotTaken(student.getUsername())) {
             student.setPassword(passwordEncoder.encode(student.getPassword()));
+            if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("TEACHER"))) {
+                CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+                Teacher teacher = teacherRepository.findById(userDetails.getId())
+                        .orElseThrow(() -> new TeacherNotFoundException(userDetails.getId()));
+                ClassGroup classGroup = classGroupRepository.findByName(teacher.getClassGroup())
+                                .orElseThrow(() -> new ClassGroupNotFoundException(teacher.getClassGroup()));
+                student.setClassGroup(classGroup);
+            }
             studentRepository.save(student);
             Resume resume = new Resume();
             resume.setStudent(student);

@@ -5,45 +5,39 @@ import com.ipwa.kp.models.Student;
 import com.ipwa.kp.models.Teacher;
 import com.ipwa.kp.repositories.StudentRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/auth")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
-    private final StudentRepository studentRepository;
-    private final UserDetailsService userDetailsService;
 
-    public AuthenticationController(AuthenticationService authenticationService, StudentRepository studentRepository, UserDetailsService userDetailsService) {
+    public AuthenticationController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
-        this.studentRepository = studentRepository;
-        this.userDetailsService = userDetailsService;
     }
 
     @PostMapping("/authenticate")
-    @CrossOrigin(origins = "*")
     public AuthenticationResponse authenticate(@RequestBody AuthenticationRequest request) {
             return authenticationService.authenticate(request);
-        //return new AuthenticationResponse("Error");
     }
 
     @PostMapping("/students")
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'TEACHER')")
-    @CrossOrigin(origins = "*")
-    public AuthenticationResponse newStudent(@RequestBody Student student) {
-        return authenticationService.registerStudent(student);
+    public AuthenticationResponse newStudent(@RequestBody Student student, Authentication authentication) {
+        return authenticationService.registerStudent(student, authentication);
     }
 
     @PostMapping("/companies")
     @PreAuthorize("hasAuthority('COORDINATOR')")
-    @CrossOrigin(origins = "*")
     public AuthenticationResponse newCompany(@RequestBody Company company) {
         return authenticationService.registerCompany(company);
     }
     @PostMapping("/teachers")
     @PreAuthorize("hasAuthority('COORDINATOR')")
-    @CrossOrigin(origins = "*")
     public AuthenticationResponse newTeacher(@RequestBody Teacher teacher) {
         return authenticationService.registerTeacher(teacher);
     }

@@ -195,11 +195,12 @@ function EditStudentProfile() {
                             </div>
                             <select className="select select-bordered w-full" name="classGroup">
                                 <option value="-1" className="font-bold">No group</option>
-                                {groups.length ?
+
+                                {groups.length && localStorage.getItem("authority") === "COORDINATOR" ?
                                     groups.map((group) =>
-                                        <option selected={student.classGroup === group.name} value={group.id}
+                                        <option key={group.name} selected={student.classGroup === group.name} value={group.id}
                                                 name={group.name}>{group.name}</option>) :
-                                    <></>}
+                                    <option value="0" selected>{student.classGroup}</option>}
                             </select>
                         </label>
                     </div>

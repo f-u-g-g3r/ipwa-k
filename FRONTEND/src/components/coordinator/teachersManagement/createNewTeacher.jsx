@@ -1,33 +1,34 @@
 import {useState} from "react";
-import {createStudent, generateRandomString} from "../../../services/AuthService.jsx";
+import {createTeacher, generateRandomString} from "../../../services/AuthService.jsx";
 
-export default function CreateNewStudent() {
-    const [newStudent, setNewStudent] = useState({
+export default function CreateNewTeacher() {
+    const [newTeacher, setNewTeacher] = useState({
         username: "",
         password: "",
     });
 
     function handelNewUsernameChange(event) {
-        setNewStudent(n => ({...n, username: event.target.value}));
+        setNewTeacher(n => ({...n, username: event.target.value}));
     }
 
     function handelNewPasswordChange(event) {
-        setNewStudent(n => ({...n, password: event.target.value}));
+        setNewTeacher(n => ({...n, password: event.target.value}));
     }
 
     function generateRandomUsername() {
-        setNewStudent(n => ({...n, username: generateRandomString(12)}));
+        setNewTeacher(n => ({...n, username: generateRandomString(12)}));
     }
 
     function generateRandomPassword() {
-        setNewStudent(n => ({...n, password: generateRandomString(12)}));
+        setNewTeacher(n => ({...n, password: generateRandomString(12)}));
     }
 
-    const addNewStudent = async () => {
+
+    const addNewTeacher = async () => {
         try {
-            if (newStudent.username !== "" && newStudent.password !== "") {
-                await createStudent(newStudent).then(
-                    setNewStudent({
+            if (newTeacher.username !== "" && newTeacher.password !== "") {
+                await createTeacher(newTeacher).then(
+                    setNewTeacher({
                         username: "",
                         password: "",
                     }));
@@ -37,22 +38,21 @@ export default function CreateNewStudent() {
         }
     }
     return (
-        <div>
+        <>
             <div className="flex flex-wrap justify-center mt-10">
-                <label className="input input-bordered flex items-center gap-2">
+                <label className="input input-bordered flex items-center gap-2 w-1/3">
                     Username:
-                    <input type="text" className="grow" required value={newStudent.username}
+                    <input type="text" className="grow" required value={newTeacher.username}
                            onChange={handelNewUsernameChange}/>
                 </label>
                 <button type="submit" className="btn btn-success ms-2" onClick={() => generateRandomUsername()}>Generate
                     random
                 </button>
             </div>
-
             <div className="flex flex-wrap justify-center mt-5">
-                <label className="input input-bordered flex items-center gap-2">
+                <label className="input input-bordered flex items-center gap-2 w-1/3">
                     Password:
-                    <input type="text" className="grow" required value={newStudent.password}
+                    <input type="text" className="grow" required value={newTeacher.password}
                            onChange={handelNewPasswordChange}/>
                 </label>
                 <button type="submit" className="btn btn-success ms-2" onClick={() => generateRandomPassword()}>Generate
@@ -60,8 +60,8 @@ export default function CreateNewStudent() {
                 </button>
             </div>
             <div className="flex justify-center">
-                <button className="btn btn-success mt-5 w-1/4" onClick={() => addNewStudent()}>Add</button>
+                <button className="btn btn-success mt-5 w-1/4" onClick={() => addNewTeacher()}>Add</button>
             </div>
-        </div>
+        </>
     )
 }

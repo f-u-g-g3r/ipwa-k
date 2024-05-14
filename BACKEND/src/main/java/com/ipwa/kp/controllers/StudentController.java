@@ -52,7 +52,7 @@ public class StudentController {
     }
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasAuthority('COORDINATOR') or hasAuthority('STUDENT') and #id == authentication.principal.id")
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'TEACHER') or hasAuthority('STUDENT') and #id == authentication.principal.id")
     public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody StudentPatchRequest request) {
         return service.updateStudent(id, request);
     }

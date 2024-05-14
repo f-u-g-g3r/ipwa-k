@@ -81,7 +81,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "show-student/:id", element: <ShowStudentProfile/>,
-                loader: () => hasAnyAuthorityLoader("COMPANY", "COORDINATOR")
+                loader: () => hasAnyAuthorityLoader("COMPANY", "COORDINATOR", "TEACHER")
             },
             {
                 path: "my-applications", element: <StudentApplications/>,

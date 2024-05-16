@@ -49,4 +49,32 @@ public class CompanyPatchRequest {
     public String getAddress() {
         return address;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setRegistryCode(String registryCode) {
+        this.registryCode = registryCode;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setContacts(String contacts) {
+        this.contacts = contacts;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

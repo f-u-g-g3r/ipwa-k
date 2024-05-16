@@ -47,6 +47,10 @@ public class StudentService {
         this.authenticationService = authenticationService;
     }
 
+    public List<Student> getAll() {
+        return repository.findAll();
+    }
+
     public Page<Student> getAllStudents(Optional<String> sortBy, Optional<Integer> page, Optional<String> direction) {
         Sort.Direction sort = Sort.Direction.ASC;
         if (direction.isPresent() && direction.get().equals("DESC")) {

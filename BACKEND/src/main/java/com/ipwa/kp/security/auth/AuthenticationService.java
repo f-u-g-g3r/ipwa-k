@@ -109,7 +109,7 @@ public class AuthenticationService {
     public AuthenticationResponse registerStudent(Student student, Authentication authentication) {
         if (isUsernameNotTaken(student.getUsername()) && isEmailNotTaken(student.getUsername())) {
             student.setPassword(passwordEncoder.encode(student.getPassword()));
-            if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("TEACHER"))) {
+            if (authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("TEACHER"))) {
                 CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
                 Teacher teacher = teacherRepository.findById(userDetails.getId())
                         .orElseThrow(() -> new TeacherNotFoundException(userDetails.getId()));
@@ -193,7 +193,6 @@ public class AuthenticationService {
                 isTaken = companyRepository.existsByUsername(username);
             }
         }
-        System.out.println(!isTaken);
         return !isTaken;
     }
 }

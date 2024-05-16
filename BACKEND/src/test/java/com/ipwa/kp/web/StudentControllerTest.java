@@ -89,11 +89,12 @@ public class StudentControllerTest {
 
     @Test
     public void getStudentByNonExistentId() {
-        Specifications.installSpecification(Specifications.requestSpec("http://localhost:" + port + "/students"), Specifications.responseSpecForbidden403());
+        Specifications.installSpecification(Specifications.requestSpec("http://localhost:" + port + "/students"), Specifications.responseSpecNotFound404());
         given()
                 .when()
                 .header(new Header("Authorization", "Bearer " + token))
                 .get("/1000000")
-                .then().log().all();
+                .then()
+                .body("error", notNullValue());
     }
 }

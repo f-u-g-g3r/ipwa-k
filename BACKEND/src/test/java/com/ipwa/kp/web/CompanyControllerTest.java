@@ -82,4 +82,15 @@ public class CompanyControllerTest {
                 .header(new Header("Authorization", "Bearer " + token))
                 .delete("/1");
     }
+
+    @Test
+    public void getCompanyByNonExistentId() {
+        Specifications.installSpecification(Specifications.requestSpec("http://localhost:" + port + "/companies"), Specifications.responseSpecNotFound404());
+        given()
+                .when()
+                .header(new Header("Authorization", "Bearer " + token))
+                .get("/1000000")
+                .then()
+                .body("error", notNullValue());
+    }
 }

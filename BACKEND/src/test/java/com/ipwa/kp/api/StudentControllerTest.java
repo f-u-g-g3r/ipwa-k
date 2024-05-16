@@ -1,4 +1,4 @@
-package com.ipwa.kp.web;
+package com.ipwa.kp.api;
 
 
 import com.ipwa.kp.controllers.requests.StudentPatchRequest;
@@ -88,7 +88,7 @@ public class StudentControllerTest {
     }
 
     @Test
-    public void getStudentByNonExistentId() {
+    public void getStudentByNonExistentIdNotFound404() {
         Specifications.installSpecification(Specifications.requestSpec("http://localhost:" + port + "/students"), Specifications.responseSpecNotFound404());
         given()
                 .when()

@@ -1,6 +1,6 @@
-package com.ipwa.kp.web;
+package com.ipwa.kp.api;
 
-import com.ipwa.kp.controllers.requests.CompanyPatchRequest;
+import com.ipwa.kp.controllers.requests.TeacherPatchRequest;
 import com.ipwa.kp.security.auth.AuthenticationRequest;
 import com.ipwa.kp.specification.Specifications;
 import io.restassured.http.Header;
@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.notNullValue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class CompanyControllerTest {
+public class TeacherControllerTest {
     @LocalServerPort
     private int port;
 
@@ -34,12 +34,12 @@ public class CompanyControllerTest {
                 .path("token");
         // --------------
 
-        Specifications.installSpecification(Specifications.requestSpec("http://localhost:" + port + "/companies"), Specifications.responseSpecOK200());
+        Specifications.installSpecification(Specifications.requestSpec("http://localhost:" + port + "/teachers"), Specifications.responseSpecOK200());
     }
 
     @Test
     @Order(1)
-    public void getAllCompanies() {
+    public void getAllTeachers() {
         given()
                 .when()
                 .header(new Header("Authorization", "Bearer " + token))
@@ -50,7 +50,7 @@ public class CompanyControllerTest {
 
     @Test
     @Order(2)
-    public void getOneCompanyById1() {
+    public void getOneTeacherById1() {
         given()
                 .when()
                 .header(new Header("Authorization", "Bearer " + token))
@@ -61,22 +61,22 @@ public class CompanyControllerTest {
 
     @Test
     @Order(3)
-    public void updateCompanyName() {
-        CompanyPatchRequest request = new CompanyPatchRequest();
-        request.setName("NewCompanyName");
+    public void updateTeacherFirstName() {
+        TeacherPatchRequest request = new TeacherPatchRequest();
+        request.setFirstName("NewFirstName");
         given()
                 .body(request)
                 .when()
                 .header(new Header("Authorization", "Bearer " + token))
                 .patch("/1")
                 .then()
-                .body("name", equalTo("NewCompanyName"));
+                .body("firstName", equalTo("NewFirstName"));
     }
 
 
     @Test
     @Order(4)
-    public void deleteCompanyByIdStatusOk() {
+    public void deleteTeacherByIdStatusOk() {
         given()
                 .when()
                 .header(new Header("Authorization", "Bearer " + token))
@@ -84,8 +84,8 @@ public class CompanyControllerTest {
     }
 
     @Test
-    public void getCompanyByNonExistentId() {
-        Specifications.installSpecification(Specifications.requestSpec("http://localhost:" + port + "/companies"), Specifications.responseSpecNotFound404());
+    public void getTeacherByNonExistentIdNotFound404() {
+        Specifications.installSpecification(Specifications.requestSpec("http://localhost:" + port + "/teachers"), Specifications.responseSpecNotFound404());
         given()
                 .when()
                 .header(new Header("Authorization", "Bearer " + token))

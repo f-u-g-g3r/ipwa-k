@@ -35,8 +35,7 @@ public class Post {
 
     }
 
-    public Post(Long id, Company company, List<PostStudent> postsStudents, String workName, String workDescription, Integer salary, String claims, String additionalInfo, String pathToPdf, LocalDate expiryDate, LocalDate datePosted) {
-        this.id = id;
+    public Post(Company company, List<PostStudent> postsStudents, String workName, String workDescription, Integer salary, String claims, String additionalInfo, String pathToPdf, LocalDate expiryDate, LocalDate datePosted) {
         this.company = company;
         this.postsStudents = postsStudents;
         this.workName = workName;

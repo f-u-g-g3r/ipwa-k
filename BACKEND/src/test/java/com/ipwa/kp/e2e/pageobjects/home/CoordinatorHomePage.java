@@ -1,5 +1,6 @@
-package com.ipwa.kp.e2e.pageobjects;
+package com.ipwa.kp.e2e.pageobjects.home;
 
+import com.ipwa.kp.e2e.pageobjects.Page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

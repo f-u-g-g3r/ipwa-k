@@ -1,17 +1,21 @@
-package com.ipwa.kp.e2e.pageobjects;
+package com.ipwa.kp.e2e.pageobjects.home;
 
+import com.ipwa.kp.e2e.pageobjects.Page;
+import com.ipwa.kp.e2e.pageobjects.company.CreatePostForm;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class TeacherHomePage extends Page {
-
+public class CompanyHomePage extends Page {
     private static final String URL = "http://localhost:5173/home?action=1";
     private static final By ROLE_NAME = By.cssSelector("#root > div.navbar.bg-base-100 > div.navbar-end > div > div > div > p.text-lg.font-medium.capitalize");
+
+    private static final By CREATE_POST_BUTTON = By.cssSelector("#root > div.container.mx-auto > div.drawer.lg\\:drawer-open > div.drawer-content.flex.flex-col.px-20.pt-5.bg-base-200 > div > div > a");
+
     private static final By NAV_END_BUTTON = By.cssSelector("#root > div.navbar.bg-base-100 > div.navbar-end > div > div");
     private static final By LOG_OUT_BUTTON = By.cssSelector("#root > div.navbar.bg-base-100 > div.navbar-end > div > ul > li:nth-child(2) > a");
 
-    public TeacherHomePage(WebDriver driver) {
+    public CompanyHomePage(WebDriver driver) {
         super(driver);
     }
 
@@ -19,15 +23,19 @@ public class TeacherHomePage extends Page {
         super.openUrl(URL);
     }
 
-
     public void verifyRoleName() {
         super.waitForElementVisible(ROLE_NAME);
         String role = super.getElementText(ROLE_NAME);
-        assert role.equals("TEACHER");
+        assert role.equals("COMPANY");
     }
 
     public void logOut() {
         super.hoverOverElement(super.getElement(NAV_END_BUTTON));
         super.findAndClick(LOG_OUT_BUTTON);
+    }
+
+    public CreatePostForm openCreatePostForm() {
+        super.findAndClick(CREATE_POST_BUTTON);
+        return new CreatePostForm(super.getDriver());
     }
 }

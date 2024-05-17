@@ -1,17 +1,22 @@
-package com.ipwa.kp.e2e.pageobjects;
+package com.ipwa.kp.e2e.pageobjects.home;
 
+import com.ipwa.kp.e2e.pageobjects.Page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class CompanyHomePage extends Page {
-    private static final String URL = "http://localhost:5173/home?action=1";
+public class StudentHomePage extends Page {
+    private static final String URL = "http://localhost:5173/login";
+    private static final By WELCOME_HEADING = By.cssSelector("#root > div.container.mx-auto > div.flex.justify-center.items-start.my-20.min-h-screen > div > div > h1");
+
     private static final By ROLE_NAME = By.cssSelector("#root > div.navbar.bg-base-100 > div.navbar-end > div > div > div > p.text-lg.font-medium.capitalize");
-    private static final By HOME_MESSAGE = By.cssSelector("#root > div.container.mx-auto > div.drawer.lg\\:drawer-open > div.drawer-content.flex.flex-col.px-20.pt-5.bg-base-200 > div > p");
+    private static final By JOB_POSTS_BUTTON = By.cssSelector("#root > div.container.mx-auto > div.flex.justify-center.items-start.my-20.min-h-screen > div > div > a:nth-child(2)");
+    private static final By MY_APPLICATIONS_BUTTON = By.cssSelector("#root > div.container.mx-auto > div.flex.justify-center.items-start.my-20.min-h-screen > div > div > a:nth-child(3)");
     private static final By NAV_END_BUTTON = By.cssSelector("#root > div.navbar.bg-base-100 > div.navbar-end > div > div");
     private static final By LOG_OUT_BUTTON = By.cssSelector("#root > div.navbar.bg-base-100 > div.navbar-end > div > ul > li:nth-child(2) > a");
 
-    public CompanyHomePage(WebDriver driver) {
+
+    public StudentHomePage(WebDriver driver) {
         super(driver);
     }
 
@@ -20,14 +25,14 @@ public class CompanyHomePage extends Page {
     }
 
     public void verifyWelcomeMessageIsVisible() {
-        WebElement message = super.getElement(HOME_MESSAGE);
-        assert message != null;
+        WebElement welcome = super.getElement(WELCOME_HEADING);
+        assert welcome != null;
     }
 
     public void verifyRoleName() {
         super.waitForElementVisible(ROLE_NAME);
         String role = super.getElementText(ROLE_NAME);
-        assert role.equals("COMPANY");
+        assert role.equals("STUDENT");
     }
 
     public void logOut() {

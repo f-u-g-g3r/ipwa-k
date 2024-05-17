@@ -1,10 +1,14 @@
 package com.ipwa.kp.e2e.pageobjects;
 
+import com.ipwa.kp.e2e.pageobjects.home.CompanyHomePage;
+import com.ipwa.kp.e2e.pageobjects.home.CoordinatorHomePage;
+import com.ipwa.kp.e2e.pageobjects.home.StudentHomePage;
+import com.ipwa.kp.e2e.pageobjects.home.TeacherHomePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class LoginPage extends Page{
+public class LoginPage extends Page {
     private static final String URL = "http://localhost:5173/login";
     private static final By USERNAME_INPUT = By.cssSelector("#root > div.container.mx-auto > form > div:nth-child(1) > label > input");
     private static final By PASSWORD_INPUT = By.cssSelector("#root > div.container.mx-auto > form > div:nth-child(2) > label > input");
@@ -52,6 +56,7 @@ public class LoginPage extends Page{
         super.findAndClick(LOGIN_BUTTON);
         return new TeacherHomePage(super.getDriver());
     }
+
     public CoordinatorHomePage logInAsCoordinator() {
         super.findAndClick(LOGIN_BUTTON);
         return new CoordinatorHomePage(super.getDriver());

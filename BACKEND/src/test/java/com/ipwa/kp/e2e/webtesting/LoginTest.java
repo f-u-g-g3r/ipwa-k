@@ -1,11 +1,13 @@
 package com.ipwa.kp.e2e.webtesting;
 
 import com.ipwa.kp.e2e.pageobjects.*;
+import com.ipwa.kp.e2e.pageobjects.home.CompanyHomePage;
+import com.ipwa.kp.e2e.pageobjects.home.CoordinatorHomePage;
+import com.ipwa.kp.e2e.pageobjects.home.StudentHomePage;
+import com.ipwa.kp.e2e.pageobjects.home.TeacherHomePage;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.parameters.P;
 
 import java.time.Duration;
 
@@ -101,9 +103,4 @@ public class LoginTest {
 
         loginPage.verifyUsernameInputVisible();
     }
-
-
-
-
-
 }

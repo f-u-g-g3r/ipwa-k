@@ -1,6 +1,7 @@
 package com.ipwa.kp.e2e.pageobjects.company;
 
 import com.ipwa.kp.e2e.pageobjects.Page;
+import com.ipwa.kp.e2e.pageobjects.PostsPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.springframework.security.core.parameters.P;
@@ -43,7 +44,8 @@ public class CreatePostForm extends Page {
         super.sendText(EXPIRATION_DATE, text);
     }
 
-    public void submitForm() {
+    public PostsPage submitForm() {
         super.findAndClick(SUBMIT);
+        return new PostsPage(super.getDriver());
     }
 }

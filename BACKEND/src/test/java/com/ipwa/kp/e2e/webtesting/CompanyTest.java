@@ -1,6 +1,7 @@
 package com.ipwa.kp.e2e.webtesting;
 
 import com.ipwa.kp.e2e.pageobjects.*;
+import com.ipwa.kp.e2e.pageobjects.company.CompanyProfilePage;
 import com.ipwa.kp.e2e.pageobjects.company.CreatePostForm;
 import com.ipwa.kp.e2e.pageobjects.home.CompanyHomePage;
 import org.junit.jupiter.api.*;
@@ -20,6 +21,7 @@ public class CompanyTest {
     public static CompanyHomePage companyHomePage;
     public static CreatePostForm createPostForm;
     public static PostsPage postsPage;
+    public static CompanyProfilePage companyProfilePage;
 
     @BeforeAll
     public static void setUp() {
@@ -57,6 +59,14 @@ public class CompanyTest {
         createPostForm.fillExpirationDate("12122024");
         postsPage = createPostForm.submitForm();
         postsPage.verifyThatPostWithWorkNameExist("TestWork2");
+    }
 
+    @Test
+    @Order(3)
+    public void updateCompanyProfile() throws InterruptedException {
+        companyProfilePage = companyHomePage.openProfile();
+        companyProfilePage.editCompanyName("NewTestName");
+        companyProfilePage.saveChanges();
+        companyProfilePage.verifyCompanyName("NewTestName");
     }
 }

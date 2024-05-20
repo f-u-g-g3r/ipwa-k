@@ -1,6 +1,7 @@
 package com.ipwa.kp.e2e.pageobjects.home;
 
 import com.ipwa.kp.e2e.pageobjects.Page;
+import com.ipwa.kp.e2e.pageobjects.company.CompanyProfilePage;
 import com.ipwa.kp.e2e.pageobjects.company.CreatePostForm;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,6 +14,8 @@ public class CompanyHomePage extends Page {
     private static final By CREATE_POST_BUTTON = By.cssSelector("#root > div.navbar.bg-base-100 > div.navbar-center.hidden.lg\\:flex > ul > li:nth-child(3) > a");
 
     private static final By NAV_END_BUTTON = By.cssSelector("#root > div.navbar.bg-base-100 > div.navbar-end > div > div");
+    private static final By MY_ACCOUNT_BUTTON = By.cssSelector("#root > div.navbar.bg-base-100 > div.navbar-end > div > ul > li:nth-child(1) > a");
+
     private static final By LOG_OUT_BUTTON = By.cssSelector("#root > div.navbar.bg-base-100 > div.navbar-end > div > ul > li:nth-child(2) > a");
 
     public CompanyHomePage(WebDriver driver) {
@@ -37,5 +40,11 @@ public class CompanyHomePage extends Page {
     public CreatePostForm openCreatePostForm() {
         super.findAndClick(CREATE_POST_BUTTON);
         return new CreatePostForm(super.getDriver());
+    }
+
+    public CompanyProfilePage openProfile() {
+        super.hoverOverElement(super.getElement(NAV_END_BUTTON));
+        super.findAndClick(MY_ACCOUNT_BUTTON);
+        return new CompanyProfilePage(super.getDriver());
     }
 }

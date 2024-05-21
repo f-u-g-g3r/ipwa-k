@@ -45,7 +45,8 @@ function ShowGroups() {
         const data = {
             name: newGroup
         }
-        await addNewGroup(data).then(fetchGroups(0))
+        await addNewGroup(data);
+        fetchGroups(0);
     }
 
 
@@ -82,6 +83,7 @@ function ShowGroups() {
 
     return (
         <>
+            <p className="text-xl font-medium text-center mb-10">Groups</p>
             <Form onSubmit={handleSubmit}>
                 <div className="flex">
                     <label className="input input-bordered flex items-center gap-2">

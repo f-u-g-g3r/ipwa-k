@@ -92,4 +92,17 @@ public class CoordinatorTest {
         coordinatorHomePage.generateRandomDataForNewTeacherAndSubmit();
     }
 
+    @Test
+    @Order(9)
+    public void openGroupManagement() {
+        coordinatorHomePage.openGroupsManagement();
+        coordinatorHomePage.verifyGroupManagementIsOpen();
+    }
+
+    @Test
+    @Order(10)
+    public void createNewGroup() {
+        coordinatorHomePage.createNewGroup("TA-21V");
+    }
+
 }

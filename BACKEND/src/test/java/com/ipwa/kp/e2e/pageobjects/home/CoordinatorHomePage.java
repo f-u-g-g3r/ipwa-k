@@ -32,6 +32,15 @@ public class CoordinatorHomePage extends Page {
     private static final By GENERATE_RANDOM_TEACHER_PASSWORD = By.cssSelector("#root > div.container.mx-auto > div.flex > div > div.drawer-content.flex.flex-col.px-20.pt-5.bg-gray-200.pb-20 > div.flex.flex-wrap.justify-center.mt-5 > button");
     private static final By SUBMIT_NEW_TEACHER = By.cssSelector("#root > div.container.mx-auto > div.flex > div > div.drawer-content.flex.flex-col.px-20.pt-5.bg-gray-200.pb-20 > div:nth-child(5) > button");
 
+
+    private static final By GROUP_MANAGEMENT = By.cssSelector("#root > div.container.mx-auto > div.flex > div > div.drawer-side.h-full > ul > li:nth-child(4) > a");
+    private static final By NEW_GROUP_INPUT = By.cssSelector("#root > div.container.mx-auto > div.flex > div > div.drawer-content.flex.flex-col.px-20.pt-5.bg-gray-200.pb-20 > form > div > label > input");
+    private static final By ADD_NEW_GROUP = By.cssSelector("#root > div.container.mx-auto > div.flex > div > div.drawer-content.flex.flex-col.px-20.pt-5.bg-gray-200.pb-20 > form > div > button");
+    private static final By GROUP_HEADING = By.cssSelector("#root > div.container.mx-auto > div.flex > div > div.drawer-content.flex.flex-col.px-20.pt-5.bg-gray-200.pb-20 > p");
+
+
+
+
     public CoordinatorHomePage(WebDriver driver) {
         super(driver);
     }
@@ -105,5 +114,19 @@ public class CoordinatorHomePage extends Page {
         super.findAndClick(GENERATE_RANDOM_TEACHER_PASSWORD);
         super.findAndClick(SUBMIT_NEW_TEACHER);
     }
+
+    public void openGroupsManagement() {
+        super.findAndClick(GROUP_MANAGEMENT);
+    }
+
+    public void verifyGroupManagementIsOpen() {
+        assert super.getElementText(GROUP_HEADING).equalsIgnoreCase("groups");
+    }
+
+    public void createNewGroup(String groupName) {
+        super.sendText(NEW_GROUP_INPUT, groupName);
+        super.findAndClick(ADD_NEW_GROUP);
+    }
+
 
 }

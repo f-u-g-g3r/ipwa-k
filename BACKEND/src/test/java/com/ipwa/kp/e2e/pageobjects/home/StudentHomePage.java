@@ -1,6 +1,7 @@
 package com.ipwa.kp.e2e.pageobjects.home;
 
 import com.ipwa.kp.e2e.pageobjects.Page;
+import com.ipwa.kp.e2e.pageobjects.student.StudentProfilePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,6 +15,7 @@ public class StudentHomePage extends Page {
     private static final By MY_APPLICATIONS_BUTTON = By.cssSelector("#root > div.container.mx-auto > div.flex.justify-center.items-start.my-20.min-h-screen > div > div > a:nth-child(3)");
     private static final By NAV_END_BUTTON = By.cssSelector("#root > div.navbar.bg-base-100 > div.navbar-end > div > div");
     private static final By LOG_OUT_BUTTON = By.cssSelector("#root > div.navbar.bg-base-100 > div.navbar-end > div > ul > li:nth-child(2) > a");
+    private static final By MY_ACCOUNT_BUTTON = By.cssSelector("#root > div.navbar.bg-base-100 > div.navbar-end > div > ul > li:nth-child(1) > a");
 
 
     public StudentHomePage(WebDriver driver) {
@@ -38,5 +40,11 @@ public class StudentHomePage extends Page {
     public void logOut() {
         super.hoverOverElement(super.getElement(NAV_END_BUTTON));
         super.findAndClick(LOG_OUT_BUTTON);
+    }
+
+    public StudentProfilePage openMyAccount() {
+        super.hoverOverElement(super.getElement(NAV_END_BUTTON));
+        super.findAndClick(MY_ACCOUNT_BUTTON);
+        return new StudentProfilePage(super.getDriver());
     }
 }

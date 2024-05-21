@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import StudentProfileManagement from "../coordinator/studentsManagement/studentProfileManagement.jsx";
 
 export default function HomeTeacher() {
-    const [action, setAction] = useState(0);
+    const [action, setAction] = useState(1);
     const urlParams = new URLSearchParams(window.location.search);
     const actionParam = urlParams.get('action');
     const navigate = useNavigate();

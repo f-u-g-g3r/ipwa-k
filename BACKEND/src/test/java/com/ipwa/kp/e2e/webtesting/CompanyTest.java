@@ -63,7 +63,7 @@ public class CompanyTest {
 
     @Test
     @Order(3)
-    public void updateCompanyProfile() throws InterruptedException {
+    public void updateCompanyProfile() {
         companyProfilePage = companyHomePage.openProfile();
         companyProfilePage.editCompanyName("NewTestName");
         companyProfilePage.saveChanges();

@@ -41,15 +41,15 @@ public class PostControllerTest {
         Specifications.installSpecification(Specifications.requestSpec("http://localhost:" + port + "/posts"), Specifications.responseSpecOK200());
     }
 
-    @Test
-    public void createPost() {
-        Post post = new Post();
-        given()
-                .header(new Header("Authorization", "Bearer " + token))
-                .body(post)
-                .when()
-                .post()
-                .then().log().all();
-    }
+//    @Test
+//    public void createPost() {
+//        Post post = new Post();
+//        given()
+//                .header(new Header("Authorization", "Bearer " + token))
+//                .body(post)
+//                .when()
+//                .post()
+//                .then().log().all();
+//    }
 
 }

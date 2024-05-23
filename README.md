@@ -1,4 +1,4 @@
-# ipwa-k-p
+# Internship portal web application
 
 ## Deployment
 ### Back-end project deployment

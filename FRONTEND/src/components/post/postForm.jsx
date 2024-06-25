@@ -30,7 +30,7 @@ function PostForm() {
                         <div className="label">
                             <span className="label-text">Töö nimetus</span>
                         </div>
-                        <input type="text" name="workName" className="input input-bordered w-full max-w-lg" required/>
+                        <input type="text" data-testid="work-name" name="workName" className="input input-bordered w-full max-w-lg" required/>
                     </label>
                 </div>
 
@@ -39,7 +39,7 @@ function PostForm() {
                         <div className="label">
                             <span className="label-text">Töö kirjeldus</span>
                         </div>
-                        <textarea className="textarea textarea-bordered w-full max-w-lg h-24 max-h-96"
+                        <textarea data-testid="work-desc" className="textarea textarea-bordered w-full max-w-lg h-24 max-h-96"
                                   name="workDescription" required></textarea>
                     </label>
                 </div>
@@ -49,7 +49,7 @@ function PostForm() {
                         <div className="label">
                             <span className="label-text">Palk</span>
                         </div>
-                        <input type="text" name="salary" className="input input-bordered w-full max-w-lg"/>
+                        <input type="text" data-testid="work-salary" name="salary" className="input input-bordered w-full max-w-lg"/>
                     </label>
                 </div>
 
@@ -58,7 +58,7 @@ function PostForm() {
                         <div className="label">
                             <span className="label-text">Nõuded</span>
                         </div>
-                        <input type="text" name="claims" className="input input-bordered w-full max-w-lg" required/>
+                        <input type="text" data-testid="work-claims" name="claims" className="input input-bordered w-full max-w-lg" required/>
                     </label>
                 </div>
 
@@ -67,7 +67,7 @@ function PostForm() {
                         <div className="label">
                             <span className="label-text">Lisainformatsioon</span>
                         </div>
-                        <textarea name="additionalInfo"
+                        <textarea name="additionalInfo" data-testid="work-info"
                                   className="textarea textarea-bordered w-full max-w-lg h-24 max-h-96"></textarea>
                     </label>
                 </div>
@@ -77,7 +77,7 @@ function PostForm() {
                         <div className="label">
                             <span className="label-text">Aegumiskuupäev</span>
                         </div>
-                        <input type="date" name="expiryDate" className="input input-bordered w-full max-w-lg" required/>
+                        <input type="date" name="expiryDate" data-testid="work-expiry-date" className="input input-bordered w-full max-w-lg" required/>
                     </label>
                 </div>
 
@@ -91,7 +91,7 @@ function PostForm() {
                 </div>
 
                 <div className="flex justify-center">
-                    <input type="submit" className="btn btn-neutral w-full max-w-lg mt-10"/>
+                    <input type="submit" data-testid="form-submit" className="btn btn-neutral w-full max-w-lg mt-10"/>
                 </div>
             </Form>
         </div>

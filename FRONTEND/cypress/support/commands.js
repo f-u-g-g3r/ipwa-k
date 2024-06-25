@@ -23,3 +23,30 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('login', (username, password, authority) => {
+    cy.visit('/login')
+
+    cy.get('input[name=username]').type(username)
+    cy.get('input[name=password]').type(`${password}{enter}`)
+
+    cy.url().should('include', '/home')
+    cy.get('[data-testid="user-authority"]').should('contain', authority.toUpperCase())
+})
+
+// Login with session!!!
+// Cypress.Commands.add('login', (username, password, authority) => {
+//     cy.session(username,
+//         () => {
+//             cy.visit('/login')
+//             cy.get('input[name=username]').type(username)
+//             cy.get('input[name=password]').type(`${password}{enter}`)
+//             cy.url().should('include', '/home')
+//         },
+//         {
+//             validate: () => {
+//                 cy.get('[data-testid="user-authority"]').should('contain', authority.toUpperCase())
+//             }
+//         }
+//     )
+// })

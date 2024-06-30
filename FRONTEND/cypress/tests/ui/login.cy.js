@@ -31,7 +31,7 @@ describe('Login', () => {
             cy.get('input[name=password]').type(`asfasfasfasfsa{enter}`)
 
             cy.url().should('include', '/login')
-            cy.get('[data-testid="guest"]').should('contain', 'Guest')
+            cy.get('[data-testid="user-name"]').should('contain', 'Guest')
         });
     })
 })

@@ -14,6 +14,7 @@ function deleteModal(props) {
                         <form method="dialog">
                             <button className="btn" onClick={() => closeModal()}>No</button>
                             <button
+                                data-testid="modal-delete"
                                 className="btn btn-error"
                                 onClick={() => {
                                     handleDelete(props.post.id);

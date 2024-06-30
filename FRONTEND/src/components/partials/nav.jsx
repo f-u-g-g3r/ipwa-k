@@ -54,7 +54,7 @@ function Nav() {
                     </div>
                     <ul tabIndex={0}
                         className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                        <li><Link to={`/home`}>Home</Link></li>
+                        <li data-testid="nav-home"><Link to={`/home`}>Home</Link></li>
                         <li><Link to={`/posts`}>Posts</Link></li>
                         {authority === "COMPANY" || authority === "COORDINATOR" ?
                             <li data-testid="nav-create-post"><Link to={`/posts/new`}>Create a job posting</Link></li> :
@@ -74,9 +74,9 @@ function Nav() {
             </div>
             <div className="navbar-end ">
                 <div className="dropdown dropdown-hover dropdown-end">
-                    <div tabIndex={0} role="button" className="btn btn-active h-auto">
+                    <div tabIndex={0} role="button" className="btn btn-active h-auto" data-testid="nav-end">
                         <div className="">
-                            <p className="text-xl w-full" data-testid="guest">{userData !== undefined ? userData : 'Guest'}</p>
+                            <p className="text-xl w-full" data-testid="user-name">{userData !== undefined ? userData : 'Guest'}</p>
                             <p className="text-lg font-medium capitalize" data-testid="user-authority">{authority}</p>
                         </div>
                     </div>
@@ -84,7 +84,7 @@ function Nav() {
                         <ul tabIndex={0}
                             className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
 
-                            <li><Link to={`/${authority.toLowerCase()}/profile`}>My account</Link></li>
+                            <li data-testid="my-account"><Link to={`/${authority.toLowerCase()}/profile`}>My account</Link></li>
                             <li><Link to={`/login`} onClick={logOut}>Log out</Link></li>
                         </ul> : <></>
                     }

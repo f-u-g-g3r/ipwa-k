@@ -61,7 +61,7 @@ function CompanyProfile() {
                             <span className="label-text text-lg">Company name</span>
                         </div>
                         <input type="text" defaultValue={company.name} name="name"
-                               className="input input-bordered w-full"/>
+                               className="input input-bordered w-full" data-testid="company-name"/>
                     </label>
                 </div>
 
@@ -71,7 +71,7 @@ function CompanyProfile() {
                             <span className="label-text text-lg">Email</span>
                         </div>
                         <input type="text" defaultValue={company.email} name="email"
-                               className="input input-bordered w-full"/>
+                               className="input input-bordered w-full" data-testid="email"/>
                     </label>
                 </div>
 
@@ -87,7 +87,7 @@ function CompanyProfile() {
                             <span className="label-text text-lg">Address</span>
                         </div>
                         <input type="text" defaultValue={company.address} name="address"
-                               className="input input-bordered w-full"/>
+                               className="input input-bordered w-full" data-testid="address"/>
                     </label>
                 </div>
 
@@ -97,7 +97,7 @@ function CompanyProfile() {
                             <span className="label-text text-lg">Phone</span>
                         </div>
                         <input type="text" defaultValue={company.phone} name="phone"
-                               className="input input-bordered w-full"/>
+                               className="input input-bordered w-full" data-testid="phone"/>
                     </label>
                 </div>
 
@@ -107,7 +107,7 @@ function CompanyProfile() {
                             <span className="label-text text-lg">Contacts</span>
                         </div>
                         <input type="text" defaultValue={company.contacts} name="contacts"
-                               className="input input-bordered w-full"/>
+                               className="input input-bordered w-full" data-testid="contacts"/>
                     </label>
                 </div>
 
@@ -117,7 +117,7 @@ function CompanyProfile() {
                             <span className="label-text text-lg">Registry code</span>
                         </div>
                         <input type="text" defaultValue={company.registryCode} name="registryCode"
-                               className="input input-bordered w-full"/>
+                               className="input input-bordered w-full" data-testid="registry-code"/>
                     </label>
                 </div>
 
@@ -140,7 +140,7 @@ function CompanyProfile() {
                 <div className="text-lg flex justify-center w-full my-1">
                     <div className="w-full max-w-lg">
                         <p className="text-lg my-3">Username: {company.username}</p>
-                        <input type="submit" className="btn btn-success my-3 w-full max-w-lg" value="Update profile" />
+                        <input type="submit" className="btn btn-success my-3 w-full max-w-lg" value="Update profile" data-testid="submit"/>
                     </div>
                 </div>
             </Form>

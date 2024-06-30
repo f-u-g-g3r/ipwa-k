@@ -95,8 +95,8 @@ function PostCard(props) {
                             }} className="btn btn-secondary text-xl h-14">Show info
                             </button>
                         </div>
-                        <div className="flex items-center w-1/5 ms-10">
-                            <button className="btn btn-error" onClick={() => openModal()}>
+                        <div data-testid="delete-post-div" className="flex items-center w-1/5 ms-10">
+                            <button data-testid="delete-post-btn" className="btn btn-error" onClick={() => openModal()}>
                                 Delete Post
                             </button>
 
